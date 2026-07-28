@@ -47,8 +47,10 @@ export const artists = [
     bio: 'Lead artist specializing in custom design work with a signature bold, detailed style.',
   },
   {
+    // Slug stays 'junior' (his professional name, and the URL/asset folder);
+    // the site displays his full name.
     slug: 'junior',
-    name: 'Junior',
+    name: 'Nelson Cruz',
     role: 'Tattoo Artist',
     instagramHandle: '@jncoficial',
     instagramHref: 'https://www.instagram.com/jncoficial',
@@ -102,7 +104,7 @@ export const testimonials = [
     name: 'Priya S.',
     rating: 5,
     quote:
-      "Junior did my forearm piece and the linework is razor clean. Already planning my next session with him.",
+      'Nelson did my forearm piece and the linework is razor clean. Already planning my next session with him.',
   },
   {
     name: 'Devon K.',
