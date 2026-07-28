@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import Testimonials from '../components/Testimonials'
 import AnimatedCounter from '../components/AnimatedCounter'
@@ -89,21 +90,6 @@ export default function About() {
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-muted">{artist.bio}</p>
 
                   <div className="mt-6 flex flex-wrap gap-3">
-                    {artist.phoneHref ? (
-                      <motion.a
-                        href={artist.phoneHref}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={{ duration: 0.2 }}
-                        className="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-cream hover:border-ink-accent-light hover:text-ink-accent-light"
-                      >
-                        {artist.phone}
-                      </motion.a>
-                    ) : (
-                      <span className="rounded-full border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-muted/50">
-                        Phone coming soon
-                      </span>
-                    )}
                     <motion.a
                       href={artist.instagramHref}
                       target="_blank"
@@ -115,6 +101,12 @@ export default function About() {
                     >
                       {artist.instagramHandle}
                     </motion.a>
+                    <Link
+                      to={`/artists/${artist.slug}`}
+                      className="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-cream transition-colors duration-200 hover:border-ink-accent-light hover:text-ink-accent-light"
+                    >
+                      Portfolio
+                    </Link>
                   </div>
                 </div>
               </motion.div>

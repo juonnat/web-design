@@ -1,8 +1,12 @@
 export const studio = {
   name: 'Ink Novation',
   tagline: 'Three Artists. One Studio. Custom Work Only.',
-  phone: '484-505-8810',
-  phoneHref: 'tel:+14845058810',
+  // No personal numbers go on this site. A dedicated studio business line
+  // has not been set up yet — until it exists, both stay null and the UI
+  // falls back to `phonePlaceholder`. See README before launch.
+  phone: null,
+  phoneHref: null,
+  phonePlaceholder: 'Business line coming soon',
   email: 'ink.novation22@gmail.com',
   emailHref: 'mailto:ink.novation22@gmail.com',
   instagramHandle: '@ink.novation.art',
@@ -16,7 +20,7 @@ export const studio = {
     'https://www.google.com/maps?q=1111+Union+Boulevard+Allentown+PA+18109&output=embed',
   rating: 5.0,
   bookingNote:
-    'Bookings are handled directly via Instagram DM or phone call — this site does not book appointments.',
+    'Bookings are handled directly through Instagram DM — this site does not book appointments.',
   hours: [
     { days: 'Monday', time: 'Closed' },
     { days: 'Tuesday – Friday', time: '10AM – 6PM' },
@@ -30,13 +34,14 @@ export const studio = {
   },
 }
 
+// Artists are contacted through Instagram only. Personal phone numbers are
+// deliberately absent from this data — do not add them back. When the studio
+// business line exists it belongs on `studio`, not on individual artists.
 export const artists = [
   {
     slug: 'bryan',
     name: 'Bryan Dilone',
     role: 'Owner & Lead Tattoo Artist',
-    phone: '484-505-8810',
-    phoneHref: 'tel:+14845058810',
     instagramHandle: '@tattoofurius',
     instagramHref: 'https://www.instagram.com/tattoofurius',
     bio: 'Lead artist specializing in custom design work with a signature bold, detailed style.',
@@ -45,20 +50,14 @@ export const artists = [
     slug: 'junior',
     name: 'Junior',
     role: 'Tattoo Artist',
-    phone: '484-469-1479',
-    phoneHref: 'tel:+14844691479',
     instagramHandle: '@jncoficial',
     instagramHref: 'https://www.instagram.com/jncoficial',
     bio: 'Versatile tattoo artist known for clean linework and creative custom pieces.',
   },
   {
     slug: 'sharyn',
-    name: 'Sharyn',
+    name: 'Sharyn Fajardo',
     role: 'Tattoo Artist',
-    // Placeholder — Sharyn's real direct number still needs to be collected.
-    // Deliberately NOT reusing Junior's number. See README before launch.
-    phone: null,
-    phoneHref: null,
     instagramHandle: '@sharyn.tattoo',
     instagramHref: 'https://www.instagram.com/sharyn.tattoo',
     bio: 'Tattoo artist bringing precision and artistic flair to every custom piece.',

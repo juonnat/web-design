@@ -92,8 +92,8 @@ export default function ContactForm() {
         This form opens an email to us — for the fastest response, DM{' '}
         <a href={studio.instagramHref} target="_blank" rel="noreferrer" className="text-ink-accent-light">
           {studio.instagramHandle}
-        </a>{' '}
-        or call {studio.phone}.
+        </a>
+        .
       </p>
     </form>
   )

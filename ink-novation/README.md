@@ -6,13 +6,19 @@ CSS v4, and Framer Motion.
 
 ## Before this goes live
 
-**Sharyn's phone number is still a placeholder.** `src/data/content.js` →
-`artists` → the `sharyn` entry has `phone: null` / `phoneHref: null` on
-purpose — her real direct line still needs to be collected. Until then, her
-About card and artist page show "Phone coming soon" instead of a click-to-call
-button (deliberately not reusing Junior's number).
+**The studio business phone number is still a placeholder.** No phone
+numbers appear anywhere on this site by design — the artists' personal
+numbers are deliberately not published, and a dedicated studio business
+line does not exist yet. `src/data/content.js` → `studio` has
+`phone: null` / `phoneHref: null`, and the Contact page and footer show
+`phonePlaceholder` ("Business line coming soon") in place of a number.
 
-Everything else — studio address, hours, all three artists' bios/phones/
+When a real business line is set up, fill in `studio.phone` and
+`studio.phoneHref` and restore the click-to-call buttons. **Do not add
+phone numbers to individual artists** — the `artists` array has no phone
+fields on purpose, and all artist contact routes through Instagram.
+
+Everything else — studio address, hours, all three artists' names/bios/
 Instagram handles, services and pricing — reflects the corrected data
 provided for this rebuild (the address is consistently
 1111 Union Boulevard, Allentown, PA 18109 throughout; the old site's 18101

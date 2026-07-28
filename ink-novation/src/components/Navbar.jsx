@@ -59,10 +59,12 @@ export default function Navbar() {
         </ul>
 
         <a
-          href={studio.phoneHref}
+          href={studio.instagramHref}
+          target="_blank"
+          rel="noreferrer"
           className="hidden sm:inline-block text-sm font-semibold text-ink-cream border border-white/20 rounded-full px-4 py-2 transition-all duration-200 hover:border-ink-accent-light hover:text-ink-accent-light"
         >
-          {studio.phone}
+          Book on Instagram
         </a>
 
         <button
@@ -105,8 +107,13 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <a href={studio.phoneHref} className="block py-2 text-sm font-semibold text-ink-cream">
-              {studio.phone}
+            <a
+              href={studio.instagramHref}
+              target="_blank"
+              rel="noreferrer"
+              className="block py-2 text-sm font-semibold text-ink-cream"
+            >
+              Book on Instagram
             </a>
           </li>
         </motion.ul>

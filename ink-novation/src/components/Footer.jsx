@@ -47,13 +47,13 @@ export default function Footer() {
             DM on Instagram
           </motion.a>
           <motion.a
-            href={studio.phoneHref}
+            href={studio.emailHref}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             className="inline-block rounded-full border border-white/20 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-cream hover:border-ink-accent-light hover:text-ink-accent-light"
           >
-            Call {studio.phone}
+            Email Us
           </motion.a>
         </div>
       </motion.div>
@@ -79,12 +79,10 @@ export default function Footer() {
                   <path d="M3 7l9 6 9-6" />
                 </svg>
               </IconLink>
-              <IconLink href={studio.phoneHref} label="Call">
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M4 5c0 9 6 15 15 15l1-4-5-2-2 2c-3-1.5-4.5-3-6-6l2-2-2-5-4 1z" />
-                </svg>
-              </IconLink>
             </div>
+            <p className="mt-4 text-xs uppercase tracking-widest text-ink-muted/50">
+              {studio.phonePlaceholder}
+            </p>
           </div>
 
           <div>

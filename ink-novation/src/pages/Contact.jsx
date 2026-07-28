@@ -58,15 +58,6 @@ export default function Contact() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <motion.a
-                  href={studio.phoneHref}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-full border border-white/20 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-cream hover:border-ink-accent-light hover:text-ink-accent-light"
-                >
-                  Call {studio.phone}
-                </motion.a>
-                <motion.a
                   href={studio.instagramHref}
                   target="_blank"
                   rel="noreferrer"
@@ -77,7 +68,19 @@ export default function Contact() {
                 >
                   DM {studio.instagramHandle}
                 </motion.a>
+                <motion.a
+                  href={studio.emailHref}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-full border border-white/20 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-cream hover:border-ink-accent-light hover:text-ink-accent-light"
+                >
+                  Email Us
+                </motion.a>
               </div>
+              <p className="mt-4 text-xs uppercase tracking-widest text-ink-muted/50">
+                {studio.phonePlaceholder}
+              </p>
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-ink-charcoal p-8">

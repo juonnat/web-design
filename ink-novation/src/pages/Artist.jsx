@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Navigate, useParams } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import PortfolioGallery from '../components/PortfolioGallery'
-import { artists, galleryCounts } from '../data/content'
+import { artists, galleryCounts, studio } from '../data/content'
 
 export default function Artist() {
   const { slug } = useParams()
@@ -16,31 +16,25 @@ export default function Artist() {
     <>
       <PageHero eyebrow={artist.role} title={artist.name.toUpperCase()} minHeight="min-h-[60vh]">
         <div className="flex flex-wrap items-center justify-center gap-4">
-          {artist.phoneHref ? (
-            <motion.a
-              href={artist.phoneHref}
-              whileHover={{ scale: 1.05, boxShadow: '0 0 28px rgba(45,212,191,0.5)' }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="inline-block rounded-full bg-ink-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-black"
-            >
-              Call {artist.phone}
-            </motion.a>
-          ) : (
-            <span className="inline-block rounded-full border border-white/15 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-muted/60">
-              Phone coming soon
-            </span>
-          )}
           <motion.a
             href={artist.instagramHref}
             target="_blank"
             rel="noreferrer"
+            whileHover={{ scale: 1.05, boxShadow: '0 0 28px rgba(45,212,191,0.5)' }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="inline-block rounded-full bg-ink-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-black"
+          >
+            DM {artist.instagramHandle}
+          </motion.a>
+          <motion.a
+            href={studio.emailHref}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             className="inline-block rounded-full border border-white/20 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-cream hover:border-ink-accent-light hover:text-ink-accent-light"
           >
-            {artist.instagramHandle}
+            Email The Studio
           </motion.a>
         </div>
       </PageHero>

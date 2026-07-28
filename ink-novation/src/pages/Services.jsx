@@ -62,7 +62,7 @@ export default function Services() {
           >
             Final pricing depends on size, placement, and detail — our
             artists will quote your piece directly once they see the concept.
-            Reach out via Instagram DM or phone to get started.
+            Reach out via Instagram DM to get started.
           </motion.p>
         </div>
       </section>
