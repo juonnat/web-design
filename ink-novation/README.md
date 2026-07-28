@@ -41,6 +41,19 @@ provided for this rebuild (the address is consistently
 1111 Union Boulevard, Allentown, PA 18109 throughout; the old site's 18101
 typo is gone).
 
+## Typography
+
+Fonts are **self-hosted**, not loaded from the Google Fonts CDN — see the
+`@font-face` rules at the top of `src/index.css` and the woff2 files in
+`src/assets/fonts/`. That removes a third-party runtime dependency and a
+render-blocking round trip to another origin, and keeps the site's typography
+intact anywhere that CDN is unreachable.
+
+Latin subset only, 108KB total for all three families. Inter ships as a
+variable font, so one file covers every weight. To add a family, download its
+latin woff2, drop it in `src/assets/fonts/`, and add a matching `@font-face`
+rule — do not add a `<link>` back to the CDN.
+
 ## Artist photography
 
 Photos resolve from `src/assets/<slug>/` at build time via

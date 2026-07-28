@@ -17,7 +17,18 @@ const item = {
   },
 }
 
-export default function PageHero({ eyebrow, title, subtitle, children, minHeight = 'min-h-[70vh]' }) {
+export default function PageHero({
+  eyebrow,
+  title,
+  subtitle,
+  children,
+  minHeight = 'min-h-[70vh]',
+  // When supplied, this renders in place of the plain heading. `title` is still
+  // required and becomes a visually-hidden h1, so the page keeps one real
+  // heading for search engines and screen readers.
+  titleContent,
+  showBackdrop = true,
+}) {
   return (
     <section className={`relative flex ${minHeight} items-center justify-center overflow-hidden bg-ink-black pt-24`}>
       <div className="pointer-events-none absolute inset-0">
@@ -39,9 +50,11 @@ export default function PageHero({ eyebrow, title, subtitle, children, minHeight
           animate={{ scale: [1, 1.2, 1], opacity: [0.35, 0.65, 0.35] }}
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
         />
-        {/* On phones the machine drops behind the headline, so it sits lower,
-            smaller and fainter there rather than being hidden outright. */}
-        <TattooMachineBackdrop className="-right-6 top-[82%] h-[44%] max-h-[340px] w-auto -translate-y-1/2 -rotate-[8deg] text-ink-accent-light/[0.11] md:right-2 md:top-1/2 md:h-[104%] md:max-h-[680px] md:text-ink-accent-light/[0.17] lg:right-16 xl:right-28" />
+        {/* Suppressed on Home, where the machine appears in the headline itself
+            and a second one in the background would just compete. */}
+        {showBackdrop && (
+          <TattooMachineBackdrop className="-right-8 top-[80%] h-[46%] max-h-[360px] w-auto -translate-y-1/2 -rotate-[10deg] text-ink-accent-light opacity-[0.16] md:right-0 md:top-1/2 md:h-[108%] md:max-h-[720px] md:opacity-[0.3] lg:right-12 xl:right-24" />
+        )}
 
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.span
@@ -74,12 +87,21 @@ export default function PageHero({ eyebrow, title, subtitle, children, minHeight
             {eyebrow}
           </motion.span>
         )}
-        <motion.h1
-          variants={item}
-          className="font-display text-5xl leading-[0.95] tracking-wide text-ink-cream sm:text-6xl md:text-7xl"
-        >
-          {title}
-        </motion.h1>
+        {titleContent ? (
+          <>
+            <h1 className="sr-only">{title}</h1>
+            <motion.div variants={item} className="w-full">
+              {titleContent}
+            </motion.div>
+          </>
+        ) : (
+          <motion.h1
+            variants={item}
+            className="font-display text-5xl leading-[0.95] tracking-wide text-ink-cream sm:text-6xl md:text-7xl"
+          >
+            {title}
+          </motion.h1>
+        )}
         {subtitle && (
           <motion.p variants={item} className="mt-6 max-w-xl text-lg text-ink-muted">
             {subtitle}
