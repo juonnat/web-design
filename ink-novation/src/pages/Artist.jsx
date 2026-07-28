@@ -1,0 +1,104 @@
+import { motion } from 'framer-motion'
+import { Navigate, useParams } from 'react-router-dom'
+import PageHero from '../components/PageHero'
+import PortfolioGallery from '../components/PortfolioGallery'
+import { artists, galleryCounts } from '../data/content'
+
+export default function Artist() {
+  const { slug } = useParams()
+  const artist = artists.find((a) => a.slug === slug)
+
+  if (!artist) {
+    return <Navigate to="/about" replace />
+  }
+
+  return (
+    <>
+      <PageHero eyebrow={artist.role} title={artist.name.toUpperCase()} minHeight="min-h-[60vh]">
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          {artist.phoneHref ? (
+            <motion.a
+              href={artist.phoneHref}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 28px rgba(45,212,191,0.5)' }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="inline-block rounded-full bg-ink-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-black"
+            >
+              Call {artist.phone}
+            </motion.a>
+          ) : (
+            <span className="inline-block rounded-full border border-white/15 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-muted/60">
+              Phone coming soon
+            </span>
+          )}
+          <motion.a
+            href={artist.instagramHref}
+            target="_blank"
+            rel="noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="inline-block rounded-full border border-white/20 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-cream hover:border-ink-accent-light hover:text-ink-accent-light"
+          >
+            {artist.instagramHandle}
+          </motion.a>
+        </div>
+      </PageHero>
+
+      <section className="bg-ink-charcoal py-24">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-14 px-6 md:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="flex aspect-square items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-ink-charcoal-light to-ink-black">
+              <svg className="h-20 w-20 text-ink-accent-light/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+              </svg>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-ink-accent-light">
+              About {artist.name}
+            </span>
+            <h2 className="mt-4 font-display text-4xl tracking-wide text-ink-cream">
+              {artist.role}
+            </h2>
+            <p className="mt-6 text-ink-muted leading-relaxed">{artist.bio}</p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="bg-ink-black py-28">
+        <div className="mx-auto max-w-5xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-ink-accent-light">
+              Portfolio
+            </span>
+            <h2 className="mt-4 font-display text-4xl tracking-wide text-ink-cream sm:text-5xl">
+              {artist.name}&rsquo;s Work
+            </h2>
+          </motion.div>
+
+          <div className="mt-16">
+            <PortfolioGallery count={galleryCounts[artist.slug] ?? 6} artistName={artist.name} />
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
