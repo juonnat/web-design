@@ -1,7 +1,37 @@
 @import "tailwindcss";
 
+/* Fonts are self-hosted rather than pulled from the Google Fonts CDN: it drops
+   a third-party runtime dependency, removes a render-blocking round trip to
+   another origin, and means the site keeps its typography even where that CDN
+   is blocked. Latin subset only — 108KB for all three families. */
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/bebas-neue-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Great Vibes";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/great-vibes-400.woff2") format("woff2");
+}
+
+/* Inter ships as a variable font, so one file covers every weight we use. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/fonts/inter-var.woff2") format("woff2");
+}
+
 @theme {
   --font-display: "Bebas Neue", sans-serif;
+  --font-script: "Great Vibes", cursive;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --color-ink-black: #09090b;

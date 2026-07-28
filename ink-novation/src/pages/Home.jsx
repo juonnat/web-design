@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
+import TattooedName from '../components/TattooedName'
 import ArtistCard from '../components/ArtistCard'
 import Testimonials from '../components/Testimonials'
 import { artists, studio } from '../data/content'
@@ -15,7 +16,9 @@ export default function Home() {
     <>
       <PageHero
         eyebrow={`Allentown, PA · ${studio.rating.toFixed(1)} ★`}
-        title="INK NOVATION"
+        title="Ink Novation"
+        titleContent={<TattooedName text="Ink Novation" />}
+        showBackdrop={false}
         subtitle={studio.tagline}
         minHeight="min-h-screen"
       >
