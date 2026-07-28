@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import TattooMachineBackdrop from './TattooMachineBackdrop'
 
 const container = {
   hidden: {},
@@ -38,6 +39,10 @@ export default function PageHero({ eyebrow, title, subtitle, children, minHeight
           animate={{ scale: [1, 1.2, 1], opacity: [0.35, 0.65, 0.35] }}
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
         />
+        {/* On phones the machine drops behind the headline, so it sits lower,
+            smaller and fainter there rather than being hidden outright. */}
+        <TattooMachineBackdrop className="-right-6 top-[82%] h-[44%] max-h-[340px] w-auto -translate-y-1/2 -rotate-[8deg] text-ink-accent-light/[0.11] md:right-2 md:top-1/2 md:h-[104%] md:max-h-[680px] md:text-ink-accent-light/[0.17] lg:right-16 xl:right-28" />
+
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.span
             key={i}
