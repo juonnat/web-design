@@ -2,7 +2,9 @@ import { motion } from 'framer-motion'
 import { Navigate, useParams } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import PortfolioGallery from '../components/PortfolioGallery'
+import ArtistPortrait from '../components/ArtistPortrait'
 import { artists, galleryCounts, studio } from '../data/content'
+import { worksFor } from '../data/images'
 
 export default function Artist() {
   const { slug } = useParams()
@@ -47,11 +49,12 @@ export default function Artist() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex aspect-square items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-ink-charcoal-light to-ink-black">
-              <svg className="h-20 w-20 text-ink-accent-light/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-              </svg>
+            <div className="aspect-square overflow-hidden rounded-2xl border border-white/10">
+              <ArtistPortrait
+                artist={artist}
+                className="h-full w-full"
+                sizes="(min-width: 768px) 480px, 100vw"
+              />
             </div>
           </motion.div>
           <motion.div
@@ -89,7 +92,11 @@ export default function Artist() {
           </motion.div>
 
           <div className="mt-16">
-            <PortfolioGallery count={galleryCounts[artist.slug] ?? 6} artistName={artist.name} />
+            <PortfolioGallery
+              images={worksFor(artist.slug)}
+              placeholderCount={galleryCounts[artist.slug] ?? 6}
+              artistName={artist.name}
+            />
           </div>
         </div>
       </section>

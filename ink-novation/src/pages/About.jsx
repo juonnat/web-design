@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import Testimonials from '../components/Testimonials'
 import AnimatedCounter from '../components/AnimatedCounter'
+import ArtistPortrait from '../components/ArtistPortrait'
 import MapEmbed from '../components/MapEmbed'
 import { artists, studio } from '../data/content'
 
@@ -78,11 +79,12 @@ export default function About() {
                 variants={card}
                 className="flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-charcoal"
               >
-                <div className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-ink-charcoal-light to-ink-black">
-                  <svg className="h-16 w-16 text-ink-accent-light/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-                  </svg>
+                <div className="aspect-[4/3] overflow-hidden">
+                  <ArtistPortrait
+                    artist={artist}
+                    className="h-full w-full"
+                    sizes="(min-width: 1024px) 380px, 100vw"
+                  />
                 </div>
                 <div className="flex flex-1 flex-col p-7">
                   <h3 className="font-display text-2xl tracking-wide text-ink-cream">{artist.name}</h3>

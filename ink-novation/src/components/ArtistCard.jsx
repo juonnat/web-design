@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import ArtistPortrait from './ArtistPortrait'
 
 const card = {
   hidden: { opacity: 0, y: 32 },
@@ -14,11 +15,12 @@ export default function ArtistCard({ artist }) {
       transition={{ duration: 0.25, ease: 'easeOut' }}
       className="flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-charcoal"
     >
-      <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-ink-charcoal-light to-ink-black">
-        <svg className="h-16 w-16 text-ink-accent-light/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-        </svg>
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <ArtistPortrait
+          artist={artist}
+          className="h-full w-full"
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+        />
       </div>
       <div className="flex flex-1 flex-col p-6">
         <h3 className="font-display text-2xl tracking-wide text-ink-cream">{artist.name}</h3>
