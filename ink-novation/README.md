@@ -18,11 +18,42 @@ When a real business line is set up, fill in `studio.phone` and
 phone numbers to individual artists** — the `artists` array has no phone
 fields on purpose, and all artist contact routes through Instagram.
 
+**The portfolio galleries are thinner than intended.** Every artist has a
+real portrait, but the gallery counts are uneven and below the 6-per-artist
+target:
+
+| Artist | Portrait | Gallery images |
+| --- | --- | --- |
+| Bryan Dilone | yes | 3 |
+| Nelson Cruz | yes | 2 |
+| Sharyn Fajardo | yes | 2 |
+
+These are the genuinely usable tattoo photos retrieved from the studio's
+Drive folder — nothing is padded with studio logo graphics or repeated
+shots. More photos exist in that folder that were not pulled. To add them,
+drop files into `src/assets/<slug>/` named `work-N.jpg` and run
+`python3 scripts/optimize-images.py`; the galleries pick them up
+automatically with no code change (see "Artist photography" below).
+
 Everything else — studio address, hours, all three artists' names/bios/
 Instagram handles, services and pricing — reflects the corrected data
 provided for this rebuild (the address is consistently
 1111 Union Boulevard, Allentown, PA 18109 throughout; the old site's 18101
 typo is gone).
+
+## Artist photography
+
+Photos resolve from `src/assets/<slug>/` at build time via
+`import.meta.glob` — there is no list to maintain. `portrait.jpg` becomes the
+artist's photo everywhere they appear; `work-1.jpg`, `work-2.jpg`, … become
+their portfolio gallery in numeric order. An artist with no files falls back
+to a placeholder graphic, so each artist's page degrades independently.
+
+Source photos come off phone cameras at 4000–6000px and 4–8MB. Always run
+`scripts/optimize-images.py` after adding new ones: it caps the long edge,
+bakes in EXIF rotation (otherwise browsers render some photos sideways),
+strips metadata, and re-encodes progressive JPEG. In practice that has been a
+~10x reduction — the current set went from 14.5MB to 1.4MB.
 
 The contact form has no backend: submitting it opens the visitor's email
 client with a pre-filled message to `ink.novation22@gmail.com`. That's a
