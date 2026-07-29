@@ -46,6 +46,37 @@ mobile rules below). The generative layers stay as the atmosphere behind them.
 
 After editing `src/page.html`, run `python3 build.py`.
 
+## Deploying to Vercel
+
+`index.html` is the whole site — fonts are base64 inside it, the visuals are
+drawn in code, and it makes **zero external requests**. Nothing to build.
+
+**From the dashboard:** New Project → import this repo → set **Root Directory**
+to `tattoo-template` → Framework Preset **Other** → leave Build Command and
+Output Directory empty → Deploy.
+
+The Root Directory setting is the one that matters. This repo holds three
+projects, so pointing Vercel at the repo root would serve the wrong thing.
+
+**From the CLI**, in this folder:
+
+```bash
+npx vercel          # preview deploy
+npx vercel --prod   # production
+```
+
+`vercel.json` sets `cleanUrls`, a no-cache header on the HTML so a redeploy is
+visible immediately rather than sitting behind a stale cache, plus
+`nosniff` and a referrer policy. `.vercelignore` keeps the source, fonts and
+build script out of the deploy — only `index.html` and `vercel.json` ship.
+
+**Per-client deploys:** copy the folder, edit `src/page.html`, run
+`python3 build.py`, deploy. Each client is its own Vercel project, so a change
+for one can never affect another.
+
+Verified served over HTTP, not just opened from disk: fonts resolve, the canvas
+renders, no failed requests, no console errors, no request leaves the origin.
+
 ## Customising it for a real studio
 
 Roughly in order of impact:
