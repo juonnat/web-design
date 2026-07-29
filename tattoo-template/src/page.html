@@ -486,6 +486,28 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
    (transform + background), and it tells you the tile is a link. */
 .flash__item:hover { background: var(--paper); transform: translateY(-4px); z-index: 2; box-shadow: var(--shadow-lg); }
 .flash__art { display: grid; place-items: center; padding: 6%; }
+
+/* Photography drop-in. The line art is the placeholder; add --photo and an
+   <img> and the crop is handled. object-position sits at 35% rather than
+   centre because a centred cover-crop on a portrait-orientation phone photo
+   cuts the top of the subject off - which on a tattoo shot is the piece
+   itself, and on a portrait is someone's face. The ratio is locked so a mixed
+   bag of phone photos still forms an even grid on a narrow screen. */
+/* display:block matters - the line-art variant centres its child with
+   place-items, which stops an <img> from stretching to fill the frame. */
+.flash__art--photo, .artist__photo { padding: 0; overflow: hidden; display: block; }
+.artist__photo { aspect-ratio: 4 / 3; }
+.flash__art--photo img, .artist__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  display: block;
+  transition: transform .55s cubic-bezier(.2,.7,.3,1);
+}
+/* Bonus hover, live the moment real photos are in: the image drifts in behind
+   a fixed frame instead of the whole tile scaling. */
+.flash__item:hover .flash__art--photo img { transform: scale(1.05); }
 .flash__meta { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; }
 .flash__meta h3 { font-size: 1.18rem; }
 .flash__no {
@@ -604,6 +626,19 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
   color: var(--ink);
 }
 .sig small { display: block; font-family: var(--label); font-style: normal; letter-spacing: .16em; text-transform: uppercase; font-size: .82rem; color: var(--ink-faint); margin-top: .35rem; }
+
+/* The About section closes on an invitation, not a button. A hard CTA here
+   undercuts the tone the story just built - the ask has to sound like the
+   person who wrote the paragraph above it. */
+.about__cta { margin-top: .4rem; color: var(--ink-soft); }
+.about__cta a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--oxblood);
+  padding-bottom: 1px;
+  transition: color .2s ease, border-color .2s ease;
+}
+.about__cta a:hover { color: var(--oxblood); border-bottom-color: var(--ink); }
 
 /* ---------- testimonials ---------- */
 .quotes { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); }
@@ -1033,6 +1068,11 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
           Rae Okonjo
           <small>Owner · Resident artist since 2012</small>
         </p>
+        <p class="about__cta reveal d3">
+          If that's the way you'd want yours done, come and sit down with us —
+          <a href="#book">the consult is free</a>, and it's the easiest way to
+          find out.
+        </p>
       </div>
     </div>
   </section>
@@ -1087,7 +1127,7 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
       <div class="faq reveal">
         <details>
           <summary>How much is this going to cost me, really?</summary>
-          <p class="faq__a">You get a written number at the consult, before you pay anything but the deposit. It only changes if you change the design. If we misjudge and run over, we eat the difference.</p>
+          <p class="faq__a">You get a written number at the consult, and it only moves if you change the design. If we misjudge and the work runs over, we eat the difference — that's our problem, not your bill.</p>
         </details>
         <details>
           <summary>Does it hurt?</summary>

@@ -39,6 +39,21 @@ Roughly in order of impact:
    defined three times: `:root`, `@media (prefers-color-scheme: dark)`, and the
    two `:root[data-theme]` blocks. Change all of them or the themes drift apart.
 
+## Coverage
+
+Every brief, and where it lives in the page.
+
+| Brief | Where it is |
+| --- | --- |
+| Above-the-fold formula | Hero — headline, subheadline, paired CTAs, risk-reversal line, 55/45 split |
+| 5 micro-interactions | Hover, scroll-reveal and button-transition effects throughout |
+| Trust & credibility module | Stats strip under the hero; testimonials + press before the final CTA |
+| Pricing, 3 tiers | Pricing section, middle tier highlighted and lifted |
+| About that builds authority | Studio section — hook, credibility, story, soft CTA |
+| 6-question FAQ | FAQ section, each answer two sentences |
+| Mobile-first rules | Applied throughout; the five rules are listed below |
+| Pre-launch polish checklist | Listed below |
+
 ## The formula behind each section
 
 This is the part worth having in your head when you walk a prospect through it.
@@ -64,20 +79,48 @@ This is the part worth having in your head when you walk a prospect through it.
 
 ### Micro-interactions
 
-Five, all cheap — transforms and opacity only, nothing that triggers layout:
+Five, covering all three categories — **hover effects, scroll reveals, and
+button transitions.** Every one is transform/opacity only, so none of them
+trigger layout or cost anything measurable at load.
 
-1. **Line art inks itself on** as each plate scrolls into view, and replays on
-   hover. `pathLength="1"` normalises every path so one CSS rule drives all of
-   them. This is the signature moment — it echoes what the business actually does.
-2. **Plates lift 4px on hover** with a warmed background, so tiles read as
-   clickable without needing a button.
-3. **Buttons fill from the baseline up** rather than swapping colour, like ink
-   wicking into paper.
-4. **Sections rise 18px as they enter.** Small distance, short duration — it
-   should register as alive, never as waiting.
-5. **The nav tightens and gains a hairline** once you leave the hero.
+| # | Type | Where |
+| --- | --- | --- |
+| 1 | Scroll reveal + hover | Flash plates, hero plate, artist marks |
+| 2 | Hover | Flash tiles, artist cards, pricing tiers, quote cards |
+| 3 | Button transition | Every button on the page |
+| 4 | Scroll reveal | Every section |
+| 5 | Scroll-driven | The nav bar |
 
-All five are disabled under `prefers-reduced-motion`. There's also a scroll
+**1 · Line art inks itself on** *(scroll reveal + hover replay)*
+Placed on every flash plate, the hero sheet, and the artist marks. As a plate
+enters the viewport its outlines draw on from nothing over about a second, like
+a needle laying the line. Hovering a tile replays it. Implementation: every path
+carries `pathLength="1"`, which normalises its length to 1 regardless of actual
+shape, so a single rule — dash array 1, dash offset 1 → 0 — animates all of them.
+This is the signature moment; it echoes what the business physically does.
+
+**2 · Plates lift on hover** *(hover)*
+On flash tiles, artist cards, pricing tiers, and testimonials. The card rises 4px,
+its paper warms one step lighter, and a soft shadow appears — so a tile reads as
+clickable without needing a button drawn on it. A 5th tier of this exists for
+photos: swap in an `<img>` and it drifts to 105% behind a fixed frame.
+
+**3 · Buttons fill from the baseline up** *(button transition)*
+Every button. Instead of swapping colour on hover, a dark fill sweeps upward
+from the bottom edge over ~0.34s while the button lifts 2px — ink wicking into
+paper rather than a light switch. Implementation: a `::after` pseudo-element at
+`translateY(101%)` moving to `0`, sitting behind the label via `z-index: -1`.
+
+**4 · Sections rise as they enter** *(scroll reveal)*
+Everything on the page. Content starts 18px low and transparent, then settles as
+it scrolls in, staggered ~70ms between neighbouring items. Small distance, short
+duration — it should register as alive, never as waiting.
+
+**5 · The nav tightens** *(scroll-driven)*
+The bar's padding halves and a hairline rule appears once you scroll past 24px,
+so the header feels like it's tracking you rather than sitting there.
+
+All five are fully disabled under `prefers-reduced-motion`. There's also a scroll
 safety sweep: if a fast flick outruns the observer, anything already past the
 fold is force-revealed, so content can never strand at opacity 0.
 
@@ -109,10 +152,17 @@ fear of a surprise, not the number itself.
 Four beats, in order: **hook**, **credibility**, **story**, **soft CTA.**
 
 The hook is a specific decision with a consequence — "We turned down the walk-in
-trade in 2016, and the work got twice as good" — not a values statement. Then
-hard numbers. Then the origin story, which is where warmth is allowed. Then a
-signature rather than a button, because a hard CTA here breaks the tone you just
-built.
+trade in 2016, and the work got twice as good" — not a values statement.
+
+Then the credibility paragraph: hard numbers only, no adjectives. Thirteen years,
+2,400 pieces, three artists sent out to their own shops.
+
+Then the personal story, which is the one place warmth is allowed — the room above
+the bike shop, the hand-painted sign that cost more than the rent.
+
+Then the **soft CTA**: a sentence with a quiet inline link, sitting under a
+signature rather than a button. The ask has to sound like the person who wrote the
+paragraph above it — a loud "BOOK NOW" here spends the trust the story just built.
 
 No "we believe in quality." Ever.
 
@@ -127,17 +177,25 @@ commitment, safety.
 
 ### Mobile
 
-1. **Tap targets are 48–52px minimum**, including the nav links in the panel.
-   Anything smaller reads as unfinished, whatever the design looks like.
-2. **The nav collapses into a real menu, not into nothing.** A sticky CTA with no
-   route to pricing or FAQ is the most common way a "mobile-friendly" site isn't.
-3. **Type scales with `clamp()`, never fixed px.** The display drops from 5.4rem
-   to 2.9rem across the range so headlines never fragment into four-line blocks.
-4. **Spacing scales too** — `--gut` and section padding are both `clamp()`. Desktop
-   padding held on a phone is what makes a site feel cramped rather than airy.
-5. **Grids collapse at content-driven breakpoints, not device widths.** The flash
-   grid goes 3 → 2 → 1 where the tiles actually stop working, which is also why
-   its column count is pinned instead of left to `auto-fit`.
+1. **Tap targets are 48–52px minimum** — buttons, nav links, and FAQ rows alike.
+   Anything smaller gets mis-tapped, and a mis-tap is the fastest way a site
+   feels cheap regardless of how it looks.
+2. **Type scales with `clamp()`, never fixed px.** The display drops from 5.4rem
+   to 2.9rem across the range. Fixed desktop type on a phone fragments a headline
+   into four ragged lines, which reads as broken rather than bold.
+3. **Spacing scales with it** — `--gut` and every section's padding are `clamp()`
+   too. Desktop padding held on a 390px screen is exactly what makes a page feel
+   cramped, and generous breathing room is most of what "expensive" means here.
+4. **Image crops are ratio-locked and biased upward.** Tiles set `aspect-ratio`
+   so a mixed bag of phone photos still forms an even grid, and `object-position`
+   sits at 35% rather than centre. A centred cover-crop on a portrait-orientation
+   photo cuts the top off — on a tattoo shot that's the piece, on a portrait it's
+   someone's face. This is live CSS in the template, not just advice.
+5. **The nav collapses into a real menu, and grids break where content stops
+   working.** A sticky CTA with no route to pricing or FAQ is the most common way
+   a "mobile-friendly" site isn't. The flash grid goes 3 → 2 → 1 at widths where
+   the tiles genuinely fail, which is why its column count is pinned rather than
+   left to `auto-fit`.
 
 ### Pre-launch checklist
 
