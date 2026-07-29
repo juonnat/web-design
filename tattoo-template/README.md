@@ -124,6 +124,43 @@ All five are fully disabled under `prefers-reduced-motion`. There's also a scrol
 safety sweep: if a fast flick outruns the observer, anything already past the
 fold is force-revealed, so content can never strand at opacity 0.
 
+### Four more, taken from the FlowState reference
+
+`flowstate-coral.vercel.app` is an info-product sales page — black ground, one hot
+orange accent, cinematic imagery, heavy scroll motion. Four of its techniques
+transfer cleanly to a studio site:
+
+**Hero defocus on scroll** *(scroll-driven)*
+The reference's signature move: the hero doesn't just scroll away, it softens and
+sinks as it goes. A single `--exit` custom property ramps 0 → 1 across the hero's
+height and drives blur, opacity, and a slight downward drift together. Blur is
+capped at 5px and scoped to two blocks — a large blurred surface is the fastest
+way to make a mid-range phone drop frames.
+
+**Sticky booking bar on mobile** *(the highest-value item here)*
+Once the hero's CTA has scrolled off, a booking button docks to the bottom of the
+screen and stays. For a business whose entire conversion is "get them to book",
+never being more than a thumb away from the CTA is worth more than any animation
+on this page. It appears at 72% of hero height so it never duplicates a button
+already on screen, and the body reserves its height so it can't cover the footer.
+
+**Status ticker** *(ambient)*
+A running band under the header. The reference uses it for countdown pressure;
+this one carries live studio status — what's bookable, when walk-ins run. Same
+restless energy, and it stays useful after the novelty wears off.
+
+**Ambient rings and a stepping arrow** *(ambient + hover)*
+Concentric rings drift behind the closing panel at 14% opacity, and the primary
+CTA's arrow steps forward 4px on hover. The rings are deliberately near-invisible:
+at any strength where you consciously notice them, they're competing with the
+headline in front of them.
+
+**What was deliberately not taken:** the countdown timer, "847 designers already
+inside", and the scarcity ticker. Those work for a $47 impulse buy. On a tattoo
+studio they read as a scam — someone choosing who will permanently mark their body
+is doing the opposite of an impulse purchase, and manufactured urgency fights that
+directly. The hype tone was left behind for the same reason.
+
 ### Trust module
 
 Stats sit high (directly under the hero) as a quick credibility hit; testimonials
