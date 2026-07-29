@@ -18,22 +18,38 @@ When a real business line is set up, fill in `studio.phone` and
 phone numbers to individual artists** — the `artists` array has no phone
 fields on purpose, and all artist contact routes through Instagram.
 
-**The portfolio galleries are thinner than intended.** Every artist has a
-real portrait, but the gallery counts are uneven and below the 6-per-artist
-target:
+**Two of the three portfolio galleries are still thin.** Every artist has a
+real portrait, but only Sharyn has reached the 6-per-artist target:
 
-| Artist | Portrait | Gallery images |
-| --- | --- | --- |
-| Bryan Dilone | yes | 3 |
-| Nelson Cruz | yes | 2 |
-| Sharyn Fajardo | yes | 2 |
+| Artist | Portrait | Gallery images | Unpublished shots in Drive |
+| --- | --- | --- | --- |
+| Bryan Dilone | yes | 3 | 7 |
+| Nelson Cruz | yes | 2 | 10 |
+| Sharyn Fajardo | yes | 6 | 4 |
 
 These are the genuinely usable tattoo photos retrieved from the studio's
 Drive folder — nothing is padded with studio logo graphics or repeated
-shots. More photos exist in that folder that were not pulled. To add them,
-drop files into `src/assets/<slug>/` named `work-N.jpg` and run
-`python3 scripts/optimize-images.py`; the galleries pick them up
-automatically with no code change (see "Artist photography" below).
+shots.
+
+**Bryan's and Nelson's remaining photos could not be retrieved through the
+Drive connector.** It refuses any single file over roughly 6.4MB, and every
+one of their unpublished shots is 6.5–19MB straight off the camera. Sharyn's
+happened to sit under the limit, which is the only reason her gallery could
+be filled. The files are fine and the Drive folder is intact — this is a
+transfer limit, not missing or corrupt source material.
+
+To finish the other two galleries, get those files onto disk by some route
+that isn't the connector (download them from Drive in a browser, or have the
+studio send them), drop them into `src/assets/<slug>/` named `work-N.jpg`
+continuing the existing numbering, and run
+
+```bash
+python3 scripts/optimize-images.py src/assets/bryan/work-4.jpg ...
+```
+
+The galleries pick them up automatically with no code change (see "Artist
+photography" below). Resizing them below ~6MB first would also bring them
+within what the connector will hand over.
 
 Everything else — studio address, hours, all three artists' names/bios/
 Instagram handles, services and pricing — reflects the corrected data
@@ -68,15 +84,29 @@ bakes in EXIF rotation (otherwise browsers render some photos sideways),
 strips metadata, and re-encodes progressive JPEG. In practice that has been a
 ~10x reduction — the current set went from 14.5MB to 1.4MB.
 
-The contact form has no backend: submitting it opens the visitor's email
-client with a pre-filled message to `ink.novation22@gmail.com`. That's a
-zero-infrastructure stopgap — swap in a real form service (Formspree,
-EmailJS, a serverless function, etc.) before launch if a mailto link isn't
-reliable enough for lead intake.
+## Contact form
 
-Each artist's portrait and portfolio gallery use placeholder graphics until
-real studio photography is added — see `src/data/content.js` and
-`src/components/PortfolioGallery.jsx`.
+Set `VITE_FORM_ENDPOINT` to a form service (Formspree, Basin, a serverless
+function — anything that accepts a JSON POST) and the form submits straight
+through, clears itself, and confirms inline:
+
+```bash
+# .env.local, or the host's environment variables
+VITE_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
+```
+
+It is read at build time, so set it wherever the production build runs, not
+just locally.
+
+With no endpoint configured the form falls back to opening the visitor's mail
+client with a pre-filled message to `ink.novation22@gmail.com`. That works,
+but it depends on the visitor having a working mail client and on them
+actually pressing send in it, so configure an endpoint before launch if the
+form matters for lead intake.
+
+If a configured endpoint fails or the network drops, the form does not
+swallow the enquiry — it surfaces the error and hands the visitor the same
+mailto link as a fallback.
 
 ## Getting started
 
