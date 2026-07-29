@@ -84,15 +84,29 @@ bakes in EXIF rotation (otherwise browsers render some photos sideways),
 strips metadata, and re-encodes progressive JPEG. In practice that has been a
 ~10x reduction — the current set went from 14.5MB to 1.4MB.
 
-The contact form has no backend: submitting it opens the visitor's email
-client with a pre-filled message to `ink.novation22@gmail.com`. That's a
-zero-infrastructure stopgap — swap in a real form service (Formspree,
-EmailJS, a serverless function, etc.) before launch if a mailto link isn't
-reliable enough for lead intake.
+## Contact form
 
-Each artist's portrait and portfolio gallery use placeholder graphics until
-real studio photography is added — see `src/data/content.js` and
-`src/components/PortfolioGallery.jsx`.
+Set `VITE_FORM_ENDPOINT` to a form service (Formspree, Basin, a serverless
+function — anything that accepts a JSON POST) and the form submits straight
+through, clears itself, and confirms inline:
+
+```bash
+# .env.local, or the host's environment variables
+VITE_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
+```
+
+It is read at build time, so set it wherever the production build runs, not
+just locally.
+
+With no endpoint configured the form falls back to opening the visitor's mail
+client with a pre-filled message to `ink.novation22@gmail.com`. That works,
+but it depends on the visitor having a working mail client and on them
+actually pressing send in it, so configure an endpoint before launch if the
+form matters for lead intake.
+
+If a configured endpoint fails or the network drops, the form does not
+swallow the enquiry — it surfaces the error and hands the visitor the same
+mailto link as a fallback.
 
 ## Getting started
 

@@ -14,23 +14,52 @@ const fields = [
 
 const initialState = Object.fromEntries(fields.map((f) => [f.name, '']))
 
+// Set VITE_FORM_ENDPOINT to a form service (Formspree et al) to have requests
+// posted straight through. Without it the form falls back to opening the
+// visitor's mail client, which is the zero-infrastructure stopgap.
+const endpoint = import.meta.env.VITE_FORM_ENDPOINT
+
+const mailtoHref = (values) => {
+  const body = fields.map((f) => `${f.label}: ${values[f.name] || '—'}`).join('\n')
+  const subject = encodeURIComponent(
+    `New consultation request — ${values.name || 'Website'}`,
+  )
+  return `mailto:${studio.email}?subject=${subject}&body=${encodeURIComponent(body)}`
+}
+
 export default function ContactForm() {
   const [values, setValues] = useState(initialState)
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState('idle')
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setValues((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const body = fields
-      .map((f) => `${f.label}: ${values[f.name] || '—'}`)
-      .join('\n')
-    const subject = encodeURIComponent(`New consultation request — ${values.name || 'Website'}`)
-    window.location.href = `mailto:${studio.email}?subject=${subject}&body=${encodeURIComponent(body)}`
-    setSubmitted(true)
+
+    if (!endpoint) {
+      window.location.href = mailtoHref(values)
+      setStatus('sent')
+      return
+    }
+
+    setStatus('sending')
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(values),
+      })
+      if (!res.ok) throw new Error(`form endpoint returned ${res.status}`)
+      setValues(initialState)
+      setStatus('sent')
+    } catch {
+      // A failed post must not swallow the lead - the error state hands the
+      // visitor the same mailto the no-endpoint build uses.
+      setStatus('error')
+    }
   }
 
   return (
@@ -70,26 +99,45 @@ export default function ContactForm() {
 
       <motion.button
         type="submit"
-        whileHover={{ scale: 1.03, boxShadow: '0 0 24px rgba(45,212,191,0.4)' }}
-        whileTap={{ scale: 0.97 }}
+        disabled={status === 'sending'}
+        whileHover={status === 'sending' ? undefined : { scale: 1.03, boxShadow: '0 0 24px rgba(45,212,191,0.4)' }}
+        whileTap={status === 'sending' ? undefined : { scale: 0.97 }}
         transition={{ duration: 0.25, ease: 'easeOut' }}
-        className="w-full rounded-full bg-ink-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-black"
+        className="w-full rounded-full bg-ink-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-black disabled:opacity-60"
       >
-        Send Consultation Request
+        {status === 'sending' ? 'Sending…' : 'Send Consultation Request'}
       </motion.button>
 
-      {submitted && (
+      {status === 'sent' && (
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center text-sm text-ink-accent-light"
+          role="status"
         >
-          Opening your email app to send this along — we&rsquo;ll reply as soon as we can.
+          {endpoint
+            ? 'Thanks — your request is in. We’ll reply as soon as we can.'
+            : 'Opening your email app to send this along — we’ll reply as soon as we can.'}
+        </motion.p>
+      )}
+
+      {status === 'error' && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center text-sm text-ink-cream"
+          role="alert"
+        >
+          That didn&rsquo;t go through.{' '}
+          <a href={mailtoHref(values)} className="text-ink-accent-light underline">
+            Send it as an email instead
+          </a>{' '}
+          and nothing is lost.
         </motion.p>
       )}
 
       <p className="text-center text-xs text-ink-muted/70">
-        This form opens an email to us — for the fastest response, DM{' '}
+        {endpoint ? 'Prefer to chat? DM ' : 'This form opens an email to us — for the fastest response, DM '}
         <a href={studio.instagramHref} target="_blank" rel="noreferrer" className="text-ink-accent-light">
           {studio.instagramHandle}
         </a>

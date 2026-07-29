@@ -25,3 +25,7 @@ dist-ssr
 
 # Single-file preview build output
 dist-singlefile
+
+# Local environment overrides
+.env
+.env.local
