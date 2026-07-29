@@ -5,8 +5,15 @@ Source photos come straight from phone cameras: 4000-6000px, 4-8MB each, often
 carrying EXIF orientation that browsers honour inconsistently. This bakes the
 rotation in, caps the long edge, strips metadata, and re-encodes progressive.
 
-Safe to re-run: images already at or under the target are still re-encoded, so
-the output is deterministic rather than depending on how many times it ran.
+Every image passed through is re-encoded, including ones already at or under the
+target, so a single run's output does not depend on the input's history. That
+does mean re-running over the whole tree recompresses already-optimized photos
+and loses a little quality each time, so when topping up one artist's gallery,
+name the new files instead:
+
+    optimize-images.py src/assets/sharyn/work-{3,4,5,6}.jpg
+
+With no arguments it processes every image under src/assets/.
 """
 
 import sys
@@ -47,7 +54,10 @@ def optimize(path: Path) -> tuple[int, int]:
 
 
 def main() -> int:
-    images = sorted(ASSETS.glob("*/*.jpg")) + sorted(ASSETS.glob("*/*.jpeg"))
+    if sys.argv[1:]:
+        images = [Path(arg).resolve() for arg in sys.argv[1:]]
+    else:
+        images = sorted(ASSETS.glob("*/*.jpg")) + sorted(ASSETS.glob("*/*.jpeg"))
     if not images:
         print(f"No images found under {ASSETS}")
         return 1
@@ -57,7 +67,7 @@ def main() -> int:
         before, after = optimize(path)
         total_before += before
         total_after += after
-        rel = path.relative_to(ASSETS)
+        rel = path.relative_to(ASSETS) if path.is_relative_to(ASSETS) else path
         print(f"{rel}  {before / 1e6:.1f}MB -> {after / 1e6:.2f}MB")
 
     print(
