@@ -30,9 +30,30 @@ licensing, and it can't look like a stock photo because it isn't one. It also
 means the template is genuinely empty — there is no borrowed studio's work
 standing in for the client's.
 
-**When real photos arrive**, they drop into the same frames: add `--photo` to a
-`.flash__art` with an `<img>` inside and the crop is already handled (see the
-mobile rules below). The generative layers stay as the atmosphere behind them.
+### Adding the studio's real photos
+
+Drop them into `photos/` as `work-1` … `work-6` (`.jpg`, `.jpeg`, `.png` or
+`.webp`, straight off the camera) and run `python3 build.py`. Each one is
+EXIF-rotated, capped at 1100px on the long edge, re-encoded to WebP, and inlined
+as a data URI — so the page stays a single self-contained file.
+
+Any slot without a photo falls back to its line-art motif automatically, so the
+gallery is never half-broken while photos are still being collected. The build
+prints what it found:
+
+```
+gallery: 4/6 photos, 2 line-art placeholders
+```
+
+Photos run edge to edge with the caption in a strip beneath, and the crop is
+biased upward — see the mobile rules below for why. Titles and style captions
+live next to each tile in `src/page.html`.
+
+Six full-size photos add roughly 400–500KB to `index.html`. If that ever matters
+more than staying a single file, move them to a `photos/` folder on the server
+and swap the data URIs for `src` paths — everything else already works.
+
+The generative layers stay as the atmosphere behind them.
 
 ## Files
 

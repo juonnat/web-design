@@ -458,13 +458,16 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 }
 @media (min-width: 560px) { .flash { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 900px) { .flash { grid-template-columns: repeat(3, 1fr); } }
+/* Padding lives on the caption, not the tile, so a photo can run edge to edge
+   while the line-art fallback keeps its own inset via .flash__art. A matted
+   photo reads as a document scan; a full-bleed one reads as a portfolio. */
 .flash__item {
   background: var(--paper-2);
   aspect-ratio: 3 / 3.4;
   display: grid;
   grid-template-rows: 1fr auto;
-  padding: clamp(1.1rem, 2.2vw, 1.7rem);
-  gap: .9rem;
+  padding: 0;
+  gap: 0;
   position: relative;
   text-decoration: none;
   color: inherit;
@@ -496,6 +499,12 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 /* Bonus hover, live the moment real photos are in: the image drifts in behind
    a fixed frame instead of the whole tile scaling. */
 .flash__item:hover .flash__art--photo img { transform: scale(1.05); }
+.flash__item > div:last-child {
+  padding: clamp(1rem, 2vw, 1.45rem);
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
 .flash__meta { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; }
 .flash__meta h3 { font-size: 1.18rem; }
 .flash__no {
@@ -1044,7 +1053,7 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
         </p>
         <div class="hero__cta reveal d3">
           <a class="btn" href="#book">Book a free consult <span class="btn__arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn--ghost" href="#work">See the flash book</a>
+          <a class="btn btn--ghost" href="#work">See recent work</a>
         </div>
         <p class="hero__note reveal d3">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -1082,55 +1091,55 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
   <section id="work">
     <div class="shell">
       <div class="sec-head">
-        <p class="eyebrow reveal">The flash book</p>
-        <h2 class="reveal d1">Six plates off the wall.</h2>
+        <p class="eyebrow reveal">Recent work</p>
+        <h2 class="reveal d1">Six pieces, healed and photographed.</h2>
         <p class="lede reveal d2">
-          Every design here is drawn in-house and ready to book as-is — or bring
-          it in as a starting point and we'll redraw it around your body.
+          Every piece here was drawn in-house for the person wearing it. Bring one
+          in as a starting point and we'll redraw it around your body.
         </p>
       </div>
 
       <div class="flash">
         <a class="flash__item reveal" href="#book">
-          <div class="flash__art">__MOTIF_SERPENT__</div>
+          __TILE_ART_1__
           <div>
-            <div class="flash__meta"><h3>Coiled Serpent</h3><span class="flash__no">No. 01</span></div>
-            <span class="flash__style">Blackwork · 3–4 hrs</span>
+            <div class="flash__meta"><h3>One Life, One Chance</h3><span class="flash__no">No. 01</span></div>
+            <span class="flash__style">Black &amp; grey · lettering</span>
           </div>
         </a>
         <a class="flash__item reveal d1" href="#book">
-          <div class="flash__art">__MOTIF_DAGGER__</div>
+          __TILE_ART_2__
           <div>
-            <div class="flash__meta"><h3>Dagger &amp; Moon</h3><span class="flash__no">No. 02</span></div>
-            <span class="flash__style">Traditional · 2 hrs</span>
+            <div class="flash__meta"><h3>Koi &amp; Rising Sun</h3><span class="flash__no">No. 02</span></div>
+            <span class="flash__style">Japanese · colour</span>
           </div>
         </a>
         <a class="flash__item reveal d2" href="#book">
-          <div class="flash__art">__MOTIF_MOTH__</div>
+          __TILE_ART_3__
           <div>
-            <div class="flash__meta"><h3>Lantern Moth</h3><span class="flash__no">No. 03</span></div>
-            <span class="flash__style">Fine line · 2–3 hrs</span>
+            <div class="flash__meta"><h3>Lion &amp; Honeycomb</h3><span class="flash__no">No. 03</span></div>
+            <span class="flash__style">Black &amp; grey · realism</span>
           </div>
         </a>
         <a class="flash__item reveal" href="#book">
-          <div class="flash__art">__MOTIF_ROSE__</div>
+          __TILE_ART_4__
           <div>
-            <div class="flash__meta"><h3>Thorn Rose</h3><span class="flash__no">No. 04</span></div>
-            <span class="flash__style">Traditional · 2–3 hrs</span>
+            <div class="flash__meta"><h3>Isla del Encanto</h3><span class="flash__no">No. 04</span></div>
+            <span class="flash__style">Black &amp; grey · full sleeve</span>
           </div>
         </a>
         <a class="flash__item reveal d1" href="#book">
-          <div class="flash__art">__MOTIF_EYE__</div>
+          __TILE_ART_5__
           <div>
-            <div class="flash__meta"><h3>Watcher</h3><span class="flash__no">No. 05</span></div>
-            <span class="flash__style">Ornamental · 4 hrs</span>
+            <div class="flash__meta"><h3>Crown of Thorns</h3><span class="flash__no">No. 05</span></div>
+            <span class="flash__style">Black &amp; grey · realism</span>
           </div>
         </a>
         <a class="flash__item reveal d2" href="#book">
-          <div class="flash__art">__MOTIF_SWALLOW__</div>
+          __TILE_ART_6__
           <div>
-            <div class="flash__meta"><h3>Harbour Swallow</h3><span class="flash__no">No. 06</span></div>
-            <span class="flash__style">Traditional · 90 min</span>
+            <div class="flash__meta"><h3>Halloween Town</h3><span class="flash__no">No. 06</span></div>
+            <span class="flash__style">Black &amp; grey · illustrative</span>
           </div>
         </a>
       </div>
@@ -1380,7 +1389,7 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
         </p>
         <div class="hero__cta reveal d3">
           <a class="btn" href="#book">Book a free consult</a>
-          <a class="btn btn--ghost" href="#work">Browse the flash book</a>
+          <a class="btn btn--ghost" href="#work">Browse recent work</a>
         </div>
       </div>
 

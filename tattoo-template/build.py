@@ -12,6 +12,7 @@ Run after editing src/page.html:  python3 build.py
 """
 
 import base64
+import io
 import re
 import sys
 from pathlib import Path
@@ -19,6 +20,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 SRC = HERE / "src" / "page.html"
 FONT_DIR = HERE / "build"
+PHOTO_DIR = HERE / "photos"
+
+# Gallery tiles render ~460px wide at most; 1100 covers that at 2x on retina.
+PHOTO_EDGE = 1100
+PHOTO_QUALITY = 74
+PHOTO_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 
 FONTS = [
     ("Fraunces", "fraunces-latin-600-normal.woff2", 600, "normal"),
@@ -41,6 +48,39 @@ def font_faces() -> str:
             f"}}"
         )
     return "\n".join(out)
+
+
+def find_photo(slot: int) -> Path | None:
+    for ext in PHOTO_EXTS:
+        p = PHOTO_DIR / f"work-{slot}{ext}"
+        if p.exists():
+            return p
+    return None
+
+
+def photo_tag(path: Path, alt: str) -> str:
+    """Optimise a camera photo and return it as an inlined <img>.
+
+    Inlined rather than shipped alongside because the page has to survive being
+    published somewhere that only takes a single self-contained file.
+    """
+    from PIL import Image, ImageOps
+
+    with Image.open(path) as im:
+        im = ImageOps.exif_transpose(im).convert("RGB")
+        if max(im.size) > PHOTO_EDGE:
+            im.thumbnail((PHOTO_EDGE, PHOTO_EDGE), Image.LANCZOS)
+        w, h = im.size
+        buf = io.BytesIO()
+        im.save(buf, "WEBP", quality=PHOTO_QUALITY, method=6)
+
+    data = base64.b64encode(buf.getvalue()).decode()
+    return (
+        f'<div class="flash__art flash__art--photo">'
+        f'<img src="data:image/webp;base64,{data}" alt="{alt}" '
+        f'width="{w}" height="{h}" loading="lazy" decoding="async" />'
+        f"</div>"
+    )
 
 
 def svg(label: str, body: str) -> str:
@@ -119,10 +159,42 @@ STAR = (
 )
 
 
+# Which motif stands in for each gallery slot until a photo lands there, and
+# the alt text used once one does.
+TILE_FALLBACK = [
+    ("__MOTIF_SERPENT__", "Coiled serpent, black and grey"),
+    ("__MOTIF_DAGGER__", "Dagger and crescent moon"),
+    ("__MOTIF_MOTH__", "Lantern moth, fine line"),
+    ("__MOTIF_ROSE__", "Thorn rose, traditional"),
+    ("__MOTIF_EYE__", "Ornamental eye"),
+    ("__MOTIF_SWALLOW__", "Harbour swallow, traditional"),
+]
+
+
+def tile_art() -> tuple[dict[str, str], int]:
+    """Build the six gallery tiles, photo where there is one, line art where not."""
+    out, found = {}, 0
+    for i, (motif, alt) in enumerate(TILE_FALLBACK, start=1):
+        path = find_photo(i)
+        if path:
+            out[f"__TILE_ART_{i}__"] = photo_tag(path, alt)
+            found += 1
+            print(f"  tile {i}: {path.name}")
+        else:
+            out[f"__TILE_ART_{i}__"] = f'<div class="flash__art">{motif}</div>'
+    return out, found
+
+
 def main() -> int:
     html = SRC.read_text()
 
     html = html.replace("__FONT_FACES__", font_faces())
+
+    tiles, found = tile_art()
+    print(f"gallery: {found}/6 photos, {6 - found} line-art placeholders")
+    for token, markup in tiles.items():
+        html = html.replace(token, markup)
+
     for token, markup in MOTIFS.items():
         html = html.replace(token, markup)
     html = html.replace("__TICK__", TICK)
