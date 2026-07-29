@@ -10,6 +10,30 @@ at the top, which is deliberate: showing a prospect obviously-sample content is
 honest, and it makes the point that the copy is a starting frame rather than
 something they need to argue with.
 
+## There is no photography on this page, on purpose
+
+Every visual is drawn by the browser at runtime:
+
+- **Particle field** — a canvas grid of points pushed by two crossed sine waves,
+  with the pointer shoving them aside. Behind the hero and the closing panel.
+  Density scales with viewport area, it only animates while on screen, and it
+  pauses when the tab is hidden.
+- **Aurora bloom** — three offset radial gradients drifting against each other
+  under a heavy blur. Two would read as a spotlight; three reads as depth.
+- **Film grain** — one tiled SVG turbulence texture at 16% over the whole page.
+  This is what stops large flat dark areas looking like empty CSS.
+- **Flash line art** — inline SVG that draws itself on as it scrolls into view.
+- **Ambient rings** — concentric circles drifting behind the closing panel.
+
+Total cost: a few KB of code instead of a few MB of images, nothing to load, no
+licensing, and it can't look like a stock photo because it isn't one. It also
+means the template is genuinely empty — there is no borrowed studio's work
+standing in for the client's.
+
+**When real photos arrive**, they drop into the same frames: add `--photo` to a
+`.flash__art` with an `<img>` inside and the crop is already handled (see the
+mobile rules below). The generative layers stay as the atmosphere behind them.
+
 ## Files
 
 | File | What it is |

@@ -22,22 +22,27 @@
 }
 
 /* ---------- tokens ---------- */
+/* Dark is the default and is not tied to the OS preference - a showpiece should
+   open the same cinematic way for everyone who is sent the link. The light
+   palette is still fully built and takes over the moment a viewer explicitly
+   asks for it via the theme toggle. */
 :root {
-  --paper:      #e9e4db;
-  --paper-2:    #f2eee7;
-  --paper-sunk: #ded7cb;
-  --ink:        #16120f;
-  --ink-soft:   #4a423b;
-  --ink-faint:  #837a70;
-  --rule:       #c8bfb0;
-  --oxblood:    #8c2231;
-  --oxblood-lt: #a83143;
-  --stencil:    #5c4b8a;
-  --ochre:      #b8873b;
-  --on-accent:  #f6f1e8;
+  --paper:      #0b0a0c;
+  --paper-2:    #141216;
+  --paper-sunk: #070609;
+  --ink:        #f2ece3;
+  --ink-soft:   #aba3ad;
+  --ink-faint:  #6f6873;
+  --rule:       #2a2630;
+  --oxblood:    #d2455c;
+  --oxblood-lt: #e9647a;
+  --stencil:    #9b88d4;
+  --ochre:      #d9a857;
+  --on-accent:  #120f14;
 
-  --shadow-sm: 0 1px 2px rgba(22, 18, 15, .06), 0 4px 14px rgba(22, 18, 15, .05);
-  --shadow-lg: 0 2px 6px rgba(22, 18, 15, .07), 0 22px 48px rgba(22, 18, 15, .12);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.5), 0 4px 14px rgba(0,0,0,.35);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,.5), 0 26px 60px rgba(0,0,0,.6);
+  --glow: 0 0 34px -6px color-mix(in srgb, var(--oxblood) 70%, transparent);
 
   --display: "Fraunces", Georgia, "Times New Roman", serif;
   --label:   "Bebas Neue", "Arial Narrow", sans-serif;
@@ -48,40 +53,6 @@
   --shell: 1220px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper:      #14110f;
-    --paper-2:    #1c1815;
-    --paper-sunk: #0e0c0a;
-    --ink:        #ece6dc;
-    --ink-soft:   #b3a99c;
-    --ink-faint:  #7d7368;
-    --rule:       #332c26;
-    --oxblood:    #cf4d61;
-    --oxblood-lt: #e0697b;
-    --stencil:    #9b88d4;
-    --ochre:      #cda75a;
-    --on-accent:  #17110f;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
-    --shadow-lg: 0 2px 6px rgba(0,0,0,.45), 0 22px 48px rgba(0,0,0,.5);
-  }
-}
-:root[data-theme="dark"] {
-  --paper:      #14110f;
-  --paper-2:    #1c1815;
-  --paper-sunk: #0e0c0a;
-  --ink:        #ece6dc;
-  --ink-soft:   #b3a99c;
-  --ink-faint:  #7d7368;
-  --rule:       #332c26;
-  --oxblood:    #cf4d61;
-  --oxblood-lt: #e0697b;
-  --stencil:    #9b88d4;
-  --ochre:      #cda75a;
-  --on-accent:  #17110f;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
-  --shadow-lg: 0 2px 6px rgba(0,0,0,.45), 0 22px 48px rgba(0,0,0,.5);
-}
 :root[data-theme="light"] {
   --paper:      #e9e4db;
   --paper-2:    #f2eee7;
@@ -97,6 +68,7 @@
   --on-accent:  #f6f1e8;
   --shadow-sm: 0 1px 2px rgba(22, 18, 15, .06), 0 4px 14px rgba(22, 18, 15, .05);
   --shadow-lg: 0 2px 6px rgba(22, 18, 15, .07), 0 22px 48px rgba(22, 18, 15, .12);
+  --glow: 0 0 30px -8px color-mix(in srgb, var(--oxblood) 55%, transparent);
 }
 
 /* ---------- base ---------- */
@@ -200,7 +172,7 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
   transform: translateY(101%);
   transition: transform .34s cubic-bezier(.2,.7,.3,1);
 }
-.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg), var(--glow); }
 .btn:hover::after { transform: translateY(0); }
 .btn:active { transform: translateY(0); }
 
@@ -375,14 +347,19 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 .hero__note svg { flex: none; color: var(--ochre); }
 
 /* the flash plate that anchors the hero */
+/* Glass rather than solid, so the particle field shows through it and the two
+   layers read as one scene instead of a card pasted over a background. */
 .plate {
   position: relative;
-  background: var(--paper-2);
-  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper-2) 72%, transparent);
+  backdrop-filter: blur(9px) saturate(1.25);
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
   border-radius: 3px;
   box-shadow: var(--shadow-lg);
   padding: clamp(1.5rem, 3vw, 2.4rem);
 }
+.plate__grid { background: color-mix(in srgb, var(--ink) 12%, transparent); border-color: color-mix(in srgb, var(--ink) 12%, transparent); }
+.plate__cell { background: color-mix(in srgb, var(--paper-2) 55%, transparent); }
 .plate::before, .plate::after {
   content: "";
   position: absolute;
@@ -735,46 +712,52 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 .faq__a { padding: 0 3rem 1.6rem 0; color: var(--ink-soft); max-width: var(--measure); }
 
 /* ---------- closing cta ---------- */
+/* --on-panel is this section's foreground. Everything inside references it
+   rather than a global token, so the panel keeps working whichever way the
+   theme flips - the earlier version hardcoded the light-on-dark assumption and
+   broke the moment the page defaulted to dark. */
 .close {
-  background: var(--ink);
-  color: var(--paper);
+  --on-panel: var(--ink);
+  background: var(--paper-sunk);
+  color: var(--on-panel);
   position: relative;
   overflow: hidden;
 }
 .close .eyebrow { color: var(--ochre); }
 .close h2 { font-size: clamp(2.2rem, 5vw, 3.7rem); }
-.close p { color: color-mix(in srgb, var(--paper) 72%, transparent); max-width: 52ch; }
+.close p { color: color-mix(in srgb, var(--on-panel) 72%, transparent); max-width: 52ch; }
 .close__in { display: grid; gap: clamp(2rem, 4vw, 3rem); position: relative; z-index: 1; }
 @media (min-width: 900px) { .close__in { grid-template-columns: 1.15fr .85fr; align-items: center; } }
 /* This panel flips with the theme, so everything inside it is expressed
    against --paper (which is the panel's foreground here), never a hardcoded
    white - white borders disappear entirely once the panel is the light one. */
 .close .btn { --btn-bg: var(--oxblood-lt); --btn-fg: #fff; }
-.close .btn::after { background: var(--paper); }
-.close .btn:hover { color: var(--ink); }
+.close .btn::after { background: var(--on-panel); }
+.close .btn:hover { color: var(--paper); }
 /* Must out-specify `.close .btn` above, which would otherwise win the tokens. */
 .close .btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: var(--paper);
-  border-color: var(--paper);
+  --btn-fg: var(--on-panel);
+  border-color: color-mix(in srgb, var(--on-panel) 55%, transparent);
 }
-.close .btn--ghost::after { background: var(--paper); }
-.close .btn--ghost:hover { color: var(--ink); }
+.close .btn--ghost::after { background: var(--on-panel); }
+.close .btn--ghost:hover { color: var(--paper); }
 .close__card {
-  border: 1px solid color-mix(in srgb, var(--paper) 24%, transparent);
+  border: 1px solid color-mix(in srgb, var(--on-panel) 22%, transparent);
   padding: clamp(1.5rem, 3vw, 2.2rem);
   display: flex; flex-direction: column; gap: 1rem;
-  background: color-mix(in srgb, var(--paper) 5%, transparent);
+  background: color-mix(in srgb, var(--on-panel) 5%, transparent);
+  backdrop-filter: blur(6px);
 }
 .close__row { display: flex; justify-content: space-between; gap: 1rem; font-size: .95rem; }
-.close__row span { color: color-mix(in srgb, var(--paper) 60%, transparent); }
+.close__row span { color: color-mix(in srgb, var(--on-panel) 60%, transparent); }
 .close__row b { font-weight: 600; font-variant-numeric: tabular-nums; }
 .close__watermark {
   position: absolute;
   right: -6%;
   bottom: -22%;
   width: min(46vw, 460px);
-  color: color-mix(in srgb, var(--paper) 7%, transparent);
+  color: color-mix(in srgb, var(--on-panel) 8%, transparent);
   pointer-events: none;
 }
 
@@ -783,15 +766,100 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 .foot__in { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; }
 .foot small { color: var(--ink-faint); font-size: .88rem; }
 
+/* ---------- generative atmosphere ---------- */
+/* No photography anywhere on this page. Everything below is drawn by the
+   browser: a particle field on canvas, light bloom from gradients, and grain
+   from an SVG turbulence filter. It costs a few KB instead of a few MB, it is
+   unique rather than stock, and it never looks like a placeholder. */
+/* isolate creates a stacking context, so the layers below can sit at z-index -1
+   and land behind the content but still in front of the section's own
+   background. Do NOT do this by promoting every child with `.stage > *` - that
+   overrides position on absolutely-positioned decorations and drops them back
+   into normal flow. */
+/* overflow:hidden is load-bearing, not tidiness - the aurora is deliberately
+   inset past the section's edges to keep its blur off-screen, and without
+   clipping here that bleed becomes horizontal page scroll on a phone. */
+.stage { position: relative; isolation: isolate; overflow: hidden; }
+
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* The field fades out at the edges so it reads as atmosphere rather than as
+     a rectangle sitting behind the text. */
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 45%, #000 42%, transparent 100%);
+          mask-image: radial-gradient(120% 90% at 50% 45%, #000 42%, transparent 100%);
+}
+
+/* The field is built for a dark ground, where the points read as light. On the
+   light theme the same points are dark specks on cream, which reads as dust -
+   so they are pulled back to a suggestion of texture instead. */
+:root[data-theme="light"] .field { opacity: .42; }
+:root[data-theme="light"] .aurora { opacity: .5; }
+:root[data-theme="light"] .grain { opacity: .09; mix-blend-mode: multiply; }
+
+/* Slow light bloom. Two offset radials drifting against each other reads as
+   depth; one centred radial reads as a spotlight. */
+.aurora {
+  position: absolute;
+  inset: -20% -10%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 44% at 22% 32%, color-mix(in srgb, var(--oxblood) 26%, transparent), transparent 70%),
+    radial-gradient(34% 40% at 78% 62%, color-mix(in srgb, var(--stencil) 24%, transparent), transparent 70%),
+    radial-gradient(30% 34% at 58% 18%, color-mix(in srgb, var(--ochre) 14%, transparent), transparent 70%);
+  filter: blur(38px);
+  opacity: .85;
+  animation: bloom 22s ease-in-out infinite alternate;
+}
+@keyframes bloom {
+  0%   { transform: translate3d(-2%, -1%, 0) scale(1); }
+  100% { transform: translate3d(3%, 2%, 0) scale(1.08); }
+}
+
+/* Film grain. A tiled turbulence texture at very low opacity - the thing that
+   stops large flat dark areas looking like empty CSS. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: .16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+/* A hairline that catches light as it crosses - used on section rules. */
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -40%;
+  width: 40%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--oxblood), transparent);
+  animation: sweep 7s ease-in-out infinite;
+}
+@keyframes sweep {
+  0%, 100% { left: -40%; opacity: 0; }
+  50%      { left: 100%; opacity: .9; }
+}
+
 /* ---------- status ticker ---------- */
 /* A running band under the header. The reference used this for countdown
    pressure; here it carries live studio status instead - what's bookable, when
    walk-ins run. Same restless energy, none of the fake scarcity, and it stays
    useful once the novelty wears off. */
 .ticker {
-  background: var(--ink);
-  color: var(--paper);
-  border-block: 1px solid var(--ink);
+  background: var(--paper-sunk);
+  color: var(--ink-soft);
+  border-block: 1px solid var(--rule);
   overflow: hidden;
   padding-block: .55rem;
   display: flex;
@@ -855,7 +923,7 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 }
 .rings circle {
   fill: none;
-  stroke: var(--paper);
+  stroke: var(--on-panel);
   stroke-width: .3;
   transform-origin: 50% 50%;
   animation: drift 26s ease-in-out infinite;
@@ -915,6 +983,8 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
   .hero__text, .hero .plate { filter: none; opacity: 1; transform: none; }
   .dock { transition: none; }
   .btn__arrow { transition: none; }
+  .aurora { animation: none; }
+  .sheen::before { animation: none; opacity: 0; }
   .inkable path, .inkable circle, .inkable ellipse, .inkable polyline, .inkable line {
     stroke-dasharray: none; stroke-dashoffset: 0; transition: none;
   }
@@ -959,7 +1029,9 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
 <main id="top">
 
   <!-- ============ HERO ============ -->
-  <section class="hero">
+  <section class="hero stage">
+    <div class="aurora" aria-hidden="true"></div>
+    <canvas class="field" data-field aria-hidden="true"></canvas>
     <div class="shell hero__grid">
       <div class="hero__text">
         <p class="eyebrow reveal">Custom tattooing · Est. 2012</p>
@@ -1294,7 +1366,8 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
   </section>
 
   <!-- ============ CLOSING CTA ============ -->
-  <section id="book" class="close">
+  <section id="book" class="close stage">
+    <canvas class="field" data-field data-field-quiet aria-hidden="true"></canvas>
     <div class="shell close__in">
       <div>
         <p class="eyebrow reveal">Next step</p>
@@ -1327,6 +1400,8 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
     <div class="close__watermark"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Coiled serpent"><path pathLength="1" d="M28 88c16 0 26-11 26-23S38 45 38 33s11-21 25-19"/><path pathLength="1" d="M63 14c7 1 11 6 11 11s-5 10-11 10"/><path pathLength="1" d="M74 25c5 1 8 5 9 9"/><path pathLength="1" d="M45 52c5 3 12 2 16-2"/><circle class="fill-dot" cx="67" cy="20" r="2"/></svg></div>
   </section>
 </main>
+
+<div class="grain" aria-hidden="true"></div>
 
 <div class="dock" id="dock">
   <a class="btn" href="#book">Book a free consult <span class="btn__arrow" aria-hidden="true">→</span></a>
@@ -1476,6 +1551,136 @@ section { padding-block: clamp(4.5rem, 9vw, 8rem); }
   (wide.addEventListener ? wide.addEventListener.bind(wide, 'change') : wide.addListener.bind(wide))(
     function () { setMenu(false); }
   );
+
+  // ---- particle field -----------------------------------------------------
+  // A grid of points pushed around by a travelling wave, plus a pointer that
+  // shoves them aside. Drawn with fillRect rather than arc() - at a few
+  // thousand points per frame, arc() is the difference between 60fps and 30.
+  function initField(canvas) {
+    var ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    var quiet = canvas.hasAttribute('data-field-quiet');
+    var w = 0, h = 0, pts = [], raf = 0, live = false, t0 = performance.now();
+    var ptr = { x: -9999, y: -9999, on: false };
+    var css = getComputedStyle(document.documentElement);
+    var hot = css.getPropertyValue('--oxblood').trim() || '#d2455c';
+    var cool = css.getPropertyValue('--stencil').trim() || '#9b88d4';
+    var warm = css.getPropertyValue('--ochre').trim() || '#d9a857';
+
+    function size() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      if (!w || !h) return;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Density is tied to area, not to a fixed count, so a phone is not asked
+      // to push the same number of points as a desktop.
+      var gap = w < 620 ? 24 : w < 1100 ? 21 : 18;
+      pts = [];
+      for (var y = -gap; y < h + gap; y += gap) {
+        for (var x = -gap; x < w + gap; x += gap) {
+          pts.push({
+            x: x + (Math.random() - 0.5) * gap * 0.45,
+            y: y + (Math.random() - 0.5) * gap * 0.45,
+            s: 0.55 + Math.random() * 0.9,
+            c: Math.random()
+          });
+        }
+      }
+    }
+
+    function frame(now) {
+      raf = 0;
+      if (!live) return;
+      var t = (now - t0) * 0.001;
+      ctx.clearRect(0, 0, w, h);
+
+      var amp = quiet ? 7 : 15;
+      var reach = quiet ? 90 : 135;
+
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        // Two crossed sine waves give an organic swell; one alone looks like a
+        // barcode scrolling past.
+        var wave = Math.sin(p.x * 0.0075 + t * 0.85) * amp
+                 + Math.cos(p.y * 0.011 - t * 0.65) * (amp * 0.65);
+        var px = p.x;
+        var py = p.y + wave;
+
+        if (ptr.on) {
+          var dx = px - ptr.x, dy = py - ptr.y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < reach && d > 0.01) {
+            var push = (1 - d / reach);
+            px += (dx / d) * push * reach * 0.42;
+            py += (dy / d) * push * reach * 0.42;
+          }
+        }
+
+        // Depth: points riding the crest are brighter and larger.
+        var lift = (wave + amp * 1.65) / (amp * 3.3);
+        var alpha = (quiet ? 0.16 : 0.28) + lift * (quiet ? 0.3 : 0.52);
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+        ctx.fillStyle = p.c > 0.82 ? warm : p.c > 0.5 ? hot : cool;
+        var s = p.s * (0.7 + lift * 1.15);
+        ctx.fillRect(px, py, s, s);
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(frame);
+    }
+
+    function start() {
+      if (live) return;
+      live = true;
+      t0 = performance.now();
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+    function stop() {
+      live = false;
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    }
+
+    // Only animate while on screen. A canvas ticking away below the fold is
+    // pure battery drain on a phone.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+      }, { threshold: 0.01 }).observe(canvas);
+    } else {
+      start();
+    }
+
+    var host = canvas.parentElement;
+    host.addEventListener('pointermove', function (e) {
+      var r = canvas.getBoundingClientRect();
+      ptr.x = e.clientX - r.left;
+      ptr.y = e.clientY - r.top;
+      ptr.on = true;
+    });
+    host.addEventListener('pointerleave', function () { ptr.on = false; });
+
+    window.addEventListener('resize', function () { size(); }, { passive: true });
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : start();
+    });
+
+    size();
+    if (!pts.length) {
+      // clientWidth can still be 0 if fonts/layout have not settled.
+      requestAnimationFrame(size);
+    }
+    // Draw one static frame even under reduced motion, so the area is never
+    // just a flat empty rectangle.
+    if (reduce) { live = true; frame(performance.now()); live = false; }
+  }
+
+  // initField handles the reduced-motion case itself by painting a single
+  // static frame, so it runs either way.
+  document.querySelectorAll('[data-field]').forEach(initField);
 
   // Demo-only: the buttons have nowhere real to go, so keep the page honest
   // instead of scrolling to an anchor that does nothing.
