@@ -46,6 +46,14 @@ reference site renders its hero object live in Three.js with real weight and
 inertia, and moves a camera through true Z-axis depth rather than sliding 2D
 layers. There's no WebGL here, but the *feel* carries:
 
+- **One hero object**, the way the reference is built. It is a real stack of 22
+  discs in a `preserve-3d` container, so tilting it exposes an actual cylinder
+  wall rather than a painted-on ellipse, and it is lit by a luminance gradient
+  rather than a shadow. It follows the pointer on a **damped spring** — it
+  overshoots slightly and settles, which is what reads as mass — with a slow
+  idle drift so it stays alive on touch, where there is no pointer. Its rest
+  pose is a three-quarter view, which is also what a reduced-motion or no-JS
+  visitor gets.
 - Each artifact sits on a real `perspective` and **recedes on the Z axis** as
   its screen leaves the middle of the viewport — depth, not offset-Y parallax.
   The position is lerped per frame rather than tied to the scrollbar, which is

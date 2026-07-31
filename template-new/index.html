@@ -161,6 +161,9 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px dashed var(--color-cork-border);
   position: relative;
 }
+/* Grid children default to min-width:auto and refuse to shrink below their
+   content, which is how one long word drags a whole section past the edge. */
+.screen > * { min-width: 0; }
 
 /* The signature layout: heading left, object centred, body right,
    symmetric 18px gutters. */
@@ -201,10 +204,109 @@ a { color: inherit; text-decoration: none; }
   filter: contrast(1.06) saturate(0.9);
 }
 
+/* ---------- the hero object ---------- */
+/* The reference is built around a single object rendered live, lit like a
+   museum piece and floating in the void. This is that object: a real stack of
+   discs in a preserve-3d container, so tilting it exposes an actual cylinder
+   wall instead of a painted ellipse. No shadow anywhere — every bit of depth
+   here is either a luminance step or a genuine Z translation. */
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 1400px;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+/* The lockup sits above the object. Scoped to direct children so it can never
+   fight the absolute positioning inside .stage. */
+.hero > .hero__top, .hero > .hero__foot { position: relative; z-index: 1; }
+
+/* vmin rather than vw, so a short desktop window shrinks the object instead of
+   letting it push into the lockup. */
+.plate { --size: clamp(210px, 37vmin, 420px); width: var(--size); height: var(--size); }
+/* Below the three-column breakpoint the lockup takes the full width, so the
+   object has to live in the negative space between the wordmark and the card
+   rather than behind them. Size is driven off available *height* as well as
+   width — a short phone has almost no gap, and an object overlapping the body
+   voice costs more than a small object does. */
+@media (max-width: 899px) {
+  /* Absolute centring cannot know where the lockup ends, so below the
+     three-column breakpoint the object joins the grid as a real row. The
+     hero is align-content: space-between, which then places it in the gap by
+     construction — no overlap is possible at any viewport height. */
+  .stage { position: relative; inset: auto; overflow: visible; order: 1; }
+  .hero__foot { order: 2; }
+  .plate { --size: min(46vw, 22svh); }
+}
+.plate__body {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transform:
+    translateZ(calc(var(--n) * var(--step) * -0.5px))
+    rotateX(calc(var(--rx, -14) * 1deg))
+    rotateY(calc(var(--ry, 22) * 1deg));
+}
+.plate__l {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  transform: translateZ(calc(var(--i) * var(--step) * 1px));
+}
+/* The lit face. The gradient is the light source — warm at the upper left,
+   falling to walnut at the lower right. */
+.plate__face {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  transform: translateZ(calc(var(--n) * var(--step) * 1px));
+  display: grid;
+  place-items: center;
+  /* A hard 1px edge, not a fade. A gradient that dissolves at the silhouette
+     reads as a glow, and glow is the blur-depth this system rejects. */
+  border: 1px solid var(--color-cork-border);
+  background:
+    radial-gradient(115% 115% at 26% 20%,
+      color-mix(in srgb, var(--color-bark-brown) 84%, var(--color-warm-cream)) 0%,
+      var(--color-bark-brown) 46%,
+      color-mix(in srgb, var(--color-walnut-shadow) 78%, var(--color-bark-brown)) 100%);
+}
+.plate__rim {
+  position: absolute; inset: 5.5%;
+  border-radius: 50%;
+  border: 1px dashed var(--color-cork-border);
+}
+/* Cork tooth: the reference's object reads as a material, not a flat shape. */
+.plate__grain {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  opacity: 0.75;
+  background-image:
+    radial-gradient(circle at 30% 34%, var(--color-driftwood) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 71% 62%, var(--color-driftwood) 0.5px, transparent 0.6px),
+    radial-gradient(circle at 47% 81%, var(--color-driftwood) 0.6px, transparent 0.7px);
+  background-size: 23px 23px, 31px 31px, 17px 17px;
+}
+.plate__face .motif {
+  position: relative;
+  width: 62%; height: auto;
+  max-width: none;
+  color: var(--color-warm-cream);
+}
+/* Heavier than the void-mode motifs: this one sits on bark brown rather than
+   the canvas, and it is foreshortened by the tilt, so a 1.5px hairline
+   disappears into the face. */
+.plate__face .motif path,
+.plate__face .motif circle { stroke-width: 2.4; }
+
 /* ---------- hero lockup ---------- */
-.hero { align-content: space-between; }
+.hero { align-content: space-between; position: relative; }
 .hero__top { display: grid; gap: var(--spacing-14); }
-.hero__mark { font-size: clamp(3rem, 13vw, 132px); line-height: 0.82; font-weight: var(--weight-medium); }
+/* The floor has to survive a 320px phone. "Blackthorn" is one unbreakable
+   word, so an over-large minimum makes it wider than the viewport and blows
+   the whole grid out — every sibling inherits the overflow. */
+.hero__mark { font-size: clamp(2.1rem, 11.5vw, 132px); line-height: 0.82; font-weight: var(--weight-medium); }
 .hero__foot { display: grid; gap: var(--spacing-24); align-items: end; }
 @media (min-width: 900px) {
   .hero__foot { grid-template-columns: minmax(0, 380px) 1fr auto; }
@@ -340,16 +442,19 @@ a { color: inherit; text-decoration: none; }
 .d1 { transition-delay: .08s; }
 .d2 { transition-delay: .16s; }
 
-.ink path, .ink circle, .ink ellipse, .ink polyline, .ink line {
+/* The line art draws itself on. These selectors must match the class build.py
+   actually emits (.inkable) — targeting .ink silently disabled the whole
+   effect, because a class selector only matches a whole token. */
+.inkable path, .inkable circle, .inkable ellipse, .inkable polyline, .inkable line {
   stroke-dasharray: 1; stroke-dashoffset: 1;
   transition: stroke-dashoffset 1.2s cubic-bezier(.4,.05,.2,1);
 }
-.inked .ink path, .inked .ink circle, .inked .ink ellipse,
-.inked .ink polyline, .inked .ink line { stroke-dashoffset: 0; }
+.inked .inkable path, .inked .inkable circle, .inked .inkable ellipse,
+.inked .inkable polyline, .inked .inkable line { stroke-dashoffset: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .rv { opacity: 1; transform: none; transition: none; }
-  .ink path, .ink circle, .ink ellipse, .ink polyline, .ink line {
+  .inkable path, .inkable circle, .inkable ellipse, .inkable polyline, .inkable line {
     stroke-dasharray: none; stroke-dashoffset: 0; transition: none;
   }
   .pill::after, .ghost { transition: none; }
@@ -375,6 +480,8 @@ a { color: inherit; text-decoration: none; }
 
   <!-- ========= SCREEN 1 · HERO LOCKUP ========= -->
   <section class="screen hero">
+    <div class="stage" aria-hidden="true"><div class="plate" id="plate"><div class="plate__body" style="--n:22;--step:2.2"><i class="plate__l" style="--i:0;background:rgb(16,9,4)"></i><i class="plate__l" style="--i:1;background:rgb(18,10,5)"></i><i class="plate__l" style="--i:2;background:rgb(20,12,6)"></i><i class="plate__l" style="--i:3;background:rgb(22,13,7)"></i><i class="plate__l" style="--i:4;background:rgb(24,14,7)"></i><i class="plate__l" style="--i:5;background:rgb(26,15,8)"></i><i class="plate__l" style="--i:6;background:rgb(27,17,9)"></i><i class="plate__l" style="--i:7;background:rgb(29,18,10)"></i><i class="plate__l" style="--i:8;background:rgb(31,19,11)"></i><i class="plate__l" style="--i:9;background:rgb(33,21,12)"></i><i class="plate__l" style="--i:10;background:rgb(35,22,13)"></i><i class="plate__l" style="--i:11;background:rgb(37,23,13)"></i><i class="plate__l" style="--i:12;background:rgb(39,24,14)"></i><i class="plate__l" style="--i:13;background:rgb(41,26,15)"></i><i class="plate__l" style="--i:14;background:rgb(43,27,16)"></i><i class="plate__l" style="--i:15;background:rgb(45,28,17)"></i><i class="plate__l" style="--i:16;background:rgb(46,30,18)"></i><i class="plate__l" style="--i:17;background:rgb(48,31,19)"></i><i class="plate__l" style="--i:18;background:rgb(50,32,19)"></i><i class="plate__l" style="--i:19;background:rgb(52,33,20)"></i><i class="plate__l" style="--i:20;background:rgb(54,35,21)"></i><i class="plate__l" style="--i:21;background:rgb(56,36,22)"></i><div class="plate__face"><span class="plate__rim"></span><span class="plate__grain"></span><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Coiled serpent"><path pathLength="1" d="M28 88c16 0 26-11 26-23S38 45 38 33s11-21 25-19"/><path pathLength="1" d="M63 14c7 1 11 6 11 11s-5 10-11 10"/><path pathLength="1" d="M74 25c5 1 8 5 9 9"/><path pathLength="1" d="M45 52c5 3 12 2 16-2"/><circle class="fill-dot" cx="67" cy="20" r="2"/></svg></div></div></div></div>
+
     <div class="hero__top">
       <p class="label rv">Custom tattooing · Allentown, PA</p>
       <h1 class="hero__mark rv d1">Blackthorn</h1>
@@ -574,7 +681,9 @@ a { color: inherit; text-decoration: none; }
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var RV = '.rv';
-  var INK = '.artifact, .reveal3 > div';
+  // .stage belongs here too: now that the draw-on actually works, anything
+  // holding line art that is never observed would sit at dashoffset 1 forever.
+  var INK = '.artifact, .reveal3 > div, .stage';
 
   // The active nav mark follows the section actually on screen. Hardcoding it
   // is a lie the moment the visitor scrolls one screen. This is navigation
@@ -671,6 +780,44 @@ a { color: inherit; text-decoration: none; }
   addEventListener('scroll', kick, { passive: true });
   addEventListener('resize', kick);
   kick();
+
+  // The hero object. The reference's object has mass, so this is a damped
+  // spring rather than a lerp: it overshoots a little and settles, instead of
+  // tracking the pointer exactly. The rest pose is a three-quarter view, which
+  // is also what a no-JS or reduced-motion visitor sees.
+  var plate = document.getElementById('plate');
+  var body = plate && plate.querySelector('.plate__body');
+  if (body) {
+    var REST_X = -14, REST_Y = 22, K = 0.008, DAMP = 0.9;
+    var tx = REST_X, ty = REST_Y, rx = REST_X, ry = REST_Y, vx2 = 0, vy2 = 0;
+    var live = true;
+
+    addEventListener('pointermove', function (e) {
+      tx = REST_X - ((e.clientY / window.innerHeight) * 2 - 1) * 12;
+      ty = REST_Y + ((e.clientX / window.innerWidth) * 2 - 1) * 26;
+    }, { passive: true });
+
+    function spin(now) {
+      if (!live) return;
+      // A slow drift keeps it alive when the pointer never moves — on touch,
+      // this is the whole of the motion.
+      var dx = Math.cos(now * 0.00031) * 3.2;
+      var dy = Math.sin(now * 0.00042) * 7;
+      vx2 = (vx2 + (tx + dx - rx) * K) * DAMP; rx += vx2;
+      vy2 = (vy2 + (ty + dy - ry) * K) * DAMP; ry += vy2;
+      body.style.setProperty('--rx', rx.toFixed(2));
+      body.style.setProperty('--ry', ry.toFixed(2));
+      requestAnimationFrame(spin);
+    }
+    requestAnimationFrame(spin);
+
+    // Don't burn frames on an object that has scrolled away.
+    new IntersectionObserver(function (es) {
+      var vis = es[0].isIntersecting;
+      if (vis && !live) { live = true; requestAnimationFrame(spin); }
+      else if (!vis) { live = false; }
+    }, { threshold: 0 }).observe(plate);
+  }
 
   // Demo build: the CTAs have nowhere real to go.
   document.querySelectorAll('a[href="#book"]').forEach(function (a) {

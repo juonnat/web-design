@@ -147,6 +147,41 @@ MOTIFS = {
     ),
 }
 
+# The hero object. The reference renders one object live in Three.js with real
+# thickness and inertia; there is no WebGL here, so the depth is built the
+# honest way — a stack of discs at increasing translateZ inside a preserve-3d
+# container, so the edge is a real cylinder wall that shows when the object
+# tilts rather than a painted-on ellipse. Colour runs walnut at the back to
+# bark at the lit face, which is a luminance step, not a shadow.
+PLATE_LAYERS = 22
+PLATE_STEP = 2.2  # px between layers -> ~46px of real thickness
+
+
+def _mix(a: tuple[int, int, int], b: tuple[int, int, int], t: float) -> str:
+    return "rgb(%d,%d,%d)" % tuple(round(x + (y - x) * t) for x, y in zip(a, b))
+
+
+def plate() -> str:
+    walnut, bark = (0x10, 0x09, 0x04), (0x38, 0x24, 0x16)
+    layers = "".join(
+        f'<i class="plate__l" style="--i:{i};background:'
+        f'{_mix(walnut, bark, i / (PLATE_LAYERS - 1))}"></i>'
+        for i in range(PLATE_LAYERS)
+    )
+    return (
+        f'<div class="plate" id="plate">'
+        f'<div class="plate__body" style="--n:{PLATE_LAYERS};--step:{PLATE_STEP}">'
+        f"{layers}"
+        f'<div class="plate__face">'
+        f'<span class="plate__rim"></span>'
+        f'<span class="plate__grain"></span>'
+        f"__MOTIF_SERPENT__"
+        f"</div>"
+        f"</div>"
+        f"</div>"
+    )
+
+
 TICK = (
     '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">'
     '<path d="M3 8.4l3.2 3.2L13 4.8" stroke="currentColor" stroke-width="2" '
@@ -195,6 +230,9 @@ def main() -> int:
     print(f"gallery: {found}/6 photos, {6 - found} line-art placeholders")
     for token, markup in tiles.items():
         html = html.replace(token, markup)
+
+    # Before the motif pass: the plate embeds a motif token of its own.
+    html = html.replace("__PLATE__", plate())
 
     for token, markup in MOTIFS.items():
         html = html.replace(token, markup)
