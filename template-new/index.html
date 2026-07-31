@@ -181,7 +181,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- artifact ---------- */
-.artifact { display: grid; place-items: center; padding: var(--spacing-18); }
+/* The perspective host: depth is applied to the object inside, never to this
+   box, because the reveal (.rv) already owns the transform on the wrapper. */
+.artifact { display: grid; place-items: center; padding: var(--spacing-18); perspective: 1100px; }
+.artifact .motif, .artifact img { transform: translateZ(calc(var(--z, 0) * 1px)); }
 .artifact .motif { width: 100%; height: auto; max-width: 330px; display: block; color: var(--color-warm-cream); }
 .motif path, .motif circle, .motif ellipse, .motif polyline, .motif line {
   fill: none; stroke: currentColor; stroke-width: 1.5;
@@ -350,6 +353,7 @@ a { color: inherit; text-decoration: none; }
     stroke-dasharray: none; stroke-dashoffset: 0; transition: none;
   }
   .pill::after, .ghost { transition: none; }
+  .artifact .motif, .artifact img { transform: none; }
 }
 </style>
 </head>
@@ -358,7 +362,7 @@ a { color: inherit; text-decoration: none; }
 <header class="nav">
   <a href="#top">Blackthorn <span class="ember">Tattoo Co.</span></a>
   <nav class="nav__links">
-    <a href="#work" aria-current="true">Work</a>
+    <a href="#work">Work</a>
     <a href="#pricing">Pricing</a>
     <a href="#studio">Studio</a>
     <a href="#book">Contact</a>
@@ -408,7 +412,7 @@ a { color: inherit; text-decoration: none; }
   <section class="screen" id="work">
     <div class="reveal3">
       <h2 class="heading rv">One life,<br />one chance.</h2>
-      <div class="rv d1"><div class="flash__art"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Coiled serpent"><path pathLength="1" d="M28 88c16 0 26-11 26-23S38 45 38 33s11-21 25-19"/><path pathLength="1" d="M63 14c7 1 11 6 11 11s-5 10-11 10"/><path pathLength="1" d="M74 25c5 1 8 5 9 9"/><path pathLength="1" d="M45 52c5 3 12 2 16-2"/><circle class="fill-dot" cx="67" cy="20" r="2"/></svg></div></div>
+      <div class="rv d1"><div class="artifact"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Coiled serpent"><path pathLength="1" d="M28 88c16 0 26-11 26-23S38 45 38 33s11-21 25-19"/><path pathLength="1" d="M63 14c7 1 11 6 11 11s-5 10-11 10"/><path pathLength="1" d="M74 25c5 1 8 5 9 9"/><path pathLength="1" d="M45 52c5 3 12 2 16-2"/><circle class="fill-dot" cx="67" cy="20" r="2"/></svg></div></div>
       <div class="rv d2">
         <p class="voice">Cherub and script across the upper arm. The lettering was drawn by hand, then redrawn twice on the stencil before a needle came near it.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 01 · Black &amp; grey · lettering</p>
@@ -419,7 +423,7 @@ a { color: inherit; text-decoration: none; }
   <section class="screen">
     <div class="reveal3">
       <h2 class="heading rv">Koi and<br />rising sun.</h2>
-      <div class="rv d1"><div class="flash__art"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Dagger and crescent moon"><path pathLength="1" d="M50 93l-9-23V42h18v28z"/><path pathLength="1" d="M30 42h40"/><path pathLength="1" d="M50 42V17"/><path pathLength="1" d="M43 17h14"/><path pathLength="1" d="M74 28a25 25 0 1 0 5 42 29 29 0 0 1-5-42z"/></svg></div></div>
+      <div class="rv d1"><div class="artifact"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Dagger and crescent moon"><path pathLength="1" d="M50 93l-9-23V42h18v28z"/><path pathLength="1" d="M30 42h40"/><path pathLength="1" d="M50 42V17"/><path pathLength="1" d="M43 17h14"/><path pathLength="1" d="M74 28a25 25 0 1 0 5 42 29 29 0 0 1-5-42z"/></svg></div></div>
       <div class="rv d2">
         <p class="voice">The only colour piece in this set. Traditional Japanese water, laid to wrap the shoulder rather than sit flat on it.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 02 · Japanese · colour</p>
@@ -430,7 +434,7 @@ a { color: inherit; text-decoration: none; }
   <section class="screen">
     <div class="reveal3">
       <h2 class="heading rv">Lion and<br />honeycomb.</h2>
-      <div class="rv d1"><div class="flash__art"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Lantern moth"><path pathLength="1" d="M50 36v40"/><path pathLength="1" d="M50 40c-8-16-29-20-35-8-5 11 8 22 21 26"/><path pathLength="1" d="M50 40c8-16 29-20 35-8 5 11-8 22-21 26"/><path pathLength="1" d="M50 60c-5 11-17 17-23 11-4-6 3-13 10-17"/><path pathLength="1" d="M50 60c5 11 17 17 23 11 4-6-3-13-10-17"/><path pathLength="1" d="M50 36l-7-13M50 36l7-13"/><circle class="fill-dot" cx="50" cy="34" r="2"/></svg></div></div>
+      <div class="rv d1"><div class="artifact"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Lantern moth"><path pathLength="1" d="M50 36v40"/><path pathLength="1" d="M50 40c-8-16-29-20-35-8-5 11 8 22 21 26"/><path pathLength="1" d="M50 40c8-16 29-20 35-8 5 11-8 22-21 26"/><path pathLength="1" d="M50 60c-5 11-17 17-23 11-4-6 3-13 10-17"/><path pathLength="1" d="M50 60c5 11 17 17 23 11 4-6-3-13-10-17"/><path pathLength="1" d="M50 36l-7-13M50 36l7-13"/><circle class="fill-dot" cx="50" cy="34" r="2"/></svg></div></div>
       <div class="rv d2">
         <p class="voice">Realism broken through geometry. The mandala above and below was stencilled in the same sitting and finished across three.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 03 · Black &amp; grey · realism</p>
@@ -441,7 +445,7 @@ a { color: inherit; text-decoration: none; }
   <section class="screen">
     <div class="reveal3">
       <h2 class="heading rv">Isla del<br />encanto.</h2>
-      <div class="rv d1"><div class="flash__art"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Thorn rose"><path pathLength="1" d="M34 46c-8 7-7 19 2 25s23 3 28-6"/><path pathLength="1" d="M50 24a15 15 0 1 1-14 21"/><path pathLength="1" d="M57 33a9 9 0 1 0-10 13"/><path pathLength="1" d="M53 40a4 4 0 1 1-3 4"/><path pathLength="1" d="M50 72v20"/><path pathLength="1" d="M50 80c-8 0-13-4-15-11 8-1 13 3 15 11z"/></svg></div></div>
+      <div class="rv d1"><div class="artifact"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Thorn rose"><path pathLength="1" d="M34 46c-8 7-7 19 2 25s23 3 28-6"/><path pathLength="1" d="M50 24a15 15 0 1 1-14 21"/><path pathLength="1" d="M57 33a9 9 0 1 0-10 13"/><path pathLength="1" d="M53 40a4 4 0 1 1-3 4"/><path pathLength="1" d="M50 72v20"/><path pathLength="1" d="M50 80c-8 0-13-4-15-11 8-1 13 3 15 11z"/></svg></div></div>
       <div class="rv d2">
         <p class="voice">A full sleeve carrying a garita, a coquí and a hibiscus. Built over six sessions around a date that mattered.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 04 · Black &amp; grey · full sleeve</p>
@@ -452,7 +456,7 @@ a { color: inherit; text-decoration: none; }
   <section class="screen">
     <div class="reveal3">
       <h2 class="heading rv">Crown<br />of thorns.</h2>
-      <div class="rv d1"><div class="flash__art"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="The watcher"><path pathLength="1" d="M17 50c11-15 22-22 33-22s22 7 33 22c-11 15-22 22-33 22S28 65 17 50z"/><circle pathLength="1" cx="50" cy="50" r="12"/><path pathLength="1" d="M50 20V7M22 29l-8-9M78 29l8-9"/><path pathLength="1" d="M50 80v13M22 71l-8 9M78 71l8 9"/><circle class="fill-dot" cx="50" cy="50" r="5"/></svg></div></div>
+      <div class="rv d1"><div class="artifact"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="The watcher"><path pathLength="1" d="M17 50c11-15 22-22 33-22s22 7 33 22c-11 15-22 22-33 22S28 65 17 50z"/><circle pathLength="1" cx="50" cy="50" r="12"/><path pathLength="1" d="M50 20V7M22 29l-8-9M78 29l8-9"/><path pathLength="1" d="M50 80v13M22 71l-8 9M78 71l8 9"/><circle class="fill-dot" cx="50" cy="50" r="5"/></svg></div></div>
       <div class="rv d2">
         <p class="voice">Portrait work down the forearm, with the only red in the piece spent on two lines. The restraint is what makes it land.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 05 · Black &amp; grey · realism</p>
@@ -463,7 +467,7 @@ a { color: inherit; text-decoration: none; }
   <section class="screen">
     <div class="reveal3">
       <h2 class="heading rv">Halloween<br />town.</h2>
-      <div class="rv d1"><div class="flash__art"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Harbour swallow"><path pathLength="1" d="M11 33c19-6 35 3 43 15 6-13 21-19 35-15-10 4-17 12-19 23"/><path pathLength="1" d="M70 56c9 4 14 13 14 21-11-10-25-12-38-6"/><path pathLength="1" d="M46 71L31 88l4-19"/><circle class="fill-dot" cx="73" cy="38" r="2"/></svg></div></div>
+      <div class="rv d1"><div class="artifact"><svg class="motif inkable" viewBox="0 0 100 100" role="img" aria-label="Harbour swallow"><path pathLength="1" d="M11 33c19-6 35 3 43 15 6-13 21-19 35-15-10 4-17 12-19 23"/><path pathLength="1" d="M70 56c9 4 14 13 14 21-11-10-25-12-38-6"/><path pathLength="1" d="M46 71L31 88l4-19"/><circle class="fill-dot" cx="73" cy="38" r="2"/></svg></div></div>
       <div class="rv d2">
         <p class="voice">Illustrative black and grey on the inner arm — the softest place to sit and the hardest place to hold a clean line.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 06 · Black &amp; grey · illustrative</p>
@@ -572,6 +576,33 @@ a { color: inherit; text-decoration: none; }
   var RV = '.rv';
   var INK = '.artifact, .reveal3 > div';
 
+  // The active nav mark follows the section actually on screen. Hardcoding it
+  // is a lie the moment the visitor scrolls one screen. This is navigation
+  // state rather than decoration, so it runs even when motion is suppressed.
+  var navLinks = [].slice.call(document.querySelectorAll('.nav__links a'));
+  var navTargets = navLinks.map(function (a) {
+    return document.querySelector(a.getAttribute('href'));
+  });
+  function spy() {
+    var line = window.innerHeight * 0.34, best = -1, bestTop = -Infinity;
+    for (var i = 0; i < navTargets.length; i++) {
+      if (!navTargets[i]) continue;
+      var top = navTargets[i].getBoundingClientRect().top;
+      if (top <= line && top > bestTop) { bestTop = top; best = i; }
+    }
+    navLinks.forEach(function (a, i) {
+      if (i === best) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  var spyQueued = false;
+  addEventListener('scroll', function () {
+    if (spyQueued) return;
+    spyQueued = true;
+    requestAnimationFrame(function () { spyQueued = false; spy(); });
+  }, { passive: true });
+  spy();
+
   if (!('IntersectionObserver' in window) || reduce) {
     document.querySelectorAll(RV).forEach(function (e) { e.classList.add('in'); });
     document.querySelectorAll(INK).forEach(function (e) { e.classList.add('inked'); });
@@ -612,6 +643,34 @@ a { color: inherit; text-decoration: none; }
     requestAnimationFrame(sweep);
   }, { passive: true });
   addEventListener('load', sweep);
+
+  // Z-axis depth. The reference moves a camera through real depth rather than
+  // sliding 2D layers, so each object recedes as its screen leaves the middle
+  // of the viewport. The per-frame lerp is what gives it mass: it settles into
+  // place instead of tracking the scrollbar exactly.
+  var DEPTH = 240, EASE = 0.12;
+  var depthEls = [].slice.call(document.querySelectorAll('.artifact'));
+  var z = depthEls.map(function () { return 0; });
+  var running = false;
+
+  function depth() {
+    var vh = window.innerHeight, moving = false;
+    for (var i = 0; i < depthEls.length; i++) {
+      var b = depthEls[i].getBoundingClientRect();
+      if (b.bottom < -vh || b.top > vh * 2) continue;
+      var d = ((b.top + b.height / 2) - vh / 2) / vh;
+      var target = -DEPTH * Math.min(1, Math.abs(d) * 1.6);
+      z[i] += (target - z[i]) * EASE;
+      if (Math.abs(target - z[i]) > 0.4) moving = true;
+      depthEls[i].style.setProperty('--z', z[i].toFixed(1));
+    }
+    running = moving;
+    if (moving) requestAnimationFrame(depth);
+  }
+  function kick() { if (!running) { running = true; requestAnimationFrame(depth); } }
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', kick);
+  kick();
 
   // Demo build: the CTAs have nowhere real to go.
   document.querySelectorAll('a[href="#book"]').forEach(function (a) {
