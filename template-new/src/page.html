@@ -429,6 +429,65 @@ a { color: inherit; text-decoration: none; }
   padding: var(--spacing-41) var(--pad);
 }
 
+/* ---------- ambient layers ---------- */
+/* The reference site keeps its whole canvas alive — dust in the light beam,
+   grain on the void. This is that atmosphere: a fixed particle canvas behind
+   everything, ember only as the rare fleck, and a scroll progress hairline.
+   All of it dies under prefers-reduced-motion. */
+#dust {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* Content rides above the dust. The nav and serial are already fixed with
+   their own z-index — repositioning them here would silently override
+   position: fixed, so they are deliberately not in this rule. */
+main, .foot { position: relative; z-index: 1; }
+
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 0;
+  border-top: 1px dashed var(--color-warm-cream);
+  z-index: 60;
+  transform-origin: 0 0;
+  transform: scaleX(0);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Gallery tiles answer the pointer the way the hero object does — a small
+   tilt on a real perspective, sprung back on leave. */
+.reveal3 .artifact { transform-style: preserve-3d; }
+.reveal3 .artifact .motif,
+.reveal3 .artifact img {
+  transform:
+    translateZ(calc(var(--z, 0) * 1px))
+    rotateX(calc(var(--tx, 0) * 1deg))
+    rotateY(calc(var(--ty, 0) * 1deg));
+  transition: none;
+}
+
+/* The hero wordmark arrives letter by letter, each with the same settling
+   curve as everything else. The split is done in JS, so no-JS keeps the
+   plain, fully visible heading. */
+.hero__mark .ltr {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1);
+  transition-delay: calc(var(--li) * 55ms);
+}
+.hero__mark.split { opacity: 1; transform: none; }
+.hero__mark.split.in .ltr { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  #dust, .progress { display: none; }
+  .hero__mark .ltr { opacity: 1; transform: none; transition: none; }
+  .reveal3 .artifact .motif, .reveal3 .artifact img { transform: none; }
+}
+
 /* ---------- motion ---------- */
 /* Scarce and flat, because restraint is the language. */
 .rv { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
@@ -457,6 +516,9 @@ a { color: inherit; text-decoration: none; }
 </style>
 </head>
 <body>
+
+<canvas id="dust" aria-hidden="true"></canvas>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="nav">
   <a href="#top">Blackthorn <span class="ember">Tattoo Co.</span></a>
@@ -526,7 +588,7 @@ a { color: inherit; text-decoration: none; }
       <h2 class="heading rv">Koi and<br />rising sun.</h2>
       <div class="rv d1">__TILE_ART_2__</div>
       <div class="rv d2">
-        <p class="voice">The only colour piece in this set. Traditional Japanese water, laid to wrap the shoulder rather than sit flat on it.</p>
+        <p class="voice">Traditional Japanese water and a rising sun, laid to wrap the shoulder rather than sit flat on it.</p>
         <p class="label ember" style="margin-top:var(--spacing-18)">No. 02 · Japanese · colour</p>
       </div>
     </div>
@@ -817,6 +879,128 @@ a { color: inherit; text-decoration: none; }
   document.querySelectorAll('a[href="#book"]').forEach(function (a) {
     if (a.closest('#book')) a.addEventListener('click', function (e) { e.preventDefault(); });
   });
+
+  // ---- the wordmark arrives letter by letter ----
+  // Split in JS so a no-JS visitor keeps a plain, visible heading.
+  var mark = document.querySelector('.hero__mark');
+  if (mark) {
+    var text = mark.textContent;
+    mark.textContent = '';
+    for (var mi = 0; mi < text.length; mi++) {
+      var sp = document.createElement('span');
+      sp.className = 'ltr';
+      sp.style.setProperty('--li', mi);
+      sp.textContent = text[mi];
+      mark.appendChild(sp);
+    }
+    mark.classList.add('split');
+  }
+
+  // ---- scroll progress hairline ----
+  var progress = document.getElementById('progress');
+  function prog() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = 'scaleX(' + (max > 0 ? window.scrollY / max : 0) + ')';
+  }
+  addEventListener('scroll', prog, { passive: true });
+  prog();
+
+  // ---- gallery tiles answer the pointer ----
+  // Same physics vocabulary as the hero object: tilt toward the pointer,
+  // spring back to flat when it leaves.
+  document.querySelectorAll('.reveal3 .artifact').forEach(function (tile) {
+    var inner = tile.querySelector('.motif, img');
+    if (!inner) return;
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    function step() {
+      cx += (tx - cx) * 0.14;
+      cy += (ty - cy) * 0.14;
+      inner.style.setProperty('--tx', cx.toFixed(2));
+      inner.style.setProperty('--ty', cy.toFixed(2));
+      raf = (Math.abs(tx - cx) + Math.abs(ty - cy) > 0.05)
+        ? requestAnimationFrame(step) : 0;
+    }
+    function kick2() { if (!raf) raf = requestAnimationFrame(step); }
+    tile.addEventListener('pointermove', function (e) {
+      var b = tile.getBoundingClientRect();
+      ty = ((e.clientX - b.left) / b.width - 0.5) * 14;
+      tx = -((e.clientY - b.top) / b.height - 0.5) * 14;
+      kick2();
+    });
+    tile.addEventListener('pointerleave', function () { tx = 0; ty = 0; kick2(); });
+  });
+
+  // ---- cork dust ----
+  // The atmosphere layer: slow-rising motes in the palette, ember as the
+  // rare fleck, drifting a little with scroll, avoiding the pointer. Fixed
+  // count, capped DPR, paused when the tab hides — cheap by construction.
+  var canvas = document.getElementById('dust');
+  var ctx2 = canvas.getContext('2d');
+  var DPR = Math.min(devicePixelRatio || 1, 2);
+  var motes = [], W = 0, H = 0, px = -1e4, py = -1e4, lastY = window.scrollY;
+
+  function resize() {
+    W = canvas.width = innerWidth * DPR;
+    H = canvas.height = innerHeight * DPR;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    var want = Math.round(innerWidth * innerHeight / 26000);
+    while (motes.length < want) {
+      motes.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: (0.6 + Math.random() * 1.6) * DPR,
+        vy: (4 + Math.random() * 10) * DPR / 600,
+        wob: Math.random() * 6.28,
+        ws: 0.002 + Math.random() * 0.004,
+        ember: Math.random() < 0.06,
+        a: 0.12 + Math.random() * 0.3,
+      });
+    }
+    motes.length = want;
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  addEventListener('pointermove', function (e) {
+    px = e.clientX * DPR; py = e.clientY * DPR;
+  }, { passive: true });
+
+  var hidden = false;
+  document.addEventListener('visibilitychange', function () {
+    hidden = document.hidden;
+    if (!hidden) requestAnimationFrame(dust);
+  });
+
+  function dust() {
+    if (hidden) return;
+    var dy = (window.scrollY - lastY) * DPR;
+    lastY = window.scrollY;
+    ctx2.clearRect(0, 0, W, H);
+    for (var i = 0; i < motes.length; i++) {
+      var m = motes[i];
+      m.wob += m.ws;
+      m.y -= m.vy;
+      m.y += dy * 0.12;          // the void drifts with the scroll, gently
+      m.x += Math.sin(m.wob) * 0.12 * DPR;
+      var ddx = m.x - px, ddy = m.y - py;
+      var d2 = ddx * ddx + ddy * ddy, R = 120 * DPR;
+      if (d2 < R * R && d2 > 1) { // motes clear a path around the pointer
+        var f = (R - Math.sqrt(d2)) / R * 0.6;
+        m.x += ddx / Math.sqrt(d2) * f * DPR;
+        m.y += ddy / Math.sqrt(d2) * f * DPR;
+      }
+      if (m.y < -8) { m.y = H + 8; m.x = Math.random() * W; }
+      if (m.x < -8) m.x = W + 8;
+      if (m.x > W + 8) m.x = -8;
+      ctx2.globalAlpha = m.a;
+      ctx2.fillStyle = m.ember ? '#dc5000' : '#ffedd7';
+      ctx2.beginPath();
+      ctx2.arc(m.x, m.y, m.r, 0, 6.28);
+      ctx2.fill();
+    }
+    requestAnimationFrame(dust);
+  }
+  requestAnimationFrame(dust);
 })();
 </script>
 </body>
