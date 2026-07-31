@@ -175,7 +175,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- artifact ---------- */
-.artifact { display: grid; place-items: center; padding: var(--spacing-18); }
+/* The perspective host: depth is applied to the object inside, never to this
+   box, because the reveal (.rv) already owns the transform on the wrapper. */
+.artifact { display: grid; place-items: center; padding: var(--spacing-18); perspective: 1100px; }
+.artifact .motif, .artifact img { transform: translateZ(calc(var(--z, 0) * 1px)); }
 .artifact .motif { width: 100%; height: auto; max-width: 330px; display: block; color: var(--color-warm-cream); }
 .motif path, .motif circle, .motif ellipse, .motif polyline, .motif line {
   fill: none; stroke: currentColor; stroke-width: 1.5;
@@ -344,6 +347,7 @@ a { color: inherit; text-decoration: none; }
     stroke-dasharray: none; stroke-dashoffset: 0; transition: none;
   }
   .pill::after, .ghost { transition: none; }
+  .artifact .motif, .artifact img { transform: none; }
 }
 </style>
 </head>
@@ -352,7 +356,7 @@ a { color: inherit; text-decoration: none; }
 <header class="nav">
   <a href="#top">Blackthorn <span class="ember">Tattoo Co.</span></a>
   <nav class="nav__links">
-    <a href="#work" aria-current="true">Work</a>
+    <a href="#work">Work</a>
     <a href="#pricing">Pricing</a>
     <a href="#studio">Studio</a>
     <a href="#book">Contact</a>
@@ -566,6 +570,33 @@ a { color: inherit; text-decoration: none; }
   var RV = '.rv';
   var INK = '.artifact, .reveal3 > div';
 
+  // The active nav mark follows the section actually on screen. Hardcoding it
+  // is a lie the moment the visitor scrolls one screen. This is navigation
+  // state rather than decoration, so it runs even when motion is suppressed.
+  var navLinks = [].slice.call(document.querySelectorAll('.nav__links a'));
+  var navTargets = navLinks.map(function (a) {
+    return document.querySelector(a.getAttribute('href'));
+  });
+  function spy() {
+    var line = window.innerHeight * 0.34, best = -1, bestTop = -Infinity;
+    for (var i = 0; i < navTargets.length; i++) {
+      if (!navTargets[i]) continue;
+      var top = navTargets[i].getBoundingClientRect().top;
+      if (top <= line && top > bestTop) { bestTop = top; best = i; }
+    }
+    navLinks.forEach(function (a, i) {
+      if (i === best) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  var spyQueued = false;
+  addEventListener('scroll', function () {
+    if (spyQueued) return;
+    spyQueued = true;
+    requestAnimationFrame(function () { spyQueued = false; spy(); });
+  }, { passive: true });
+  spy();
+
   if (!('IntersectionObserver' in window) || reduce) {
     document.querySelectorAll(RV).forEach(function (e) { e.classList.add('in'); });
     document.querySelectorAll(INK).forEach(function (e) { e.classList.add('inked'); });
@@ -606,6 +637,34 @@ a { color: inherit; text-decoration: none; }
     requestAnimationFrame(sweep);
   }, { passive: true });
   addEventListener('load', sweep);
+
+  // Z-axis depth. The reference moves a camera through real depth rather than
+  // sliding 2D layers, so each object recedes as its screen leaves the middle
+  // of the viewport. The per-frame lerp is what gives it mass: it settles into
+  // place instead of tracking the scrollbar exactly.
+  var DEPTH = 240, EASE = 0.12;
+  var depthEls = [].slice.call(document.querySelectorAll('.artifact'));
+  var z = depthEls.map(function () { return 0; });
+  var running = false;
+
+  function depth() {
+    var vh = window.innerHeight, moving = false;
+    for (var i = 0; i < depthEls.length; i++) {
+      var b = depthEls[i].getBoundingClientRect();
+      if (b.bottom < -vh || b.top > vh * 2) continue;
+      var d = ((b.top + b.height / 2) - vh / 2) / vh;
+      var target = -DEPTH * Math.min(1, Math.abs(d) * 1.6);
+      z[i] += (target - z[i]) * EASE;
+      if (Math.abs(target - z[i]) > 0.4) moving = true;
+      depthEls[i].style.setProperty('--z', z[i].toFixed(1));
+    }
+    running = moving;
+    if (moving) requestAnimationFrame(depth);
+  }
+  function kick() { if (!running) { running = true; requestAnimationFrame(depth); } }
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', kick);
+  kick();
 
   // Demo build: the CTAs have nowhere real to go.
   document.querySelectorAll('a[href="#book"]').forEach(function (a) {

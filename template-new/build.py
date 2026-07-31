@@ -77,7 +77,7 @@ def photo_tag(path: Path, alt: str) -> str:
 
     data = base64.b64encode(buf.getvalue()).decode()
     return (
-        f'<div class="flash__art flash__art--photo">'
+        f'<div class="artifact artifact--photo">'
         f'<img src="data:image/webp;base64,{data}" alt="{alt}" '
         f'width="{w}" height="{h}" loading="lazy" decoding="async" />'
         f"</div>"
@@ -182,7 +182,7 @@ def tile_art() -> tuple[dict[str, str], int]:
             found += 1
             print(f"  tile {i}: {path.name}")
         else:
-            out[f"__TILE_ART_{i}__"] = f'<div class="flash__art">{motif}</div>'
+            out[f"__TILE_ART_{i}__"] = f'<div class="artifact">{motif}</div>'
     return out, found
 
 

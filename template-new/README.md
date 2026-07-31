@@ -5,6 +5,11 @@ Same fictional studio (Blackthorn), same booking-first structure, **entirely
 different visual system** — built from an extracted ORYZO AI design-token set
 (`tokens.json` / `DESIGN.md` supplied by the client).
 
+The system it derives from is [ORYZO](https://lusion.co/projects/oryzo_ai/) by
+Lusion (lead designer Edan Kwan), with tokens published at
+[refero.design](https://styles.refero.design/style/1f204e95-454a-437e-845b-c1b169d35607).
+The house rules distilled from it live in `../CLAUDE.md`.
+
 ## The system
 
 Darkroom product editorial: work presented like museum artifacts in a warm
@@ -36,18 +41,26 @@ compliance rather than design.
 
 ## Motion
 
-Restraint is the language, so motion is scarce and flat:
+Restraint is the language, so motion is scarce — but it has mass. The
+reference site renders its hero object live in Three.js with real weight and
+inertia, and moves a camera through true Z-axis depth rather than sliding 2D
+layers. There's no WebGL here, but the *feel* carries:
 
-- Line art **inks itself on** as it enters the viewport, and replays on hover
-- The hero artifact **breathes** — a slow 9s float, the page's one ambient move
+- Each artifact sits on a real `perspective` and **recedes on the Z axis** as
+  its screen leaves the middle of the viewport — depth, not offset-Y parallax.
+  The position is lerped per frame rather than tied to the scrollbar, which is
+  what gives it weight: it settles instead of snapping.
+- Line art **inks itself on** as it enters the viewport
 - Buttons fill with cream from the baseline; text flips to walnut — no lift,
   no shadow
-- Sections rise 16px on entry, with a scroll safety sweep so nothing can
+- Sections rise 14px on entry, with a scroll safety sweep so nothing can
   strand invisible
-- Sticky mobile booking dock arrives once the hero CTA scrolls off
+- The nav's dashed underline **tracks the section you're actually in**. This is
+  navigation state, not decoration, so it keeps working when motion is off.
 
-All disabled under `prefers-reduced-motion`. Single theme by design — the
-warm-dark editorial world is the identity; there is no light mode.
+Everything above except the nav indicator is disabled under
+`prefers-reduced-motion`. Single theme by design — the warm-dark editorial
+world is the identity; there is no light mode.
 
 ## Files
 
