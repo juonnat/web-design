@@ -84,10 +84,26 @@ def photo_tag(path: Path, alt: str) -> str:
     )
 
 
-def svg(label: str, body: str) -> str:
+def svg(label: str, centre: tuple = (), half: tuple = (), extra: str = "") -> str:
+    """Assemble one motif on the shared 100x100 field.
+
+    `centre` strokes are drawn as given. `half` strokes are drawn once and then
+    mirrored about x=50, so anything symmetrical is exactly symmetrical —
+    hand-placing both sides is what made the earlier set read as a sketch
+    rather than as flash. pathLength="1" normalises every stroke so a single
+    CSS rule draws any of them on.
+    """
+
+    def paths(ds: tuple) -> str:
+        return "".join(f'<path pathLength="1" d="{d}"/>' for d in ds)
+
+    body = paths(centre)
+    if half:
+        side = paths(half)
+        body += side + f'<g transform="translate(100,0) scale(-1,1)">{side}</g>'
     return (
         f'<svg class="motif inkable" viewBox="0 0 100 100" role="img" '
-        f'aria-label="{label}">{body}</svg>'
+        f'aria-label="{label}">{body}{extra}</svg>'
     )
 
 
@@ -95,55 +111,92 @@ def svg(label: str, body: str) -> str:
 # the same optical weight. pathLength="1" normalises each stroke so a single
 # CSS rule can draw any of them on.
 MOTIFS = {
+    # Coiled serpent. The body is two roughly parallel curves rather than one
+    # line, which is what stops a snake reading as a squiggle — it gives the
+    # form thickness that tapers toward the tail.
     "__MOTIF_SERPENT__": svg(
         "Coiled serpent",
-        '<path pathLength="1" d="M28 88c16 0 26-11 26-23S38 45 38 33s11-21 25-19"/>'
-        '<path pathLength="1" d="M63 14c7 1 11 6 11 11s-5 10-11 10"/>'
-        '<path pathLength="1" d="M74 25c5 1 8 5 9 9"/>'
-        '<path pathLength="1" d="M45 52c5 3 12 2 16-2"/>'
-        '<circle class="fill-dot" cx="67" cy="20" r="2"/>',
+        centre=(
+            "M27 87c25 4 38-11 33-27-4-14-24-17-26-30-2-11 6-19 18-19",
+            "M35 80c18 2 27-9 23-21-4-13-23-17-24-31-1-9 5-14 14-15",
+            "M52 9c11-1 19 7 18 17-1 9-9 15-19 13",
+            "M71 30l10 2-7 5",
+            "M40 62c5 4 12 4 17 0",
+            "M33 74c5 4 12 4 17 0",
+        ),
+        extra='<circle class="fill-dot" cx="62" cy="21" r="2.2"/>',
     ),
+    # Dagger. Mirrored, because a blade that is even slightly lopsided looks
+    # like a mistake rather than a mark.
     "__MOTIF_DAGGER__": svg(
-        "Dagger and crescent moon",
-        '<path pathLength="1" d="M50 93l-9-23V42h18v28z"/>'
-        '<path pathLength="1" d="M30 42h40"/>'
-        '<path pathLength="1" d="M50 42V17"/>'
-        '<path pathLength="1" d="M43 17h14"/>'
-        '<path pathLength="1" d="M74 28a25 25 0 1 0 5 42 29 29 0 0 1-5-42z"/>',
+        "Dagger",
+        centre=(
+            "M50 6v54",
+            "M26 60h48",
+            "M30 68h40",
+            "M44 68v17",
+            "M56 68v17",
+            "M44 74h12",
+            "M44 80h12",
+            "M50 85c4 0 7 3 7 6s-3 5-7 5-7-2-7-5 3-6 7-6z",
+        ),
+        half=("M50 6l9 38v16", "M26 60l4 8"),
     ),
+    # Lantern moth. Four wings mirrored off one half, body segmented.
     "__MOTIF_MOTH__": svg(
         "Lantern moth",
-        '<path pathLength="1" d="M50 36v40"/>'
-        '<path pathLength="1" d="M50 40c-8-16-29-20-35-8-5 11 8 22 21 26"/>'
-        '<path pathLength="1" d="M50 40c8-16 29-20 35-8 5 11-8 22-21 26"/>'
-        '<path pathLength="1" d="M50 60c-5 11-17 17-23 11-4-6 3-13 10-17"/>'
-        '<path pathLength="1" d="M50 60c5 11 17 17 23 11 4-6-3-13-10-17"/>'
-        '<path pathLength="1" d="M50 36l-7-13M50 36l7-13"/>'
-        '<circle class="fill-dot" cx="50" cy="34" r="2"/>',
+        centre=(
+            "M50 33v46",
+            "M46 47h8",
+            "M46 55h8",
+            "M46 63h8",
+        ),
+        half=(
+            "M52 39c9-17 29-22 35-10 5 11-11 23-31 29",
+            "M53 64c12 1 23 9 19 17-4 8-15 2-20-10",
+            "M51 34c5-8 12-13 19-15",
+        ),
+        extra='<circle class="fill-dot" cx="50" cy="32" r="3"/>',
     ),
+    # Thorn rose. Concentric petal turns spiralling into a filled core, with
+    # mirrored leaves so the stem reads as balanced.
     "__MOTIF_ROSE__": svg(
         "Thorn rose",
-        '<path pathLength="1" d="M34 46c-8 7-7 19 2 25s23 3 28-6"/>'
-        '<path pathLength="1" d="M50 24a15 15 0 1 1-14 21"/>'
-        '<path pathLength="1" d="M57 33a9 9 0 1 0-10 13"/>'
-        '<path pathLength="1" d="M53 40a4 4 0 1 1-3 4"/>'
-        '<path pathLength="1" d="M50 72v20"/>'
-        '<path pathLength="1" d="M50 80c-8 0-13-4-15-11 8-1 13 3 15 11z"/>',
+        centre=(
+            "M50 16c17 0 29 12 29 27S67 70 50 70 21 58 21 43 33 16 50 16z",
+            "M50 25c12 0 20 8 20 18s-8 18-20 18-20-8-20-18",
+            "M50 34c7 0 12 5 12 11s-5 11-12 11-11-5-11-11",
+            "M44 45c2-4 9-4 11 0",
+            "M50 70v26",
+        ),
+        half=("M50 78c9 1 16-3 20-11-10-3-18 2-20 11z",),
     ),
+    # The watcher. Lid arcs mirror top to bottom, rays mirror left to right.
     "__MOTIF_EYE__": svg(
         "The watcher",
-        '<path pathLength="1" d="M17 50c11-15 22-22 33-22s22 7 33 22c-11 15-22 22-33 22S28 65 17 50z"/>'
-        '<circle pathLength="1" cx="50" cy="50" r="12"/>'
-        '<path pathLength="1" d="M50 20V7M22 29l-8-9M78 29l8-9"/>'
-        '<path pathLength="1" d="M50 80v13M22 71l-8 9M78 71l8 9"/>'
-        '<circle class="fill-dot" cx="50" cy="50" r="5"/>',
+        centre=(
+            "M12 50c11-18 24-27 38-27s27 9 38 27",
+            "M12 50c11 18 24 27 38 27s27-9 38-27",
+            "M50 36a14 14 0 1 1 0 28 14 14 0 0 1 0-28z",
+            "M50 14V4",
+            "M50 86v10",
+        ),
+        half=("M80 26l7-7", "M80 74l7 7", "M88 50h9"),
+        extra='<circle class="fill-dot" cx="50" cy="50" r="5.5"/>',
     ),
+    # Harbour swallow. Deliberately not mirrored — a bird in flight is the one
+    # subject here that would look wrong symmetrical.
     "__MOTIF_SWALLOW__": svg(
         "Harbour swallow",
-        '<path pathLength="1" d="M11 33c19-6 35 3 43 15 6-13 21-19 35-15-10 4-17 12-19 23"/>'
-        '<path pathLength="1" d="M70 56c9 4 14 13 14 21-11-10-25-12-38-6"/>'
-        '<path pathLength="1" d="M46 71L31 88l4-19"/>'
-        '<circle class="fill-dot" cx="73" cy="38" r="2"/>',
+        centre=(
+            "M24 44c10-8 23-7 32 3",
+            "M56 47c7-16 23-25 36-23-10 10-14 21-16 33",
+            "M56 47c-2 12 4 21 14 25-12 5-26-1-33-11",
+            "M37 61L14 76l10-16-13 1 21-13",
+            "M24 44c-4 6-3 13 2 17",
+            "M63 52c4 5 6 11 6 17",
+        ),
+        extra='<circle class="fill-dot" cx="29" cy="43" r="2.2"/>',
     ),
 }
 
@@ -196,14 +249,16 @@ STAR = (
 
 
 # Which motif stands in for each gallery slot until a photo lands there, and
-# the alt text used once one does.
+# the alt text used once one does. The shipped demo set (photos/work-*.png)
+# was art-directed in Canva to match each caption; a studio adopting the
+# template overwrites those files with real photography and rebuilds.
 TILE_FALLBACK = [
-    ("__MOTIF_SERPENT__", "Coiled serpent, black and grey"),
-    ("__MOTIF_DAGGER__", "Dagger and crescent moon"),
-    ("__MOTIF_MOTH__", "Lantern moth, fine line"),
-    ("__MOTIF_ROSE__", "Thorn rose, traditional"),
-    ("__MOTIF_EYE__", "Ornamental eye"),
-    ("__MOTIF_SWALLOW__", "Harbour swallow, traditional"),
+    ("__MOTIF_SERPENT__", "Cherub with wings above a script banner, black and grey"),
+    ("__MOTIF_DAGGER__", "Koi rising through water before a sun disc"),
+    ("__MOTIF_MOTH__", "Lion framed by honeycomb geometry and mandala"),
+    ("__MOTIF_ROSE__", "Garita watchtower, coqui and hibiscus sleeve"),
+    ("__MOTIF_EYE__", "Portrait with crown of thorns, two red lines"),
+    ("__MOTIF_SWALLOW__", "Crescent moon, ghost and jack-o-lantern, illustrative"),
 ]
 
 
