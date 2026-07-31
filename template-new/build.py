@@ -258,7 +258,7 @@ TILE_FALLBACK = [
     ("__MOTIF_MOTH__", "Lion framed by honeycomb geometry and mandala"),
     ("__MOTIF_ROSE__", "Garita watchtower, coqui and hibiscus sleeve"),
     ("__MOTIF_EYE__", "Portrait with crown of thorns, two red lines"),
-    ("__MOTIF_SWALLOW__", "Crescent moon, ghost and jack-o-lantern, illustrative"),
+    ("__MOTIF_SWALLOW__", "Bare tree rooted in a jack-o-lantern before a crescent moon"),
 ]
 
 
