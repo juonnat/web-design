@@ -1,0 +1,9 @@
+# index.html is fully self-contained - the font is base64 inside it and there
+# are no external assets. Everything below is source or tooling and would
+# otherwise be served publicly.
+src
+build
+build.py
+photos
+artifact.html
+README.md
