@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Instance, Instances } from "@react-three/drei";
 import * as THREE from "three";
 
 const BLOCK_COUNT = 80;
@@ -50,7 +49,7 @@ function FlowBlocks() {
           (Math.random() - 0.5) * 0.01,
           (Math.random() - 0.5) * 0.01
         ),
-        scale: Math.random() * 1.2 + 0.8,
+        scale: Math.random() * 2.5 + 2.0, // chunky: 2.0 to 4.5 units
       });
     }
     return temp;
@@ -103,17 +102,25 @@ function FlowBlocks() {
   });
 
   return (
-    <Instances ref={meshRef} limit={BLOCK_COUNT}>
+    // A raw instancedMesh, not drei's <Instances>/<Instance> — that wrapper
+    // ties its render count to the number of mounted <Instance> children
+    // (drei/core/Instances.js: count = Math.min(limit, range ?? limit,
+    // instances.length)) and overwrites the buffer from each <Instance>'s
+    // own transform every frame. With a single <Instance/> child driven by
+    // manual setMatrixAt calls instead of per-instance props, count was
+    // pinned to 1 every frame — 79 of 80 blocks had matrices written but
+    // were never drawn, and were reset each frame regardless. args sets
+    // the instance count directly since there's no per-child count to derive.
+    <instancedMesh ref={meshRef} args={[undefined, undefined, BLOCK_COUNT]}>
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial
-        color="#100904"
-        roughness={0.2}
-        metalness={0.9}
+        color="#dc5000"
+        roughness={0.1}
+        metalness={1.0}
         emissive="#dc5000"
-        emissiveIntensity={1.5}
+        emissiveIntensity={3.0}
       />
-      <Instance />
-    </Instances>
+    </instancedMesh>
   );
 }
 
@@ -132,15 +139,20 @@ function Scene() {
   });
   return (
     <>
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.8} />
       <pointLight
         ref={lightRef}
         color="#dc5000"
-        intensity={7}
-        distance={25}
-        decay={1.2}
+        intensity={12}
+        distance={30}
+        decay={1}
       />
-      <fog attach="fog" args={["#100904", 8, 25]} />
+      {/* Temporary debug cube — proves the scene itself renders,
+          independent of the instancedMesh fix. Remove once confirmed. */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[2, 2, 2]} />
+        <meshStandardMaterial color="hotpink" />
+      </mesh>
       <FlowBlocks />
     </>
   );
@@ -149,7 +161,7 @@ function Scene() {
 export function InteractiveFlowScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 12], fov: 65 }}
+      camera={{ position: [0, 0, 8], fov: 65 }}
       dpr={[1, 2]}
       gl={{ alpha: true, antialias: true }}
     >
