@@ -4,9 +4,9 @@ import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-const BLOCK_COUNT = 80;
-const REPULSION_RADIUS = 8;
-const REPULSION_STRENGTH = 0.8;
+const BLOCK_COUNT = 60; // fewer = less chaos, more premium
+const REPULSION_RADIUS = 6; // smaller = more subtle
+const REPULSION_STRENGTH = 0.5; // softer punch
 
 function FlowBlocks() {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
@@ -15,10 +15,30 @@ function FlowBlocks() {
   const lastScroll = useRef(0);
   const { viewport } = useThree();
 
+  const geometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const material = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: "#dc5000",
+        roughness: 0.1,
+        metalness: 1.0,
+        emissive: "#dc5000",
+        emissiveIntensity: 2.5,
+      }),
+    []
+  );
+
+  // Invisible bounds keep blocks from drifting into the abyss.
+  const bounds = useMemo(
+    () => ({ x: viewport.width * 0.8, y: viewport.height * 0.8, z: 6 }),
+    [viewport]
+  );
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      scrollVelocity.current = (currentScroll - lastScroll.current) * 0.01;
+      // Smoother: add to (not replace) velocity, and reduce scroll impact.
+      scrollVelocity.current += (currentScroll - lastScroll.current) * 0.002;
       lastScroll.current = currentScroll;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -30,14 +50,14 @@ function FlowBlocks() {
     for (let i = 0; i < BLOCK_COUNT; i++) {
       temp.push({
         position: new THREE.Vector3(
-          (Math.random() - 0.5) * viewport.width * 3,
-          (Math.random() - 0.5) * viewport.height * 3,
-          (Math.random() - 0.5) * 8
+          (Math.random() - 0.5) * bounds.x,
+          (Math.random() - 0.5) * bounds.y,
+          (Math.random() - 0.5) * bounds.z
         ),
         velocity: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.015,
-          -Math.random() * 0.0075 - 0.005,
-          (Math.random() - 0.5) * 0.0075
+          (Math.random() - 0.5) * 0.01,
+          (Math.random() - 0.5) * 0.01,
+          (Math.random() - 0.5) * 0.01
         ),
         rotation: new THREE.Euler(
           Math.random() * Math.PI,
@@ -45,15 +65,15 @@ function FlowBlocks() {
           Math.random() * Math.PI
         ),
         rotationSpeed: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.01,
-          (Math.random() - 0.5) * 0.01,
-          (Math.random() - 0.5) * 0.01
+          (Math.random() - 0.5) * 0.005, // slower rotation
+          (Math.random() - 0.5) * 0.005,
+          (Math.random() - 0.5) * 0.005
         ),
-        scale: Math.random() * 2.5 + 2.0, // chunky: 2.0 to 4.5 units
+        scale: Math.random() * 1.5 + 1.5, // 1.5 to 3.0
       });
     }
     return temp;
-  }, [viewport]);
+  }, [bounds]);
 
   useFrame((state) => {
     if (!meshRef.current) return;
@@ -64,34 +84,56 @@ function FlowBlocks() {
     );
     const dummy = new THREE.Object3D();
     const time = state.clock.elapsedTime;
+
+    // Smooth damping: scroll velocity fades out each frame rather than
+    // being replaced wholesale, so a burst of scroll doesn't snap blocks.
+    scrollVelocity.current *= 0.88;
+
     blocks.forEach((block, i) => {
-      const flowX = Math.sin(time * 0.2 + block.position.y * 0.1) * 0.008;
-      const flowY = Math.cos(time * 0.15 + block.position.x * 0.1) * 0.005;
+      // Gentle sine-wave current instead of a sharp, chaotic push.
+      const flowStrength = 0.003;
+      const flowX = Math.sin(time * 0.15 + block.position.y * 0.05) * flowStrength;
+      const flowY = Math.cos(time * 0.12 + block.position.x * 0.05) * flowStrength;
+      const flowZ = Math.sin(time * 0.1 + i * 0.1) * flowStrength * 0.5;
       block.velocity.x += flowX;
       block.velocity.y += flowY;
+      block.velocity.z += flowZ;
+
       block.velocity.y += scrollVelocity.current;
-      block.velocity.x += scrollVelocity.current * (Math.random() - 0.5) * 2;
-      scrollVelocity.current *= 0.92;
+      block.velocity.x += scrollVelocity.current * 0.3;
+
       const dist = block.position.distanceTo(mouse.current);
       if (dist < REPULSION_RADIUS) {
         const force =
-          Math.pow((REPULSION_RADIUS - dist) / REPULSION_RADIUS, 2) *
-          REPULSION_STRENGTH;
+          Math.pow((REPULSION_RADIUS - dist) / REPULSION_RADIUS, 1.5) *
+          REPULSION_STRENGTH *
+          0.6;
         const direction = block.position.clone().sub(mouse.current).normalize();
         block.velocity.add(direction.multiplyScalar(force));
-        block.rotationSpeed.x += (Math.random() - 0.5) * 0.15;
-        block.rotationSpeed.y += (Math.random() - 0.5) * 0.15;
       }
+
+      // Invisible walls: nudge back in rather than hard-clamping, so the
+      // bounce reads as containment, not a wall collision.
+      const boundsForce = 0.02;
+      if (Math.abs(block.position.x) > bounds.x) {
+        block.velocity.x -= Math.sign(block.position.x) * boundsForce;
+      }
+      if (Math.abs(block.position.y) > bounds.y) {
+        block.velocity.y -= Math.sign(block.position.y) * boundsForce;
+      }
+      if (Math.abs(block.position.z) > bounds.z) {
+        block.velocity.z -= Math.sign(block.position.z) * boundsForce;
+      }
+
       block.position.add(block.velocity);
-      block.velocity.multiplyScalar(0.985);
+      // Heavy damping — syrup, not chaos.
+      block.velocity.multiplyScalar(0.96);
+
       block.rotation.x += block.rotationSpeed.x;
       block.rotation.y += block.rotationSpeed.y;
       block.rotation.z += block.rotationSpeed.z;
-      block.rotationSpeed.multiplyScalar(0.96);
-      if (block.position.y < -viewport.height * 1.5) {
-        block.position.y = viewport.height * 1.5;
-        block.position.x = (Math.random() - 0.5) * viewport.width * 3;
-      }
+      block.rotationSpeed.multiplyScalar(0.98);
+
       dummy.position.copy(block.position);
       dummy.rotation.copy(block.rotation);
       dummy.scale.setScalar(block.scale);
@@ -108,19 +150,20 @@ function FlowBlocks() {
     // instances.length)) and overwrites the buffer from each <Instance>'s
     // own transform every frame. With a single <Instance/> child driven by
     // manual setMatrixAt calls instead of per-instance props, count was
-    // pinned to 1 every frame — 79 of 80 blocks had matrices written but
-    // were never drawn, and were reset each frame regardless. args sets
-    // the instance count directly since there's no per-child count to derive.
-    <instancedMesh ref={meshRef} args={[undefined, undefined, BLOCK_COUNT]}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial
-        color="#dc5000"
-        roughness={0.1}
-        metalness={1.0}
-        emissive="#dc5000"
-        emissiveIntensity={3.0}
-      />
-    </instancedMesh>
+    // pinned to 1 every frame — all but one block had matrices written but
+    // were never drawn, and were reset each frame regardless.
+    //
+    // geometry/material are constructed directly and passed via args
+    // instead of args={[undefined, undefined, BLOCK_COUNT]} + JSX children —
+    // that pattern left the mesh with no geometry at actual construction
+    // time (confirmed via a diagnostic: a plain <mesh> with the same
+    // geometry/material at the same position rendered fine, while this
+    // instancedMesh with JSX-attached children after construction did not).
+    <instancedMesh
+      ref={meshRef}
+      args={[geometry, material, BLOCK_COUNT]}
+      frustumCulled={false}
+    />
   );
 }
 
