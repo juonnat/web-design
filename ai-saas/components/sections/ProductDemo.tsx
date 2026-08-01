@@ -30,7 +30,7 @@ export function ProductDemo() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, ease: EASE_MASS }}
-      className="section flex flex-col justify-center gap-31 py-[136px]"
+      className="section flex flex-col justify-center gap-31 overflow-hidden py-[136px]"
     >
       <SectionLabel index="04" title="Inside the runtime" />
 
