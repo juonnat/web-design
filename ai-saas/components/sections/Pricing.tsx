@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Button } from "@/components/ui/Button";
+import { TiltCard } from "@/components/ui/TiltCard";
 import { viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -64,43 +65,46 @@ export function Pricing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
-            className={cn(
-              "flex flex-col gap-24 rounded-[var(--radius-card)] border border-dashed p-31",
-              tier.featured ? "border-cream" : "border-border"
-            )}
           >
-            <div className="flex flex-col gap-8">
-              <span className="voice-label text-label text-driftwood">
-                {tier.name}
-              </span>
-              <div className="flex items-baseline gap-8">
-                <span className="text-[41px] leading-none">{tier.price}</span>
-                <span className="text-legal text-driftwood">{tier.unit}</span>
-              </div>
-              <p className="voice-body text-[16px] leading-[1.35] text-cream/75">
-                {tier.description}
-              </p>
-            </div>
-
-            <ul className="flex flex-col gap-10 border-t border-dashed border-border pt-18">
-              {tier.features.map((feature) => (
-                <li
-                  key={feature}
-                  className="voice-label flex items-center gap-10 text-[12px] text-cream/80"
-                >
-                  <span className="h-4 w-4 shrink-0 bg-cream/60" aria-hidden />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              href="#cta"
-              variant={tier.featured ? "filled" : "outline"}
-              className="mt-auto w-full"
+            <TiltCard
+              className={cn(
+                "flex h-full flex-col gap-24 rounded-[var(--radius-card)] border border-dashed p-31",
+                tier.featured ? "border-cream" : "border-border"
+              )}
             >
-              {tier.name === "Forge" ? "Talk to us" : "Get started"}
-            </Button>
+              <div className="flex flex-col gap-8">
+                <span className="voice-label text-label text-driftwood">
+                  {tier.name}
+                </span>
+                <div className="flex items-baseline gap-8">
+                  <span className="text-[41px] leading-none">{tier.price}</span>
+                  <span className="text-legal text-driftwood">{tier.unit}</span>
+                </div>
+                <p className="voice-body text-[16px] leading-[1.35] text-cream/75">
+                  {tier.description}
+                </p>
+              </div>
+
+              <ul className="flex flex-col gap-10 border-t border-dashed border-border pt-18">
+                {tier.features.map((feature) => (
+                  <li
+                    key={feature}
+                    className="voice-label flex items-center gap-10 text-[12px] text-cream/80"
+                  >
+                    <span className="h-4 w-4 shrink-0 bg-cream/60" aria-hidden />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <Button
+                href="#cta"
+                variant={tier.featured ? "filled" : "outline"}
+                className="mt-auto w-full"
+              >
+                {tier.name === "Forge" ? "Talk to us" : "Get started"}
+              </Button>
+            </TiltCard>
           </motion.div>
         ))}
       </div>
