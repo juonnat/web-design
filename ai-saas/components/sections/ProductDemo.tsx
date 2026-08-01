@@ -72,11 +72,15 @@ export function ProductDemo() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 1, ease: EASE_MASS, delay: 0.15 }}
-        className="relative"
+        className="relative isolate"
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute -inset-31 -z-10 rounded-[var(--radius-card)] bg-cream/[0.04] blur-3xl"
+          className="pointer-events-none absolute -inset-68 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(255,237,215,0.22) 0%, rgba(255,237,215,0.08) 40%, transparent 70%)",
+          }}
         />
         <div className="rounded-[var(--radius-card)] border border-dashed border-border bg-bark/30">
           <AnimatePresence mode="wait">

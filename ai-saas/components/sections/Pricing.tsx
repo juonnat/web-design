@@ -69,8 +69,10 @@ export function Pricing() {
           >
             <TiltCard
               className={cn(
-                "flex h-full flex-col gap-24 rounded-[var(--radius-card)] border border-dashed p-31",
-                tier.featured ? "border-cream" : "border-border"
+                "flex h-full flex-col gap-24 rounded-[var(--radius-card)] border border-dashed bg-bark/20 p-31 transition-colors duration-500 hover:bg-bark/30",
+                tier.featured
+                  ? "border-cream"
+                  : "border-border hover:border-cream/60"
               )}
             >
               <div className="flex flex-col gap-8">

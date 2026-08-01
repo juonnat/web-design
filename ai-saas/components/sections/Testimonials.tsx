@@ -7,6 +7,13 @@ import { EASE_MASS } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { cn } from "@/lib/utils";
 
+function initials(name: string) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("");
+}
+
 const QUOTES = [
   {
     quote:
@@ -51,7 +58,7 @@ export function Testimonials() {
       <div className="relative">
         <span
           aria-hidden
-          className="pointer-events-none absolute -left-[6px] -top-[64px] select-none text-[140px] leading-none text-border/50 sm:-top-[96px] sm:text-[200px]"
+          className="pointer-events-none absolute -left-[6px] -top-[8px] select-none text-[140px] leading-none text-border sm:-top-[16px] sm:text-[200px]"
         >
           &ldquo;
         </span>
@@ -70,9 +77,24 @@ export function Testimonials() {
       </div>
 
       <div className="flex items-center justify-between gap-24 border-t border-dashed border-border pt-24">
-        <div>
-          <p className="voice-label text-label">{current.name}</p>
-          <p className="text-legal text-driftwood">{current.role}</p>
+        <div className="flex items-center gap-14">
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={active}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.5, ease: EASE_MASS }}
+              aria-hidden
+              className="voice-label flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-full border border-dashed border-border text-[13px] text-ember"
+            >
+              {initials(current.name)}
+            </motion.span>
+          </AnimatePresence>
+          <div>
+            <p className="voice-label text-label">{current.name}</p>
+            <p className="text-legal text-driftwood">{current.role}</p>
+          </div>
         </div>
 
         <div className="flex gap-10">

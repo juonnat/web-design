@@ -32,8 +32,17 @@ export function Features() {
     <section
       id="features"
       data-section="features"
-      className="section flex flex-col justify-center gap-45 py-[136px]"
+      className="section relative isolate flex flex-col justify-center gap-45 py-[136px]"
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[600px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 800px 400px at 50% 0%, rgba(255,237,215,0.16) 0%, rgba(255,237,215,0.05) 45%, transparent 75%)",
+        }}
+      />
+
       <SectionLabel index="03" title="What's inside" />
 
       <motion.div
@@ -48,7 +57,7 @@ export function Features() {
             key={feature.n}
             variants={fadeUp}
             whileHover="hover"
-            className="group grid grid-cols-1 gap-18 border-t border-dashed border-border py-41 transition-colors duration-500 md:grid-cols-[80px_1fr_2fr] md:items-center md:gap-45"
+            className="group grid grid-cols-1 gap-18 border-t border-dashed border-border py-41 transition-colors duration-500 hover:bg-cream/[0.03] md:grid-cols-[80px_1fr_2fr] md:items-center md:gap-45"
           >
             <motion.span
               variants={{ hover: { x: 4 } }}
