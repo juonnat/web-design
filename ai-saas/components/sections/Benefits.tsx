@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { CountUp } from "@/components/ui/CountUp";
 import { viewportOnce } from "@/lib/motion";
 
 const STATS = [
@@ -30,9 +31,10 @@ export function Benefits() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
             className="flex flex-col gap-10 border-t border-dashed border-border pt-24"
           >
-            <span className="text-[13vw] leading-[0.9] sm:text-[52px]">
-              {stat.value}
-            </span>
+            <CountUp
+              value={stat.value}
+              className="text-[13vw] leading-[0.9] sm:text-[52px]"
+            />
             <span className="voice-label text-label text-driftwood">
               {stat.label}
             </span>

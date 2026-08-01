@@ -67,19 +67,31 @@ export function ProductDemo() {
         ))}
       </div>
 
-      <div className="rounded-[var(--radius-card)] border border-dashed border-border bg-bark/30">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.5, ease: EASE_MASS }}
-          >
-            {activeTab.render()}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1, ease: EASE_MASS, delay: 0.15 }}
+        className="relative"
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-31 -z-10 rounded-[var(--radius-card)] bg-cream/[0.04] blur-3xl"
+        />
+        <div className="rounded-[var(--radius-card)] border border-dashed border-border bg-bark/30">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.5, ease: EASE_MASS }}
+            >
+              {activeTab.render()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
     </motion.section>
   );
 }

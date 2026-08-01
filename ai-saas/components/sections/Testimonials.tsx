@@ -48,18 +48,26 @@ export function Testimonials() {
     >
       <SectionLabel index="07" title="Who's running it" />
 
-      <AnimatePresence mode="wait">
-        <motion.blockquote
-          key={active}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.8, ease: EASE_MASS }}
-          className="voice-body max-w-[70ch] text-[24px] leading-[1.3] text-cream sm:text-body"
+      <div className="relative">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -left-[6px] -top-[64px] select-none text-[140px] leading-none text-border/50 sm:-top-[96px] sm:text-[200px]"
         >
-          &ldquo;{current.quote}&rdquo;
-        </motion.blockquote>
-      </AnimatePresence>
+          &ldquo;
+        </span>
+        <AnimatePresence mode="wait">
+          <motion.blockquote
+            key={active}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.8, ease: EASE_MASS }}
+            className="voice-body relative max-w-[70ch] text-[24px] leading-[1.3] text-cream sm:text-body"
+          >
+            &ldquo;{current.quote}&rdquo;
+          </motion.blockquote>
+        </AnimatePresence>
+      </div>
 
       <div className="flex items-center justify-between gap-24 border-t border-dashed border-border pt-24">
         <div>
