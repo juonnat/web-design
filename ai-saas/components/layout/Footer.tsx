@@ -38,7 +38,7 @@ export function Footer() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, ease: EASE_SETTLE }}
-        className="before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_100%,rgba(220,80,0,0.15),transparent_70%)] relative flex min-h-[100vh] flex-col justify-between gap-68 bg-gradient-to-t from-shadow via-shadow/90 to-shadow/60 px-[var(--pad)] pb-45 pt-68"
+        className="pointer-events-none before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_100%,rgba(220,80,0,0.15),transparent_70%)] relative flex min-h-[100vh] flex-col justify-between gap-68 bg-gradient-to-t from-shadow via-shadow/90 to-shadow/60 px-[var(--pad)] pb-45 pt-68"
       >
         <div className="relative flex flex-col gap-45 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="flex flex-col gap-18">
@@ -60,7 +60,7 @@ export function Footer() {
                     <li key={link}>
                       <MotionLink
                         href="#"
-                        className="voice-label inline-block text-label text-cream/80 transition-colors duration-500 hover:text-cream"
+                        className="voice-label pointer-events-auto inline-block text-label text-cream/80 transition-colors duration-500 hover:text-cream"
                         {...hoverTap}
                       >
                         {link}
