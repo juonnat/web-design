@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+   KILN design tokens.
+   Palette + type system derived from the repo's house style (see
+   /CLAUDE.md): full-bleed warm-dark canvas, cream type, ember used only
+   as editorial credit — never on an interactive element.
+   Typeface: Inter, standing in for the unlicensed Halyard Display.
+--------------------------------------------------------------------- */
+
+:root {
+  --color-warm-cream: #ffedd7;
+  --color-walnut-shadow: #100904;
+  --color-bark-brown: #382416;
+  --color-cork-border: #40372e;
+  --color-driftwood: #6c5f51;
+  --color-ember-accent: #dc5000;
+
+  --pad: clamp(18px, 4vw, 68px);
+
+  --ease-mass: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slow: 1.4s;
+  --dur-med: 0.8s;
+  --dur-fast: 0.4s;
+}
+
+@theme inline {
+  --color-cream: var(--color-warm-cream);
+  --color-shadow: var(--color-walnut-shadow);
+  --color-bark: var(--color-bark-brown);
+  --color-border: var(--color-cork-border);
+  --color-driftwood: var(--color-driftwood);
+  --color-ember: var(--color-ember-accent);
+
+  --font-sans: var(--font-inter);
+
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-14: 14px;
+  --spacing-18: 18px;
+  --spacing-24: 24px;
+  --spacing-31: 31px;
+  --spacing-41: 41px;
+  --spacing-45: 45px;
+  --spacing-68: 68px;
+  --spacing-204: 204px;
+
+  --radius-card: 12px;
+  --radius-pill: 36px;
+  --radius-outline: 22.5px;
+
+  --text-display: 51px;
+  --text-display--line-height: 0.9;
+  --text-heading: 41px;
+  --text-heading--line-height: 0.9;
+  --text-heading-sm: 24px;
+  --text-heading-sm--line-height: 1.05;
+  --text-subheading: 18px;
+  --text-subheading--line-height: 1.3;
+  --text-body: 29px;
+  --text-body--line-height: 1.26;
+  --text-label: 12px;
+  --text-label--line-height: 1;
+  --text-legal: 8px;
+  --text-legal--line-height: 1.4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-walnut-shadow);
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--color-walnut-shadow);
+  color: var(--color-warm-cream);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-ember-accent);
+  color: var(--color-walnut-shadow);
+}
+
+/* The default interface voice: uppercase, medium weight, tracked out. */
+.voice-label {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+/* The sole conversational voice — body copy only, never centred. */
+.voice-body {
+  font-weight: 400;
+  text-align: left;
+}
+
+.dashed {
+  border-color: var(--color-cork-border);
+  border-style: dashed;
+}
+
+.section {
+  min-height: 100svh;
+  width: 100%;
+  padding-inline: var(--pad);
+  position: relative;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus is always visible — never suppressed for aesthetics. */
+:focus-visible {
+  outline: 1px dashed var(--color-warm-cream);
+  outline-offset: 4px;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
