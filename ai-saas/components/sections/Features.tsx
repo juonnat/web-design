@@ -45,10 +45,23 @@ export function Features() {
             viewport={viewportOnce}
             variants={fadeUp}
             custom={i}
-            className="grid grid-cols-1 gap-18 border-t border-dashed border-border py-41 md:grid-cols-[80px_1fr_2fr] md:items-center md:gap-45"
+            whileHover="hover"
+            className="group grid grid-cols-1 gap-18 border-t border-dashed border-border py-41 transition-colors duration-500 md:grid-cols-[80px_1fr_2fr] md:items-center md:gap-45"
           >
-            <span className="text-legal text-driftwood">{feature.n}</span>
-            <h3 className="text-heading-sm">{feature.title}</h3>
+            <motion.span
+              variants={{ hover: { x: 4 } }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="text-legal text-driftwood transition-colors duration-500 group-hover:text-ember"
+            >
+              {feature.n}
+            </motion.span>
+            <motion.h3
+              variants={{ hover: { x: 4 } }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="text-heading-sm"
+            >
+              {feature.title}
+            </motion.h3>
             <p className="voice-body max-w-[52ch] text-[20px] leading-[1.3] text-cream/80 sm:text-[24px]">
               {feature.body}
             </p>

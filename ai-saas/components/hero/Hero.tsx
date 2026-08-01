@@ -7,6 +7,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Button } from "@/components/ui/Button";
 import { CanvasErrorBoundary } from "./CanvasErrorBoundary";
 import { StaticEmberGlow } from "./StaticEmberGlow";
+import { ScrollCue } from "./ScrollCue";
 import { EASE_MASS } from "@/lib/motion";
 
 const HeroCanvas = dynamic(
@@ -68,15 +69,21 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE_MASS, delay: 1.1 }}
+            className="flex flex-col items-start gap-10"
           >
             <MagneticButton>
               <Button href="#cta" variant="filled">
                 Start forging
               </Button>
             </MagneticButton>
+            <span className="text-legal text-driftwood">
+              Free to start · No credit card
+            </span>
           </motion.div>
         </div>
       </div>
+
+      <ScrollCue />
     </section>
   );
 }

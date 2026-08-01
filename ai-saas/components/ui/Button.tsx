@@ -23,7 +23,7 @@ export function Button({
   onClick,
 }: ButtonProps) {
   const base =
-    "voice-label inline-flex items-center justify-center gap-10 px-24 py-12 text-label transition-colors duration-500";
+    "voice-label inline-flex items-center justify-center gap-10 px-24 py-12 text-label transition-[color,background-color,border-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] active:scale-[0.98]";
 
   const styles = {
     filled:

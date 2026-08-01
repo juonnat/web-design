@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { GrainOverlay } from "@/components/GrainOverlay";
 import { Nav } from "@/components/layout/Nav";
 
 // House style specifies Halyard Display (Darden Studio, commercial —
@@ -67,6 +69,8 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className="antialiased">
         <SmoothScroll />
+        <GrainOverlay />
+        <ScrollProgress />
         <Nav />
         {children}
       </body>

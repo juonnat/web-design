@@ -11,6 +11,8 @@ const SYMPTOMS = [
   "A script that only the person who wrote it can fix",
 ];
 
+const COMPANIES = ["Northline", "Fathom", "Verano", "Solder & Co.", "Meridian Health"];
+
 /**
  * Context mode, three-column composition: heading left, a small
  * diagnostic object centred, body copy right.
@@ -22,7 +24,23 @@ export function Problem() {
       data-section="problem"
       className="section flex flex-col justify-center gap-45 py-[136px]"
     >
-      <SectionLabel index="01" title="The problem" />
+      <div className="flex flex-col gap-31">
+        <SectionLabel index="01" title="The problem" />
+        <motion.ul
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={fadeUp}
+          className="voice-label flex flex-wrap items-center gap-x-31 gap-y-10 text-[13px] text-cream/45"
+        >
+          <li className="text-driftwood">Already running in production at</li>
+          {COMPANIES.map((name) => (
+            <li key={name} className="text-cream/60">
+              {name}
+            </li>
+          ))}
+        </motion.ul>
+      </div>
 
       <div className="grid grid-cols-1 items-center gap-45 md:grid-cols-[1fr_auto_1fr] md:gap-68">
         <h2 className="max-w-[12ch] text-[10vw] leading-[0.92] sm:text-heading">
