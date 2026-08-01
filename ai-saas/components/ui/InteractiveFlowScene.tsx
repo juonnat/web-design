@@ -134,7 +134,7 @@ function Scene() {
         (state.mouse.y * viewport.height) / 2,
         5
       );
-      lightRef.current.intensity = 7 + Math.sin(state.clock.elapsedTime * 3) * 2;
+      lightRef.current.intensity = 12 + Math.sin(state.clock.elapsedTime * 3) * 2;
     }
   });
   return (
@@ -147,12 +147,6 @@ function Scene() {
         distance={30}
         decay={1}
       />
-      {/* Temporary debug cube — proves the scene itself renders,
-          independent of the instancedMesh fix. Remove once confirmed. */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[2, 2, 2]} />
-        <meshStandardMaterial color="hotpink" />
-      </mesh>
       <FlowBlocks />
     </>
   );
