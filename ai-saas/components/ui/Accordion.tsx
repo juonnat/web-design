@@ -22,10 +22,13 @@ export function Accordion({
               aria-expanded={open}
               aria-controls={`faq-panel-${i}`}
               onClick={() => setOpenIndex(open ? null : i)}
-              className="voice-label flex w-full items-center justify-between gap-24 py-24 text-left text-[16px] sm:text-[18px]"
+              className="voice-label group flex w-full items-center justify-between gap-24 py-24 text-left text-[16px] text-cream/85 transition-colors duration-500 hover:text-cream sm:text-[18px]"
             >
               {item.question}
-              <span aria-hidden className="text-driftwood">
+              <span
+                aria-hidden
+                className="text-driftwood transition-colors duration-500 group-hover:text-cream"
+              >
                 {open ? "–" : "+"}
               </span>
             </button>

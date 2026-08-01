@@ -1,4 +1,5 @@
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { SplitText } from "@/components/ui/SplitText";
 import { Accordion } from "@/components/ui/Accordion";
 
 const FAQS = [
@@ -35,7 +36,7 @@ export function FAQ() {
 
       <div className="grid grid-cols-1 gap-31 md:grid-cols-[1fr_1.6fr] md:gap-68">
         <h2 className="max-w-[14ch] text-[9vw] leading-[0.95] sm:text-heading">
-          Before you ask sales.
+          <SplitText text="Before you ask sales." />
         </h2>
         <Accordion items={FAQS} />
       </div>

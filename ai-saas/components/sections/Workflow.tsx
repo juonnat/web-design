@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { SplitText } from "@/components/ui/SplitText";
 import { viewportOnce } from "@/lib/motion";
 
 const STEPS = [
@@ -37,7 +38,7 @@ export function Workflow() {
       <SectionLabel index="05" title="How it's built" />
 
       <h2 className="max-w-[16ch] text-[9vw] leading-[0.95] sm:text-heading">
-        Four steps from idea to running process.
+        <SplitText text="Four steps from idea to running process." />
       </h2>
 
       <div className="relative grid grid-cols-1 gap-31 md:grid-cols-4">

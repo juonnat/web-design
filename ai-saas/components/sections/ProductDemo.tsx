@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { SplitText } from "@/components/ui/SplitText";
 import { DashboardPreview } from "@/components/product/DashboardPreview";
 import { ChatPreview } from "@/components/product/ChatPreview";
 import { WorkflowGraph } from "@/components/product/WorkflowGraph";
@@ -22,15 +23,19 @@ export function ProductDemo() {
   const activeTab = TABS.find((t) => t.id === active)!;
 
   return (
-    <section
+    <motion.section
       id="product"
       data-section="product"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: EASE_MASS }}
       className="section flex flex-col justify-center gap-31 py-[136px]"
     >
       <SectionLabel index="04" title="Inside the runtime" />
 
       <h2 className="max-w-[18ch] text-[9vw] leading-[0.95] sm:text-heading">
-        One surface, every step of the run.
+        <SplitText text="One surface, every step of the run." />
       </h2>
 
       <div
@@ -75,6 +80,6 @@ export function ProductDemo() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </section>
+    </motion.section>
   );
 }
