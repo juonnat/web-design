@@ -1,9 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { EASE_SETTLE } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { InteractiveShapes } from "@/components/ui/InteractiveShapes";
 
 const COLUMNS = [
   {
@@ -23,6 +25,7 @@ const COLUMNS = [
 const MotionLink = motion.create(Link);
 
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
   const hoverTap = reducedMotion
     ? {}
@@ -30,13 +33,16 @@ export function Footer() {
 
   return (
     <motion.footer
+      ref={footerRef}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, ease: EASE_SETTLE }}
-      className="flex flex-col justify-between gap-68 border-t border-dashed border-border px-[var(--pad)] pb-45 pt-68"
+      className="relative isolate flex flex-col justify-between gap-68 border-t border-dashed border-border px-[var(--pad)] pb-45 pt-68"
     >
-      <div className="flex flex-col gap-45 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <InteractiveShapes containerRef={footerRef} />
+
+      <div className="relative flex flex-col gap-45 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-18">
           <span className="voice-label text-label">Kiln</span>
           <p className="voice-body max-w-[32ch] text-[18px] leading-[1.35] text-cream/70">
