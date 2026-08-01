@@ -32,11 +32,11 @@ export function DashboardPreview() {
         ))}
       </div>
 
-      <div className="flex items-end gap-6 border border-dashed border-border p-18 h-[120px]">
+      <div className="flex items-end gap-1 border border-dashed border-border p-18 h-[120px]">
         {BARS.map((h, i) => (
           <div
             key={i}
-            className="flex-1 bg-ember/70"
+            className="flex-1 bg-cream/40"
             style={{ height: `${h}%` }}
             aria-hidden
           />

@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { SplitText } from "@/components/ui/SplitText";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Button } from "@/components/ui/Button";
@@ -9,6 +10,7 @@ import { CanvasErrorBoundary } from "./CanvasErrorBoundary";
 import { StaticEmberGlow } from "./StaticEmberGlow";
 import { ScrollCue } from "./ScrollCue";
 import { EASE_MASS } from "@/lib/motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const HeroCanvas = dynamic(
   () => import("./HeroCanvas").then((m) => m.HeroCanvas),
@@ -16,15 +18,26 @@ const HeroCanvas = dynamic(
 );
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -150]);
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
       data-section="hero"
       className="section relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-45 pt-[136px]"
     >
-      <CanvasErrorBoundary fallback={<StaticEmberGlow />}>
-        <HeroCanvas />
-      </CanvasErrorBoundary>
+      <motion.div style={{ y }} className="absolute inset-0">
+        <CanvasErrorBoundary fallback={<StaticEmberGlow />}>
+          <HeroCanvas />
+        </CanvasErrorBoundary>
+      </motion.div>
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-shadow via-transparent to-shadow/40" />
 

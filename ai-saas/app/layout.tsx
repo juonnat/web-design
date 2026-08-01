@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { GrainOverlay } from "@/components/GrainOverlay";
 import { Nav } from "@/components/layout/Nav";
+import { PageTransition } from "@/components/PageTransition";
 
 // House style specifies Halyard Display (Darden Studio, commercial —
 // Adobe Fonts); we don't hold a licence, so Inter substitutes. Both are
@@ -72,7 +73,7 @@ export default function RootLayout({
         <GrainOverlay />
         <ScrollProgress />
         <Nav />
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );

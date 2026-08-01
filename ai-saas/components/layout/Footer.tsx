@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { EASE_SETTLE } from "@/lib/motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const COLUMNS = [
   {
@@ -15,10 +20,23 @@ const COLUMNS = [
   },
 ];
 
+const MotionLink = motion.create(Link);
+
 export function Footer() {
+  const reducedMotion = useReducedMotion();
+  const hoverTap = reducedMotion
+    ? {}
+    : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, transition: { duration: 0.2 } };
+
   return (
-    <footer className="flex flex-col justify-between gap-68 border-t border-dashed border-border px-[var(--pad)] pb-45 pt-68">
-      <div className="grid grid-cols-1 gap-45 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <motion.footer
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, ease: EASE_SETTLE }}
+      className="flex flex-col justify-between gap-68 border-t border-dashed border-border px-[var(--pad)] pb-45 pt-68"
+    >
+      <div className="flex flex-col gap-45 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-18">
           <span className="voice-label text-label">Kiln</span>
           <p className="voice-body max-w-[32ch] text-[18px] leading-[1.35] text-cream/70">
@@ -27,25 +45,28 @@ export function Footer() {
           </p>
         </div>
 
-        {COLUMNS.map((col) => (
-          <div key={col.heading} className="flex flex-col gap-14">
-            <span className="voice-label text-label text-driftwood">
-              {col.heading}
-            </span>
-            <ul className="flex flex-col gap-10">
-              {col.links.map((link) => (
-                <li key={link}>
-                  <Link
-                    href="#"
-                    className="voice-label text-label text-cream/80 transition-colors duration-500 hover:text-cream"
-                  >
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className="grid grid-cols-2 gap-x-24 gap-y-45 md:contents">
+          {COLUMNS.map((col) => (
+            <div key={col.heading} className="flex flex-col gap-14">
+              <span className="voice-label text-label text-driftwood">
+                {col.heading}
+              </span>
+              <ul className="flex flex-col gap-10">
+                {col.links.map((link) => (
+                  <li key={link}>
+                    <MotionLink
+                      href="#"
+                      className="voice-label inline-block text-label text-cream/80 transition-colors duration-500 hover:text-cream"
+                      {...hoverTap}
+                    >
+                      {link}
+                    </MotionLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex flex-col-reverse items-start justify-between gap-18 border-t border-dashed border-border pt-24 md:flex-row md:items-center">
@@ -56,6 +77,6 @@ export function Footer() {
           Built by a design system, not a template.
         </span>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
