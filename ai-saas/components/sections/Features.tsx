@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { fadeUp, viewportOnce } from "@/lib/motion";
+import { fadeUp, staggerChildren, viewportOnce } from "@/lib/motion";
 
 const FEATURES = [
   {
@@ -36,15 +36,17 @@ export function Features() {
     >
       <SectionLabel index="03" title="What's inside" />
 
-      <div className="flex flex-col">
-        {FEATURES.map((feature, i) => (
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce}
+        variants={staggerChildren(0.1)}
+        className="flex flex-col"
+      >
+        {FEATURES.map((feature) => (
           <motion.div
             key={feature.n}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
             variants={fadeUp}
-            custom={i}
             whileHover="hover"
             className="group grid grid-cols-1 gap-18 border-t border-dashed border-border py-41 transition-colors duration-500 md:grid-cols-[80px_1fr_2fr] md:items-center md:gap-45"
           >
@@ -68,7 +70,7 @@ export function Features() {
           </motion.div>
         ))}
         <div className="border-t border-dashed border-border" />
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { EASE_MASS } from "@/lib/motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { cn } from "@/lib/utils";
 
 const QUOTES = [
@@ -30,11 +31,19 @@ const QUOTES = [
 export function Testimonials() {
   const [active, setActive] = useState(0);
   const current = QUOTES[active];
+  const reducedMotion = useReducedMotion();
+  const hoverTap = reducedMotion
+    ? {}
+    : { whileHover: { scale: 1.15 }, whileTap: { scale: 0.9 }, transition: { duration: 0.2 } };
 
   return (
-    <section
+    <motion.section
       id="testimonials"
       data-section="testimonials"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: EASE_MASS }}
       className="section flex flex-col justify-center gap-45 py-[136px]"
     >
       <SectionLabel index="07" title="Who's running it" />
@@ -60,7 +69,7 @@ export function Testimonials() {
 
         <div className="flex gap-10">
           {QUOTES.map((q, i) => (
-            <button
+            <motion.button
               key={q.name}
               type="button"
               aria-label={`Show testimonial from ${q.name}`}
@@ -70,10 +79,11 @@ export function Testimonials() {
                 "h-8 w-8 rounded-full transition-colors duration-500",
                 active === i ? "bg-cream" : "bg-border"
               )}
+              {...hoverTap}
             />
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

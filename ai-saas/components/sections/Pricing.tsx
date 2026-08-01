@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { SplitText } from "@/components/ui/SplitText";
 import { Button } from "@/components/ui/Button";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { viewportOnce } from "@/lib/motion";
@@ -54,7 +55,7 @@ export function Pricing() {
       <SectionLabel index="08" title="Pricing" />
 
       <h2 className="max-w-[16ch] text-[9vw] leading-[0.95] sm:text-heading">
-        Pay for what runs, not for seats.
+        <SplitText text="Pay for what runs, not for seats." />
       </h2>
 
       <div className="grid grid-cols-1 gap-24 lg:grid-cols-3">
