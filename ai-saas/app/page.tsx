@@ -1,6 +1,6 @@
 import { Hero } from "@/components/hero/Hero";
 import { Problem } from "@/components/sections/Problem";
-import { Solution } from "@/components/sections/Solution";
+import Solution from "@/components/sections/Solution";
 import { Features } from "@/components/sections/Features";
 import { ProductDemo } from "@/components/sections/ProductDemo";
 import { Workflow } from "@/components/sections/Workflow";
