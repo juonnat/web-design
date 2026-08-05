@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+   BOTANICA CHANGO design tokens.
+
+   Structure and motion follow the repo's house style (see /CLAUDE.md):
+   full-bleed, one-viewport sections, dashed hairlines, no shadows, one
+   filled surface per screen, physics-feeling motion. Palette and
+   typeface are Botanica Chango's own established brand, which the house
+   style's client-brand-override rule puts ahead of the ORYZO reference
+   palette — deep green + violet, Playfair Display (headings) and Mulish
+   (interface + body), instead of warm-dark-and-cream.
+
+   Tokens are named for role (ink/surface/line/mute/accent), not literal
+   colour, because the page alternates a light "context" mode and a dark
+   green "void" mode (see CLAUDE.md "Layout") — `.mode-dark` overrides the
+   same variables so every component below stays mode-agnostic.
+--------------------------------------------------------------------- */
+
+:root {
+  --c-ink: #000000;
+  --c-surface: #faf6ee;
+  --c-line: rgba(0, 0, 0, 0.18);
+  --c-mute: #646464;
+  --c-accent: #955ac9;
+  --c-accent-soft: #966ca7;
+  --c-on-accent: #fffdf8;
+
+  --pad: clamp(18px, 4vw, 68px);
+
+  --ease-mass: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slow: 1.4s;
+  --dur-med: 0.8s;
+  --dur-fast: 0.4s;
+}
+
+/* Void mode: deep green canvas, warm off-white ink — never pure white on
+   pure black, matching the reference's "never #fff / never #000" spirit
+   even though the palette itself is hers, not ORYZO's. */
+.mode-dark {
+  --c-ink: #f5efe0;
+  --c-surface: #23352a;
+  --c-line: rgba(245, 239, 224, 0.26);
+  --c-mute: #a9b7ac;
+}
+
+@theme inline {
+  --color-ink: var(--c-ink);
+  --color-surface: var(--c-surface);
+  --color-line: var(--c-line);
+  --color-mute: var(--c-mute);
+  --color-accent: var(--c-accent);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-on-accent: var(--c-on-accent);
+
+  --font-heading: var(--font-playfair);
+  --font-sans: var(--font-mulish);
+
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-14: 14px;
+  --spacing-18: 18px;
+  --spacing-24: 24px;
+  --spacing-31: 31px;
+  --spacing-41: 41px;
+  --spacing-45: 45px;
+  --spacing-68: 68px;
+  --spacing-204: 204px;
+
+  --radius-card: 12px;
+  --radius-pill: 36px;
+  --radius-outline: 22.5px;
+
+  --text-display: 51px;
+  --text-display--line-height: 0.98;
+  --text-heading: 41px;
+  --text-heading--line-height: 1;
+  --text-heading-sm: 24px;
+  --text-heading-sm--line-height: 1.1;
+  --text-subheading: 18px;
+  --text-subheading--line-height: 1.3;
+  --text-body: 29px;
+  --text-body--line-height: 1.26;
+  --text-label: 12px;
+  --text-label--line-height: 1;
+  --text-legal: 8px;
+  --text-legal--line-height: 1.4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--c-surface);
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-family: var(--font-mulish), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.6s var(--ease-settle);
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+/* The default interface voice: uppercase, tracked out, Mulish — nav,
+   labels, buttons, prices, kickers, everything except headings and body. */
+.voice-label {
+  font-family: var(--font-mulish), ui-sans-serif, system-ui, sans-serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* Headline voice: same uppercase/tracked treatment, but in Playfair
+   Display at display/heading sizes — Botanica Chango's own "elegant
+   serif" identity, reserved for headlines. */
+.voice-heading {
+  font-family: var(--font-playfair), Georgia, serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* The sole conversational voice — body copy only, never centred. */
+.voice-body {
+  font-family: var(--font-mulish), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  text-align: left;
+}
+
+.dashed {
+  border-color: var(--c-line);
+  border-style: dashed;
+}
+
+.section {
+  min-height: 100svh;
+  width: 100%;
+  padding-inline: var(--pad);
+  position: relative;
+  background: var(--c-surface);
+  color: var(--c-ink);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus is always visible — never suppressed for aesthetics. */
+:focus-visible {
+  outline: 1px dashed var(--c-accent);
+  outline-offset: 4px;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
