@@ -108,7 +108,7 @@ export function Nav() {
           <FacebookIcon />
         </a>
         <a
-          href="https://instagram.com/bossladyevileye"
+          href="https://instagram.com/bossladysevileye"
           target="_blank"
           rel="noreferrer"
           aria-label="Botanica Chango on Instagram"
@@ -172,7 +172,7 @@ export function Nav() {
                 <FacebookIcon />
               </a>
               <a
-                href="https://instagram.com/bossladyevileye"
+                href="https://instagram.com/bossladysevileye"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Botanica Chango on Instagram"

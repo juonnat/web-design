@@ -95,7 +95,7 @@ const localBusinessSchema = {
   url: siteUrl,
   sameAs: [
     "https://facebook.com/bossladyevileye",
-    "https://instagram.com/bossladyevileye",
+    "https://instagram.com/bossladysevileye",
   ],
 };
 

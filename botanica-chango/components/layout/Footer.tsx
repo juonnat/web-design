@@ -73,7 +73,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://instagram.com/bossladyevileye"
+                  href="https://instagram.com/bossladysevileye"
                   target="_blank"
                   rel="noreferrer"
                   className="voice-label inline-block text-label text-ink/80 transition-colors duration-500 hover:text-ink"
