@@ -6,7 +6,7 @@ import { RoundedBoxGeometry } from "three-stdlib";
 import * as THREE from "three";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
-const BLOCK_COUNT = 40;
+const BLOCK_COUNT = 24;
 const REPULSION_RADIUS = 4.5;
 const REPULSION_STRENGTH = 0.25;
 const SEPARATION_DISTANCE = 3.2;
@@ -37,7 +37,13 @@ function FlowBlocks() {
         roughness: 0.4,
         metalness: 0.35,
         emissive: "#dc5000",
-        emissiveIntensity: 0.4,
+        // 0.4 (plus a 2.5-intensity point light at close range, see below)
+        // rendered every block as a near-solid saturated red-orange fill —
+        // a wash, not the "small ember-lit blocks in a dark void" this
+        // comment already promised. Cut hard so the base block reads dark
+        // bark-brown at rest and only picks up ember when it's genuinely
+        // near the light/cursor.
+        emissiveIntensity: 0.05,
       }),
     []
   );
@@ -64,7 +70,10 @@ function FlowBlocks() {
       temp.push({
         position: new THREE.Vector3(
           (Math.random() - 0.5) * BOUNDS.x * 1.5,
-          (Math.random() - 0.5) * BOUNDS.y * 1.5,
+          // Biased to the bottom half of the frame: the footer's nav grid
+          // (links, headings) lives in the top band, and blocks drifting
+          // through it read as clutter over readable text.
+          (Math.random() * 0.55 - 0.75) * BOUNDS.y * 1.5,
           (Math.random() - 0.5) * BOUNDS.z * 1.5
         ),
         velocity: new THREE.Vector3(0, 0, 0),
@@ -83,7 +92,7 @@ function FlowBlocks() {
         // why it still read as a wash even with the material/lighting fixed
         // and postprocessing removed. Shrunk so blocks read as distinct
         // objects with the dark canvas visible between them.
-        scale: Math.random() * 0.5 + 0.5,
+        scale: Math.random() * 0.35 + 0.4,
         noiseOffset: Math.random() * 1000,
       });
     }
@@ -170,14 +179,19 @@ function Scene() {
   useFrame((state) => {
     if (lightRef.current) {
       lightRef.current.position.set((state.mouse.x * viewport.width) / 2, (state.mouse.y * viewport.height) / 2, 5);
-      lightRef.current.intensity = 2.5 + Math.sin(state.clock.elapsedTime * 1.5) * 0.5;
+      lightRef.current.intensity = 0.55 + Math.sin(state.clock.elapsedTime * 1.5) * 0.1;
     }
   });
   return (
     <>
       <color attach="background" args={["#100904"]} />
-      <ambientLight intensity={0.15} />
-      <pointLight ref={lightRef} color="#dc5000" intensity={2.5} distance={25} decay={1.5} />
+      <ambientLight intensity={0.1} />
+      {/* distance:25 with decay:1.5 barely falls off across this scene's
+          ~9-16 unit span, so the light was lighting every block near-evenly
+          instead of just the ones the cursor is near -- the whole point of
+          a repulsion light. Pulled the reach and intensity in so it reads
+          as a small local glow instead of a scene-wide fill. */}
+      <pointLight ref={lightRef} color="#dc5000" intensity={0.55} distance={5.5} decay={2} />
       <FlowBlocks />
     </>
   );
