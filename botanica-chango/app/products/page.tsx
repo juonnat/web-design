@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageBanner } from "@/components/sections/PageBanner";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
+import { ShopGrid } from "@/components/sections/ShopGrid";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
 import { TestimonialGrid } from "@/components/sections/TestimonialGrid";
 import { CTABand } from "@/components/sections/CTABand";
@@ -35,8 +36,10 @@ export default function Products() {
         ]}
       />
 
+      <ShopGrid index="03" />
+
       <GalleryGrid
-        index="03"
+        index="04"
         label="Product highlights"
         captions={[
           "Blessed collares",
@@ -60,7 +63,7 @@ export default function Products() {
       />
 
       <TextBlock
-        index="05"
+        index="06"
         label="Product highlights"
         headline="Blessed collares and spiritual baths on Seventh Street."
         paragraphs={[

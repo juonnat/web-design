@@ -99,6 +99,8 @@ const localBusinessSchema = {
   ],
 };
 
+const snipcartApiKey = process.env.NEXT_PUBLIC_SNIPCART_API_KEY;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -117,6 +119,19 @@ export default function RootLayout({
         <Nav />
         <PageTransition>{children}</PageTransition>
         <Footer />
+        {snipcartApiKey && (
+          <>
+            <link
+              rel="stylesheet"
+              href="https://cdn.snipcart.com/themes/v3.7.3/default/snipcart.css"
+            />
+            <div hidden id="snipcart" data-api-key={snipcartApiKey} data-config-modal-style="side" />
+            <script
+              async
+              src="https://cdn.snipcart.com/themes/v3.7.3/default/snipcart.js"
+            />
+          </>
+        )}
       </body>
     </html>
   );
