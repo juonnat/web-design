@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import TattooMachineBackdrop from './TattooMachineBackdrop'
+import EdgeLabel from './EdgeLabel'
 
 const container = {
   hidden: {},
@@ -28,6 +29,7 @@ export default function PageHero({
   // heading for search engines and screen readers.
   titleContent,
   showBackdrop = true,
+  edgeLabel = 'Ink Novation — Studio 01',
 }) {
   return (
     <section className={`relative flex ${minHeight} items-center justify-center overflow-hidden bg-ink-black pt-24`}>
@@ -72,6 +74,8 @@ export default function PageHero({
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ink-black/40 to-ink-black" />
       </div>
+
+      {edgeLabel && <EdgeLabel text={edgeLabel} />}
 
       <motion.div
         variants={container}
