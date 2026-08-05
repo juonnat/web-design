@@ -123,6 +123,15 @@ export function Nav() {
         >
           {PHONE}
         </motion.a>
+        {process.env.NEXT_PUBLIC_SNIPCART_API_KEY && (
+          <motion.button
+            type="button"
+            className="snipcart-checkout voice-label text-label text-ink"
+            {...hoverTap}
+          >
+            Cart (<span className="snipcart-items-count">0</span>)
+          </motion.button>
+        )}
       </div>
 
       <motion.button
