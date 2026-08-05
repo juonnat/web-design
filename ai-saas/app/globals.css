@@ -16,6 +16,10 @@
   --color-driftwood: #6c5f51;
   --color-ember-accent: #dc5000;
 
+  /* Legal/disclaimer micro-copy borrows the system fallback, not Halyard's
+     substitute — a deliberate mismatch signaling "compliance, not design." */
+  --font-legal: Arial, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
   --pad: clamp(18px, 4vw, 68px);
 
   --ease-mass: cubic-bezier(0.16, 1, 0.3, 1);
@@ -106,6 +110,10 @@ body {
 .dashed {
   border-color: var(--color-cork-border);
   border-style: dashed;
+}
+
+.text-legal {
+  font-family: var(--font-legal);
 }
 
 .section {

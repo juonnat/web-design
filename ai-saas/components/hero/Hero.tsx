@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { CanvasErrorBoundary } from "./CanvasErrorBoundary";
 import { StaticEmberGlow } from "./StaticEmberGlow";
 import { ScrollCue } from "./ScrollCue";
+import { EdgeLabel } from "./EdgeLabel";
 import { EASE_MASS } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
@@ -96,6 +97,7 @@ export function Hero() {
         </div>
       </div>
 
+      <EdgeLabel />
       <ScrollCue />
     </section>
   );
