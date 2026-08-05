@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageBanner } from "@/components/sections/PageBanner";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { TestimonialGrid } from "@/components/sections/TestimonialGrid";
+import { ShopReveal } from "@/components/sections/ShopReveal";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
 import { CTABand } from "@/components/sections/CTABand";
 import { TextBlock } from "@/components/sections/TextBlock";
@@ -58,6 +59,8 @@ export default function Home() {
       />
 
       <TestimonialGrid />
+
+      <ShopReveal />
 
       <GalleryGrid
         index="05"
