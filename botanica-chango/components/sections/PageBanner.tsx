@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { fadeUp, staggerChildren } from "@/lib/motion";
 import { SplitText } from "@/components/ui/SplitText";
+import DepthParallaxWords from "@/components/ui/depth-parallax-words";
 import { Button } from "@/components/ui/Button";
 import { Waves } from "@/components/ui/wave-background";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -20,11 +21,15 @@ export function PageBanner({
   headline,
   subhead,
   buttons = [],
+  headlineEffect = "split",
 }: {
   kicker: string;
   headline: string;
   subhead?: string;
   buttons?: BannerButton[];
+  /** "split" (default) masks each word up into place; "depth" brings each
+   * word forward out of blur instead — see components/ui/depth-parallax-words. */
+  headlineEffect?: "split" | "depth";
 }) {
   const reducedMotion = useReducedMotion();
 
@@ -63,11 +68,17 @@ export function PageBanner({
         <motion.span variants={fadeUp} className="voice-label text-label text-mute">
           {kicker}
         </motion.span>
-        <SplitText
-          as="h1"
-          text={headline}
-          className="voice-heading text-display text-ink"
-        />
+        {headlineEffect === "depth" ? (
+          <h1 className="voice-heading text-display text-ink">
+            <DepthParallaxWords>{headline}</DepthParallaxWords>
+          </h1>
+        ) : (
+          <SplitText
+            as="h1"
+            text={headline}
+            className="voice-heading text-display text-ink"
+          />
+        )}
         {subhead && (
           <motion.p variants={fadeUp} className="voice-body max-w-[54ch] text-[20px] leading-[1.3] text-ink/80 md:text-body">
             {subhead}

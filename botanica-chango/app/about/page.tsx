@@ -19,6 +19,7 @@ export default function About() {
       <PageBanner
         kicker="Our Story"
         headline="Meet Bosslady Evil Eye. She's at the counter."
+        headlineEffect="depth"
       />
 
       <FeatureGrid
