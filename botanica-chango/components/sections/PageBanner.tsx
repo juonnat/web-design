@@ -4,14 +4,15 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerChildren } from "@/lib/motion";
 import { SplitText } from "@/components/ui/SplitText";
 import { Button } from "@/components/ui/Button";
+import { Waves } from "@/components/ui/wave-background";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 type BannerButton = { label: string; href: string; variant?: "filled" | "outline" };
 
 /**
- * Full-viewport void-mode banner: deep-green canvas with a soft purple
- * glow standing in for the reference's live hero object (see /CLAUDE.md
- * "Motion" — no WebGL here, so the feel carries through a slow, damped
- * glow drift instead). Swap in a real store photo behind `motif` once
+ * Full-viewport void-mode banner: deep-green canvas with a mouse-reactive
+ * line-wave field standing in for the reference's live hero object (see
+ * /CLAUDE.md "Motion"). Swap in a real store photo behind `motif` once
  * Bosslady sends one — this is deliberately abstract, not a stock photo.
  */
 export function PageBanner({
@@ -25,19 +26,34 @@ export function PageBanner({
   subhead?: string;
   buttons?: BannerButton[];
 }) {
+  const reducedMotion = useReducedMotion();
+
   return (
     <section className="mode-dark section relative flex min-h-[100svh] flex-col items-start justify-center gap-24 overflow-hidden bg-surface pt-[100px]">
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          background:
-            "radial-gradient(circle at 70% 30%, rgba(149, 90, 201, 0.35), transparent 55%), radial-gradient(circle at 20% 80%, rgba(150, 108, 167, 0.22), transparent 60%)",
-        }}
-      />
+      {reducedMotion ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(circle at 70% 30%, rgba(149, 90, 201, 0.35), transparent 55%), radial-gradient(circle at 20% 80%, rgba(150, 108, 167, 0.22), transparent 60%)",
+          }}
+        />
+      ) : (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <Waves
+            className="h-full w-full"
+            backgroundColor="var(--c-surface)"
+            strokeColor="var(--c-accent)"
+          />
+        </motion.div>
+      )}
       <motion.div
         initial="hidden"
         animate="visible"

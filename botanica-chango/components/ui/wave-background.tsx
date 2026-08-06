@@ -207,18 +207,22 @@ export function Waves({
                 p.wave.x = Math.cos(move) * 12  // Reduced horizontal amplitude
                 p.wave.y = Math.sin(move) * 6   // Reduced vertical amplitude
 
-                // Mouse effect - smoother response
+                // Mouse effect - a radial field centred on the cursor's actual
+                // position, not its direction of travel, so points react to
+                // where the mouse is (proximity) rather than only how fast
+                // it's moving. Speed still adds an extra kick on top.
                 const dx = p.x - mouse.sx
                 const dy = p.y - mouse.sy
                 const d = Math.hypot(dx, dy)
-                const l = Math.max(175, mouse.vs)
+                const radius = 220
 
-                if (d < l) {
-                    const s = 1 - d / l
-                    const f = Math.cos(d * 0.001) * s
+                if (d < radius) {
+                    const s = 1 - d / radius
+                    const angle = Math.atan2(dy, dx)
+                    const strength = s * (0.3 + mouse.vs * 0.004)
 
-                    p.cursor.vx += Math.cos(mouse.a) * f * l * mouse.vs * 0.00035  // Reduced influence
-                    p.cursor.vy += Math.sin(mouse.a) * f * l * mouse.vs * 0.00035  // Reduced influence
+                    p.cursor.vx += Math.cos(angle) * strength
+                    p.cursor.vy += Math.sin(angle) * strength
                 }
 
                 p.cursor.vx += (0 - p.cursor.x) * 0.01   // Increased restoration force
