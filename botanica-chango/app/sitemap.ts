@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const siteUrl = "https://botanicachango.vercel.app";
+const siteUrl = "https://botanica-sigma-ten.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = ["", "/about", "/services", "/products", "/contact"];

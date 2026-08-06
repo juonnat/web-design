@@ -22,7 +22,7 @@ const mulish = Mulish({
   display: "swap",
 });
 
-const siteUrl = "https://botanicachango.vercel.app";
+const siteUrl = "https://botanica-sigma-ten.vercel.app";
 const title = "Botanica Chango | Bosslady Evil Eye - Spiritual Supply Store";
 const description =
   "Crystals, blessed jewelry, candles, and spiritual baths on Seventh Street in Allentown, PA. Tarot readings, shell readings, and house cleansings, biweekly on Thursdays.";
