@@ -17,6 +17,16 @@ export function SiteBackgroundVideo() {
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
+
+    // React's JSX `muted` prop only sets the initial HTML attribute — it
+    // doesn't reliably set the live `.muted` DOM property before this
+    // effect's play() call, especially through hydration. Mobile browsers
+    // (iOS Safari in particular) require the video to actually be muted
+    // at the moment play() runs, or they silently block autoplay and fall
+    // back to showing a native tap-to-play button instead of looping.
+    video.muted = true;
+    video.defaultMuted = true;
+
     if (reducedMotion) {
       video.pause();
     } else {
@@ -34,6 +44,7 @@ export function SiteBackgroundVideo() {
       muted
       loop
       playsInline
+      webkit-playsinline="true"
     />
   );
 }
