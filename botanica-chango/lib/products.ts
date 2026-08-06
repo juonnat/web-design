@@ -1,8 +1,7 @@
 /**
- * The online-shop catalog. Snipcart needs each purchasable item defined
- * somewhere in the site's code (it isn't a no-code product editor like
- * Shopify's admin) — this file is that one place. Add a candle scent or
- * change a price here, redeploy, done.
+ * The online-shop catalog — no CMS or admin UI, this file is the one
+ * place items live. Add a candle scent or change a price here, redeploy,
+ * done.
  *
  * These are EXAMPLE items/prices standing in for Bosslady's real catalog
  * and pricing — swap them out before this goes live. Only picked

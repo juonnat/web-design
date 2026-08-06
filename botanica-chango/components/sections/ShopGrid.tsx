@@ -6,17 +6,17 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { staggerChildren, fadeUp } from "@/lib/motion";
 import { PRODUCTS } from "@/lib/products";
+import { useCart } from "@/components/cart/CartContext";
 
 /**
  * Each card gets its own filled "Add to cart" button — a deliberate
  * exception to the house style's one-filled-surface-per-screen rule
  * (/CLAUDE.md #7), which is written for marketing pages, not a shop
  * grid where every item needs its own affordance.
- *
- * Requires NEXT_PUBLIC_SNIPCART_API_KEY to be set (see layout.tsx) —
- * without it, Snipcart's script never loads and these buttons are inert.
  */
 export function ShopGrid({ index }: { index: string }) {
+  const { addItem } = useCart();
+
   return (
     <section className="section flex flex-col justify-center gap-45 py-68">
       <Reveal className="flex flex-col gap-18">
@@ -51,12 +51,8 @@ export function ShopGrid({ index }: { index: string }) {
                 </span>
                 <button
                   type="button"
-                  className="snipcart-add-item voice-label inline-flex items-center justify-center gap-10 rounded-[var(--radius-pill)] bg-accent px-24 py-12 text-label text-on-accent transition-[background-color,transform] duration-500 hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98]"
-                  data-item-id={product.id}
-                  data-item-name={product.name}
-                  data-item-price={product.price.toFixed(2)}
-                  data-item-description={product.description}
-                  data-item-url="/products"
+                  onClick={() => addItem(product)}
+                  className="voice-label inline-flex items-center justify-center gap-10 rounded-[var(--radius-pill)] bg-accent px-24 py-12 text-label text-on-accent transition-[background-color,transform] duration-500 hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Add to cart
                 </button>

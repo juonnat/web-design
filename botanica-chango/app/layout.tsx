@@ -9,6 +9,8 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import { FloatingLogo } from "@/components/FloatingLogo";
+import { CartProvider } from "@/components/cart/CartContext";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 
 // Botanica Chango's own established brand typography (client brand wins
 // over the house style's Inter/Halyard substitution — see /CLAUDE.md).
@@ -101,8 +103,6 @@ const localBusinessSchema = {
   ],
 };
 
-const snipcartApiKey = process.env.NEXT_PUBLIC_SNIPCART_API_KEY;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -115,27 +115,17 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
-        <SmoothScroll />
-        <SiteBackgroundVideo />
-        <GrainOverlay />
-        <ScrollProgress />
-        <Nav />
-        <PageTransition>{children}</PageTransition>
-        <Footer />
-        <FloatingLogo />
-        {snipcartApiKey && (
-          <>
-            <link
-              rel="stylesheet"
-              href="https://cdn.snipcart.com/themes/v3.7.3/default/snipcart.css"
-            />
-            <div hidden id="snipcart" data-api-key={snipcartApiKey} data-config-modal-style="side" />
-            <script
-              async
-              src="https://cdn.snipcart.com/themes/v3.7.3/default/snipcart.js"
-            />
-          </>
-        )}
+        <CartProvider>
+          <SmoothScroll />
+          <SiteBackgroundVideo />
+          <GrainOverlay />
+          <ScrollProgress />
+          <Nav />
+          <PageTransition>{children}</PageTransition>
+          <Footer />
+          <FloatingLogo />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

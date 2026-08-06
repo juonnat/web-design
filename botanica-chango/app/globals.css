@@ -8,12 +8,13 @@
    filled surface per screen, physics-feeling motion. Palette and
    typeface are Botanica Chango's own established brand, which the house
    style's client-brand-override rule puts ahead of the ORYZO reference
-   palette — deep green + violet, Playfair Display (headings) and Mulish
-   (interface + body), instead of warm-dark-and-cream.
+   palette — light blue / dark blue / white (with a violet accent),
+   Playfair Display (headings) and Mulish (interface + body), instead
+   of warm-dark-and-cream.
 
    Tokens are named for role (ink/surface/line/mute/accent), not literal
    colour, because the page alternates a light "context" mode and a dark
-   green "void" mode (see CLAUDE.md "Layout") — `.mode-dark` overrides the
+   blue "void" mode (see CLAUDE.md "Layout") — `.mode-dark` overrides the
    same variables so every component below stays mode-agnostic.
 --------------------------------------------------------------------- */
 
@@ -26,6 +27,11 @@
   --c-accent-soft: #966ca7;
   --c-on-accent: #fffdf8;
 
+  /* RippleButton (components/ui/multi-type-ripple-buttons.tsx) click-ripple
+     color — dark ripple on the light surface, cream ripple once .mode-dark
+     flips the surface dark (see rule below). */
+  --button-ripple-color: rgba(0, 0, 0, 0.12);
+
   --pad: clamp(18px, 4vw, 68px);
 
   --ease-mass: cubic-bezier(0.16, 1, 0.3, 1);
@@ -35,14 +41,15 @@
   --dur-fast: 0.4s;
 }
 
-/* Void mode: deep green canvas, warm off-white ink — never pure white on
+/* Void mode: deep blue canvas, warm off-white ink — never pure white on
    pure black, matching the reference's "never #fff / never #000" spirit
    even though the palette itself is hers, not ORYZO's. */
 .mode-dark {
   --c-ink: #f5efe0;
-  --c-surface: #23352a;
-  --c-line: rgba(245, 239, 224, 0.26);
-  --c-mute: #a9b7ac;
+  --c-surface: #0b1d3a;
+  --c-line: rgba(207, 232, 251, 0.26);
+  --c-mute: #a9bdd6;
+  --button-ripple-color: rgba(245, 239, 224, 0.35);
 }
 
 @theme inline {

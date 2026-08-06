@@ -11,7 +11,7 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 type BannerButton = { label: string; href: string; variant?: "filled" | "outline" };
 
 /**
- * Full-viewport void-mode banner: deep-green canvas with a mouse-reactive
+ * Full-viewport void-mode banner: deep-blue canvas with a mouse-reactive
  * line-wave field standing in for the reference's live hero object (see
  * /CLAUDE.md "Motion"). Swap in a real store photo behind `motif` once
  * Bosslady sends one — this is deliberately abstract, not a stock photo.
@@ -41,7 +41,7 @@ export function PageBanner({
           className="pointer-events-none absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(circle at 70% 30%, rgba(149, 90, 201, 0.35), transparent 55%), radial-gradient(circle at 20% 80%, rgba(150, 108, 167, 0.22), transparent 60%)",
+              "radial-gradient(circle at 70% 30%, rgba(142, 202, 230, 0.35), transparent 55%), radial-gradient(circle at 20% 80%, rgba(191, 227, 245, 0.22), transparent 60%)",
           }}
         />
       ) : (
@@ -54,8 +54,8 @@ export function PageBanner({
         >
           <Waves
             className="h-full w-full"
-            backgroundColor="var(--c-surface)"
-            strokeColor="var(--c-accent)"
+            backgroundColor="#0b1d3a"
+            strokeColor="#cfe8fb"
           />
         </motion.div>
       )}

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useAnimationFrame } from "framer-motion";
 import { EASE_MASS } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useCart } from "@/components/cart/CartContext";
 
 const LINKS = [
   { label: "Home", href: "/" },
@@ -43,11 +44,28 @@ function InstagramIcon() {
   );
 }
 
+function CartIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M4 6h2l1.6 10.4a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.6L20 8H7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="21" r="1.3" fill="currentColor" />
+      <circle cx="17" cy="21" r="1.3" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const reducedMotion = useReducedMotion();
+  const cart = useCart();
 
   // Sampling window.scrollY once per animation frame sidesteps Lenis's
   // intercepted scroll dispatch (see SmoothScroll) — a native `scroll`
@@ -61,14 +79,25 @@ export function Nav() {
     ? {}
     : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, transition: { duration: 0.2 } };
 
+  // Every page opens on a full-viewport mode-dark hero (HomeHero or
+  // PageBanner) — while unscrolled, the header sits directly on top of
+  // it with a transparent background, so it switches into mode-dark
+  // itself (cream ink) plus a soft drop-shadow glow that keeps it
+  // legible over video or imagery regardless of what's directly behind
+  // it. Scrolling past the hero reverts both to the light, solid state.
   return (
     <motion.header
       animate={{
         backgroundColor: scrolled ? "rgba(250, 246, 238, 0.85)" : "rgba(250, 246, 238, 0)",
         backdropFilter: scrolled ? "blur(16px)" : "blur(0px)",
+        filter: scrolled
+          ? "drop-shadow(0 0px 0px rgba(0, 0, 0, 0))"
+          : "drop-shadow(0 1px 10px rgba(0, 0, 0, 0.45))",
       }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[var(--pad)] py-18"
+      className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[var(--pad)] py-18 ${
+        scrolled ? "" : "mode-dark"
+      }`}
     >
       <MotionLink href="/" className="voice-heading text-[20px] text-ink" {...hoverTap}>
         Botanica Chango
@@ -123,27 +152,35 @@ export function Nav() {
         >
           {PHONE}
         </motion.a>
-        {process.env.NEXT_PUBLIC_SNIPCART_API_KEY && (
-          <motion.button
-            type="button"
-            className="snipcart-checkout voice-label text-label text-ink"
-            {...hoverTap}
-          >
-            Cart (<span className="snipcart-items-count">0</span>)
-          </motion.button>
-        )}
       </div>
 
-      <motion.button
-        type="button"
-        className="voice-label text-label text-ink md:hidden"
-        aria-expanded={open}
-        aria-controls="mobile-nav"
-        onClick={() => setOpen((v) => !v)}
-        {...hoverTap}
-      >
-        {open ? "Close" : "Menu"}
-      </motion.button>
+      <div className="flex items-center gap-18">
+        <motion.button
+          type="button"
+          onClick={cart.toggle}
+          aria-label={`Cart, ${cart.count} item${cart.count === 1 ? "" : "s"}`}
+          className="relative flex items-center text-ink/80 transition-colors duration-500 hover:text-ink"
+          {...hoverTap}
+        >
+          <CartIcon />
+          {cart.count > 0 && (
+            <span className="voice-label absolute -right-8 -top-8 flex h-16 w-16 items-center justify-center rounded-full bg-accent text-[9px] text-on-accent">
+              {cart.count}
+            </span>
+          )}
+        </motion.button>
+
+        <motion.button
+          type="button"
+          className="voice-label text-label text-ink md:hidden"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          onClick={() => setOpen((v) => !v)}
+          {...hoverTap}
+        >
+          {open ? "Close" : "Menu"}
+        </motion.button>
+      </div>
 
       <AnimatePresence>
         {open && (
