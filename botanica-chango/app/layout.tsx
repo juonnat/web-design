@@ -7,6 +7,7 @@ import { GrainOverlay } from "@/components/GrainOverlay";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { FloatingLogo } from "@/components/FloatingLogo";
 
 // Botanica Chango's own established brand typography (client brand wins
 // over the house style's Inter/Halyard substitution — see /CLAUDE.md).
@@ -119,6 +120,7 @@ export default function RootLayout({
         <Nav />
         <PageTransition>{children}</PageTransition>
         <Footer />
+        <FloatingLogo />
         {snipcartApiKey && (
           <>
             <link
