@@ -14,7 +14,7 @@ function QuantityStepper({ id, quantity }: { id: string; quantity: number }) {
         type="button"
         aria-label="Decrease quantity"
         onClick={() => setQuantity(id, quantity - 1)}
-        className="voice-label text-label text-ink/70 hover:text-ink"
+        className="voice-label px-4 py-4 text-label text-ink/70 hover:text-ink"
       >
         −
       </button>
@@ -23,7 +23,7 @@ function QuantityStepper({ id, quantity }: { id: string; quantity: number }) {
         type="button"
         aria-label="Increase quantity"
         onClick={() => setQuantity(id, quantity + 1)}
-        className="voice-label text-label text-ink/70 hover:text-ink"
+        className="voice-label px-4 py-4 text-label text-ink/70 hover:text-ink"
       >
         +
       </button>
@@ -63,7 +63,7 @@ export function CartDrawer() {
                 type="button"
                 onClick={close}
                 aria-label="Close cart"
-                className="voice-label text-label text-ink/70 hover:text-ink"
+                className="voice-label -m-8 p-8 text-label text-ink/70 hover:text-ink"
               >
                 Close
               </button>
@@ -135,7 +135,7 @@ function CartRemoveButton({ id }: { id: string }) {
     <button
       type="button"
       onClick={() => removeItem(id)}
-      className="voice-label text-label text-mute hover:text-ink"
+      className="voice-label px-4 py-4 text-label text-mute hover:text-ink"
     >
       Remove
     </button>

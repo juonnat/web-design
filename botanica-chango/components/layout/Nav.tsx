@@ -159,20 +159,22 @@ export function Nav() {
           type="button"
           onClick={cart.toggle}
           aria-label={`Cart, ${cart.count} item${cart.count === 1 ? "" : "s"}`}
-          className="relative flex items-center text-ink/80 transition-colors duration-500 hover:text-ink"
+          className="-m-8 flex items-center p-8 text-ink/80 transition-colors duration-500 hover:text-ink"
           {...hoverTap}
         >
-          <CartIcon />
-          {cart.count > 0 && (
-            <span className="voice-label absolute -right-8 -top-8 flex h-16 w-16 items-center justify-center rounded-full bg-accent text-[9px] text-on-accent">
-              {cart.count}
-            </span>
-          )}
+          <span className="relative flex items-center">
+            <CartIcon />
+            {cart.count > 0 && (
+              <span className="voice-label absolute -right-8 -top-8 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-accent text-[9px] text-on-accent">
+                {cart.count}
+              </span>
+            )}
+          </span>
         </motion.button>
 
         <motion.button
           type="button"
-          className="voice-label text-label text-ink md:hidden"
+          className="voice-label -m-8 p-8 text-label text-ink md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
@@ -191,14 +193,14 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.4, ease: EASE_MASS }}
-            className="absolute left-0 right-0 top-full flex flex-col gap-18 border-b border-dashed border-line bg-surface px-[var(--pad)] py-24 md:hidden"
+            className="absolute left-0 right-0 top-full flex flex-col gap-8 border-b border-dashed border-line bg-surface px-[var(--pad)] py-24 md:hidden"
           >
             {LINKS.map((link) => (
               <MotionLink
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="voice-label text-label text-ink"
+                className="voice-label py-10 text-label text-ink"
                 {...hoverTap}
               >
                 {link.label}

@@ -80,9 +80,13 @@
   --radius-pill: 36px;
   --radius-outline: 22.5px;
 
-  --text-display: 51px;
+  /* Desktop anchors are 51px/41px, but clamped rather than fixed — see
+     /CLAUDE.md's type-scale note: an unclamped 51px headline wraps into
+     five-plus lines on a phone. Both settle at their full desktop size
+     by ~700-900px and only shrink below that. */
+  --text-display: clamp(34px, 8vw + 10px, 51px);
   --text-display--line-height: 0.98;
-  --text-heading: 41px;
+  --text-heading: clamp(28px, 7vw + 8px, 41px);
   --text-heading--line-height: 1;
   --text-heading-sm: 24px;
   --text-heading-sm--line-height: 1.1;

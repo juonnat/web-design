@@ -121,7 +121,7 @@ export function FloatingLogo() {
   if (reducedMotion) {
     return (
       <>
-        <div className="fixed bottom-24 right-24 z-40 hidden h-20 w-20 md:block">{trigger}</div>
+        <div className="fixed bottom-24 right-24 z-40 hidden h-[84px] w-[84px] md:block">{trigger}</div>
         <AssistantChatOverlay open={chatOpen} onClose={() => setChatOpen(false)} />
       </>
     );

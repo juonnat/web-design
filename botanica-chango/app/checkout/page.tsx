@@ -23,7 +23,7 @@ function QuantityStepper({
         type="button"
         aria-label="Decrease quantity"
         onClick={() => onChange(id, quantity - 1)}
-        className="voice-label text-label text-ink/70 hover:text-ink"
+        className="voice-label px-4 py-4 text-label text-ink/70 hover:text-ink"
       >
         −
       </button>
@@ -32,7 +32,7 @@ function QuantityStepper({
         type="button"
         aria-label="Increase quantity"
         onClick={() => onChange(id, quantity + 1)}
-        className="voice-label text-label text-ink/70 hover:text-ink"
+        className="voice-label px-4 py-4 text-label text-ink/70 hover:text-ink"
       >
         +
       </button>
@@ -157,7 +157,7 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={() => removeItem(item.id)}
-                      className="voice-label text-label text-mute hover:text-ink"
+                      className="voice-label px-4 py-4 text-label text-mute hover:text-ink"
                     >
                       Remove
                     </button>
