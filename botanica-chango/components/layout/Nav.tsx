@@ -49,12 +49,6 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const reducedMotion = useReducedMotion();
 
-  // The home page's CinematicHero ships its own full navbar (see
-  // components/sections/CinematicHero.tsx) — showing this global nav on
-  // top of it would double up two differently-branded navbars. Every
-  // other page keeps this one as normal.
-  const hideForCinematicHero = pathname === "/";
-
   // Sampling window.scrollY once per animation frame sidesteps Lenis's
   // intercepted scroll dispatch (see SmoothScroll) — a native `scroll`
   // listener isn't reliable while Lenis is driving the scroll position.
@@ -66,8 +60,6 @@ export function Nav() {
   const hoverTap = reducedMotion
     ? {}
     : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, transition: { duration: 0.2 } };
-
-  if (hideForCinematicHero) return null;
 
   return (
     <motion.header

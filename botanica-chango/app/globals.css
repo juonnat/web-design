@@ -94,12 +94,16 @@
 }
 
 html {
-  background: var(--c-surface);
+  /* Transparent (not var(--c-surface)) so the fixed site background
+     video shows through — html/body don't establish their own stacking
+     context, so an opaque background here paints *above* a negative
+     z-index fixed child instead of behind it. See SiteBackgroundVideo. */
+  background: transparent;
   scroll-behavior: auto;
 }
 
 body {
-  background: var(--c-surface);
+  background: transparent;
   color: var(--c-ink);
   font-family: var(--font-mulish), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
@@ -155,7 +159,10 @@ body {
      stacking context above and paints *underneath* this section's own
      background instead of above it. */
   z-index: 0;
-  background: var(--c-surface);
+  /* Semi-transparent rather than solid so the fixed site background
+     video (see SiteBackgroundVideo) reads through every section as the
+     page scrolls, instead of being hidden behind an opaque fill. */
+  background: color-mix(in srgb, var(--c-surface) 85%, transparent);
   color: var(--c-ink);
 }
 

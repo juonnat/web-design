@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Mulish } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { SiteBackgroundVideo } from "@/components/SiteBackgroundVideo";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { GrainOverlay } from "@/components/GrainOverlay";
 import { Nav } from "@/components/layout/Nav";
@@ -115,6 +116,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
         <SmoothScroll />
+        <SiteBackgroundVideo />
         <GrainOverlay />
         <ScrollProgress />
         <Nav />

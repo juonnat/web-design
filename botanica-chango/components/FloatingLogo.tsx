@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { AssistantChatOverlay } from "@/components/AssistantChat";
+import { SmokeWisp } from "@/components/SmokeWisp";
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
@@ -17,12 +18,16 @@ function clamp(n: number, min: number, max: number) {
  * wherever it currently is, so it actually crosses rather than wandering
  * in place). Fixed positioning means it rides along as the page scrolls.
  * Disabled under reduced motion, where it just sits still in a corner.
+ *
+ * Clicking it opens the shop assistant chat (see AssistantChat) rather
+ * than navigating anywhere.
  */
 export function FloatingLogo() {
   const reducedMotion = useReducedMotion();
   const controls = useAnimationControls();
   const posRef = useRef({ x: 0, y: 0 });
   const [ready, setReady] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -102,30 +107,41 @@ export function FloatingLogo() {
     />
   );
 
+  const trigger = (
+    <button
+      type="button"
+      onClick={() => setChatOpen(true)}
+      aria-label="Open the shop assistant"
+      className="pointer-events-auto block h-full w-full"
+    >
+      {logo}
+    </button>
+  );
+
   if (reducedMotion) {
     return (
-      <div className="fixed bottom-24 right-24 z-40 hidden md:block">
-        <Link href="/" aria-label="Botanica Chango — back to home" className="block h-20 w-20">
-          {logo}
-        </Link>
-      </div>
+      <>
+        <div className="fixed bottom-24 right-24 z-40 hidden h-20 w-20 md:block">{trigger}</div>
+        <AssistantChatOverlay open={chatOpen} onClose={() => setChatOpen(false)} />
+      </>
     );
   }
 
   return (
-    <motion.div
-      className="pointer-events-none fixed left-0 top-0 z-40"
-      initial={{ opacity: 0, x: 0, y: 0 }}
-      animate={controls}
-      style={{ visibility: ready ? "visible" : "hidden" }}
-    >
-      <Link
-        href="/"
-        aria-label="Botanica Chango — back to home"
-        className="pointer-events-auto block h-[56px] w-[56px] md:h-[84px] md:w-[84px]"
+    <>
+      <motion.div
+        className="pointer-events-none fixed left-0 top-0 z-40 h-[56px] w-[56px] md:h-[84px] md:w-[84px]"
+        initial={{ opacity: 0, x: 0, y: 0 }}
+        animate={controls}
+        style={{ visibility: ready ? "visible" : "hidden" }}
       >
-        {logo}
-      </Link>
-    </motion.div>
+        <div className="relative h-full w-full">
+          <SmokeWisp side="left" />
+          {trigger}
+          <SmokeWisp side="right" />
+        </div>
+      </motion.div>
+      <AssistantChatOverlay open={chatOpen} onClose={() => setChatOpen(false)} />
+    </>
   );
 }

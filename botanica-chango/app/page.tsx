@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CinematicHero } from "@/components/sections/CinematicHero";
+import { HomeHero } from "@/components/sections/HomeHero";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { TestimonialGrid } from "@/components/sections/TestimonialGrid";
 import { ShopReveal } from "@/components/sections/ShopReveal";
@@ -17,7 +17,14 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      <CinematicHero />
+      <HomeHero
+        kicker="Seventh Street"
+        headline="Spiritual tools. Honest readings. Open late on Seventh."
+        buttons={[
+          { label: "See what's in stock", href: "/products" },
+          { label: "Visit the store", href: "/contact", variant: "filled" },
+        ]}
+      />
 
       <FeatureGrid
         index="02"
