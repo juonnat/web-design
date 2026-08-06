@@ -20,6 +20,7 @@ export default function Products() {
       <PageBanner
         kicker="On Seventh Street"
         headline="Blessed jewelry, crystals, and spiritual baths in Allentown."
+        headlineEffect="depth"
       />
 
       <FeatureGrid

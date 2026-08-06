@@ -20,6 +20,7 @@ export default function Home() {
       <PageBanner
         kicker="Seventh Street"
         headline="Spiritual tools. Honest readings. Open late on Seventh."
+        headlineEffect="depth"
         buttons={[
           { label: "See what's in stock", href: "/products" },
           { label: "Visit the store", href: "/contact", variant: "filled" },

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function Contact() {
   return (
     <main>
-      <PageBanner kicker="Get in touch" headline="Stop by or give me a call." />
+      <PageBanner kicker="Get in touch" headline="Stop by or give me a call." headlineEffect="depth" />
 
       <ContactForm />
 

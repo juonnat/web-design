@@ -38,42 +38,38 @@ export default function DepthParallaxWords({
   return (
     <span aria-label={children} className={className} ref={ref}>
       {words.map((word, index) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: words have no stable id
-        <span key={index}>
-          <motion.span
-            animate={
-              play
-                ? { filter: "blur(0px)", opacity: 1, scale: 1, y: 0 }
-                : undefined
-            }
-            aria-hidden="true"
-            initial={
-              shouldReduceMotion
-                ? { opacity: 1 }
-                : { filter: "blur(3px)", opacity: 0, scale: 0.92, y: 18 }
-            }
-            style={{ display: "inline-block", whiteSpace: "pre" }}
-            transition={
-              shouldReduceMotion
-                ? { duration: 0 }
-                : {
-                    delay: delay / MS + (index * stagger) / MS,
-                    duration: DURATION_S,
-                    ease: EASE,
-                  }
-            }
-          >
-            {word}
-          </motion.span>
-          {index < words.length - 1 && (
-            <span
-              aria-hidden="true"
-              style={{ display: "inline-block", whiteSpace: "pre" }}
-            >
-              {" "}
-            </span>
-          )}
-        </span>
+        <motion.span
+          // biome-ignore lint/suspicious/noArrayIndexKey: words have no stable id
+          key={index}
+          animate={
+            play
+              ? { filter: "blur(0px)", opacity: 1, scale: 1, y: 0 }
+              : undefined
+          }
+          aria-hidden="true"
+          initial={
+            shouldReduceMotion
+              ? { opacity: 1 }
+              : { filter: "blur(3px)", opacity: 0, scale: 0.92, y: 18 }
+          }
+          // The trailing space lives inside the same inline-block as the
+          // word (not a separate element) so the browser wraps between
+          // whole "word + space" chunks — a standalone space span can
+          // strand itself at the start of the next line when text wraps.
+          style={{ display: "inline-block", whiteSpace: "pre" }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0 }
+              : {
+                  delay: delay / MS + (index * stagger) / MS,
+                  duration: DURATION_S,
+                  ease: EASE,
+                }
+          }
+        >
+          {word}
+          {index < words.length - 1 ? " " : ""}
+        </motion.span>
       ))}
     </span>
   );

@@ -19,6 +19,7 @@ export default function Services() {
       <PageBanner
         kicker="Spiritual Services"
         headline="Book a reading or cleansing. Thursdays, biweekly, on Seventh."
+        headlineEffect="depth"
       />
 
       <ServiceGrid
