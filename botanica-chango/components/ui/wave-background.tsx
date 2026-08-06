@@ -135,8 +135,11 @@ export function Waves({
             path.classList.add('a__line')
             path.classList.add('js-line')
             path.setAttribute('fill', 'none')
-            path.setAttribute('stroke', strokeColor)
-            path.setAttribute('stroke-width', '1')
+            // Set via style (not the raw presentation attribute) so a
+            // CSS var() reference here — e.g. strokeColor="var(--c-accent)" —
+            // actually resolves through the CSS cascade at paint time.
+            path.style.stroke = strokeColor
+            path.style.strokeWidth = '1'
 
             svgRef.current.appendChild(path)
             pathsRef.current.push(path)

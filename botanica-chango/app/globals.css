@@ -149,6 +149,12 @@ body {
   width: 100%;
   padding-inline: var(--pad);
   position: relative;
+  /* Without an explicit z-index, `position: relative` alone doesn't
+     establish a stacking context — any negative z-index child (e.g. an
+     absolutely-positioned background layer) escapes to the nearest real
+     stacking context above and paints *underneath* this section's own
+     background instead of above it. */
+  z-index: 0;
   background: var(--c-surface);
   color: var(--c-ink);
 }
