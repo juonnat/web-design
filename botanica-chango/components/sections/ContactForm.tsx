@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { Reveal } from "@/components/animations/Reveal";
 import { Button } from "@/components/ui/Button";
-
-const TOPICS = [
-  "Product question",
-  "Schedule a reading or cleansing",
-  "A specific item",
-  "General inquiry",
-];
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const TO_EMAIL = "botanicachango6@gmail.com";
 
@@ -20,11 +14,14 @@ const TO_EMAIL = "botanicachango6@gmail.com";
  * visitors don't need their own mail client open.
  */
 export function ContactForm() {
-  const [topic, setTopic] = useState(TOPICS[0]);
+  const t = useTranslation();
+  const TOPICS = t.contactForm.topics;
+  const [topicIndex, setTopicIndex] = useState(0);
   const [sent, setSent] = useState(false);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const topic = TOPICS[topicIndex];
     const form = new FormData(e.currentTarget);
     const name = String(form.get("name") ?? "");
     const email = String(form.get("email") ?? "");
@@ -53,7 +50,7 @@ export function ContactForm() {
       <Reveal className="w-full max-w-[560px]">
         <form onSubmit={handleSubmit} className="flex flex-col gap-24">
           <label className="flex flex-col gap-8">
-            <span className="voice-label text-label text-mute">Name *</span>
+            <span className="voice-label text-label text-mute">{t.contactForm.name}</span>
             <input
               required
               name="name"
@@ -63,7 +60,7 @@ export function ContactForm() {
           </label>
 
           <label className="flex flex-col gap-8">
-            <span className="voice-label text-label text-mute">Email *</span>
+            <span className="voice-label text-label text-mute">{t.contactForm.email}</span>
             <input
               required
               name="email"
@@ -73,7 +70,7 @@ export function ContactForm() {
           </label>
 
           <label className="flex flex-col gap-8">
-            <span className="voice-label text-label text-mute">Phone</span>
+            <span className="voice-label text-label text-mute">{t.contactForm.phone}</span>
             <input
               name="phone"
               type="tel"
@@ -82,22 +79,22 @@ export function ContactForm() {
           </label>
 
           <label className="flex flex-col gap-8">
-            <span className="voice-label text-label text-mute">What are you looking for?</span>
+            <span className="voice-label text-label text-mute">{t.contactForm.lookingFor}</span>
             <select
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
+              value={topicIndex}
+              onChange={(e) => setTopicIndex(Number(e.target.value))}
               className="voice-body border-0 border-b border-dashed border-line bg-transparent py-10 text-[18px] text-ink outline-none focus-visible:border-accent"
             >
-              {TOPICS.map((t) => (
-                <option key={t} value={t}>
-                  {t}
+              {TOPICS.map((topicLabel, i) => (
+                <option key={i} value={i}>
+                  {topicLabel}
                 </option>
               ))}
             </select>
           </label>
 
           <label className="flex flex-col gap-8">
-            <span className="voice-label text-label text-mute">Message</span>
+            <span className="voice-label text-label text-mute">{t.contactForm.message}</span>
             <textarea
               name="message"
               rows={4}
@@ -106,14 +103,10 @@ export function ContactForm() {
           </label>
 
           <Button type="submit" variant="filled" className="self-start">
-            Send message
+            {t.contactForm.send}
           </Button>
 
-          {sent && (
-            <p className="voice-body text-[15px] text-ink/60">
-              Opening your email app to send this to Bosslady Evil Eye.
-            </p>
-          )}
+          {sent && <p className="voice-body text-[15px] text-ink/60">{t.contactForm.sent}</p>}
         </form>
       </Reveal>
     </section>

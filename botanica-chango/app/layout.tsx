@@ -11,6 +11,8 @@ import { PageTransition } from "@/components/PageTransition";
 import { FloatingLogo } from "@/components/FloatingLogo";
 import { CartProvider } from "@/components/cart/CartContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
+import { LanguagePrompt } from "@/components/LanguagePrompt";
 
 // Botanica Chango Spiritual Wonders' own established brand typography (client brand wins
 // over the house style's Inter/Halyard substitution — see /CLAUDE.md).
@@ -115,17 +117,20 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
-        <CartProvider>
-          <SmoothScroll />
-          <SiteBackgroundVideo />
-          <GrainOverlay />
-          <ScrollProgress />
-          <Nav />
-          <PageTransition>{children}</PageTransition>
-          <Footer />
-          <FloatingLogo />
-          <CartDrawer />
-        </CartProvider>
+        <LanguageProvider>
+          <CartProvider>
+            <SmoothScroll />
+            <SiteBackgroundVideo />
+            <GrainOverlay />
+            <ScrollProgress />
+            <Nav />
+            <PageTransition>{children}</PageTransition>
+            <Footer />
+            <FloatingLogo />
+            <CartDrawer />
+            <LanguagePrompt />
+          </CartProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

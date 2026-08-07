@@ -6,6 +6,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AssistantChatOverlay } from "@/components/AssistantChat";
 import { SmokeWisp } from "@/components/SmokeWisp";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
@@ -24,6 +25,7 @@ function clamp(n: number, min: number, max: number) {
  */
 export function FloatingLogo() {
   const reducedMotion = useReducedMotion();
+  const t = useTranslation();
   const controls = useAnimationControls();
   const posRef = useRef({ x: 0, y: 0 });
   const [ready, setReady] = useState(false);
@@ -111,7 +113,7 @@ export function FloatingLogo() {
     <button
       type="button"
       onClick={() => setChatOpen(true)}
-      aria-label="Open the shop assistant"
+      aria-label={t.assistant.openAria}
       className="pointer-events-auto block h-full w-full"
     >
       {logo}

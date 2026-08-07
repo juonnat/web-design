@@ -39,9 +39,11 @@ export async function POST(request: Request) {
   }
 
   let messages: ChatMessage[];
+  let locale: string;
   try {
     const body = await request.json();
     messages = Array.isArray(body?.messages) ? body.messages : [];
+    locale = body?.locale === "es" ? "es" : "en";
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
@@ -66,7 +68,10 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         model: MODEL,
         max_tokens: 400,
-        system: SYSTEM_PROMPT,
+        system:
+          locale === "es"
+            ? `${SYSTEM_PROMPT}\n\nRespond only in Spanish (the visitor has the site set to Spanish), using natural, warm, everyday Spanish rather than stiff or overly formal translation.`
+            : SYSTEM_PROMPT,
         messages: trimmed,
       }),
     });

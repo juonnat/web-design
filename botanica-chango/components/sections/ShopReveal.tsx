@@ -1,6 +1,7 @@
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/animations/Reveal";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 /**
  * Real store photography hasn't arrived yet (see GalleryGrid) — the
@@ -9,24 +10,24 @@ import { Reveal } from "@/components/animations/Reveal";
  * Bosslady sends one.
  */
 export function ShopReveal() {
+  const t = useTranslation();
+
   return (
     <section className="relative overflow-hidden bg-surface py-68">
       <div className="px-[var(--pad)]">
         <Reveal>
-          <SectionLabel index="04" title="Step inside" />
+          <SectionLabel index="04" title={t.home.shopReveal.stepInside} />
         </Reveal>
       </div>
 
       <ContainerScroll
         titleComponent={
           <>
-            <span className="voice-label text-label text-mute">
-              Seventh Street
-            </span>
+            <span className="voice-label text-label text-mute">{t.home.shopReveal.kicker}</span>
             <h2 className="voice-heading mt-14 text-heading-sm text-ink md:text-heading">
-              Every shelf has a story.
+              {t.home.shopReveal.headline[0]}
               <br />
-              Come see it for yourself.
+              {t.home.shopReveal.headline[1]}
             </h2>
           </>
         }
@@ -38,9 +39,7 @@ export function ShopReveal() {
               "linear-gradient(155deg, color-mix(in srgb, var(--c-accent) 14%, transparent), transparent 70%)",
           }}
         >
-          <span className="voice-label text-label text-mute">
-            Inside Botanica Chango Spiritual Wonders
-          </span>
+          <span className="voice-label text-label text-mute">{t.home.shopReveal.inside}</span>
         </div>
       </ContainerScroll>
     </section>

@@ -7,14 +7,8 @@ import { AnimatePresence, motion, useAnimationFrame } from "framer-motion";
 import { EASE_MASS } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useCart } from "@/components/cart/CartContext";
-
-const LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Shop", href: "/products" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const PHONE = "(610) 704-4022";
 const PHONE_HREF = "tel:+16107044022";
@@ -66,6 +60,16 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const reducedMotion = useReducedMotion();
   const cart = useCart();
+  const { locale, setLocale } = useLanguage();
+  const t = useTranslation();
+
+  const LINKS = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.services, href: "/services" },
+    { label: t.nav.shop, href: "/products" },
+    { label: t.nav.about, href: "/about" },
+    { label: t.nav.contact, href: "/contact" },
+  ];
 
   // Sampling window.scrollY once per animation frame sidesteps Lenis's
   // intercepted scroll dispatch (see SmoothScroll) — a native `scroll`
@@ -135,7 +139,7 @@ export function Nav() {
           href="https://facebook.com/bossladyevileye"
           target="_blank"
           rel="noreferrer"
-          aria-label="Botanica Chango Spiritual Wonders on Facebook"
+          aria-label={t.nav.facebookAria}
           className="text-ink/70 transition-colors duration-500 hover:text-ink"
         >
           <FacebookIcon />
@@ -144,7 +148,7 @@ export function Nav() {
           href="https://instagram.com/bossladysevileye"
           target="_blank"
           rel="noreferrer"
-          aria-label="Botanica Chango Spiritual Wonders on Instagram"
+          aria-label={t.nav.instagramAria}
           className="text-ink/70 transition-colors duration-500 hover:text-ink"
         >
           <InstagramIcon />
@@ -156,13 +160,22 @@ export function Nav() {
         >
           {PHONE}
         </motion.a>
+        <motion.button
+          type="button"
+          onClick={() => setLocale(locale === "en" ? "es" : "en")}
+          aria-label={t.nav.languageLabel}
+          className="voice-label rounded-[var(--radius-outline)] border border-dashed border-line px-14 py-12 text-label text-ink/80 transition-colors duration-500 hover:border-ink hover:text-ink"
+          {...hoverTap}
+        >
+          {locale === "en" ? "ES" : "EN"}
+        </motion.button>
       </div>
 
       <div className="flex shrink-0 items-center gap-18">
         <motion.button
           type="button"
           onClick={cart.toggle}
-          aria-label={`Cart, ${cart.count} item${cart.count === 1 ? "" : "s"}`}
+          aria-label={t.nav.cartAria(cart.count)}
           className="-m-8 flex items-center p-8 text-ink/80 transition-colors duration-500 hover:text-ink"
           {...hoverTap}
         >
@@ -184,7 +197,7 @@ export function Nav() {
           onClick={() => setOpen((v) => !v)}
           {...hoverTap}
         >
-          {open ? "Close" : "Menu"}
+          {open ? t.nav.close : t.nav.menu}
         </motion.button>
       </div>
 
@@ -213,25 +226,35 @@ export function Nav() {
             <a href={PHONE_HREF} className="voice-label text-label text-ink">
               {PHONE}
             </a>
-            <div className="flex items-center gap-18 pt-8">
-              <a
-                href="https://facebook.com/bossladyevileye"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Botanica Chango Spiritual Wonders on Facebook"
-                className="text-ink/70"
+            <div className="flex items-center justify-between gap-18 pt-8">
+              <div className="flex items-center gap-18">
+                <a
+                  href="https://facebook.com/bossladyevileye"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={t.nav.facebookAria}
+                  className="text-ink/70"
+                >
+                  <FacebookIcon />
+                </a>
+                <a
+                  href="https://instagram.com/bossladysevileye"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={t.nav.instagramAria}
+                  className="text-ink/70"
+                >
+                  <InstagramIcon />
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLocale(locale === "en" ? "es" : "en")}
+                aria-label={t.nav.languageLabel}
+                className="voice-label rounded-[var(--radius-outline)] border border-dashed border-line px-14 py-8 text-label text-ink/80"
               >
-                <FacebookIcon />
-              </a>
-              <a
-                href="https://instagram.com/bossladysevileye"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Botanica Chango Spiritual Wonders on Instagram"
-                className="text-ink/70"
-              >
-                <InstagramIcon />
-              </a>
+                {locale === "en" ? "ES" : "EN"}
+              </button>
             </div>
           </motion.nav>
         )}

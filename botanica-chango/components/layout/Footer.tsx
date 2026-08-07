@@ -4,19 +4,21 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { EASE_SETTLE } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-
-const LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Shop", href: "/products" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const MotionLink = motion.create(Link);
 
 export function Footer() {
   const reducedMotion = useReducedMotion();
+  const t = useTranslation();
+
+  const LINKS = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.services, href: "/services" },
+    { label: t.nav.shop, href: "/products" },
+    { label: t.nav.about, href: "/about" },
+    { label: t.nav.contact, href: "/contact" },
+  ];
   const hoverTap = reducedMotion
     ? {}
     : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, transition: { duration: 0.2 } };
@@ -42,7 +44,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-14">
-            <span className="voice-label text-label text-mute">Pages</span>
+            <span className="voice-label text-label text-mute">{t.footer.pages}</span>
             <ul className="flex flex-col gap-10">
               {LINKS.map((link) => (
                 <li key={link.href}>
@@ -59,7 +61,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-14">
-            <span className="voice-label text-label text-mute">Follow</span>
+            <span className="voice-label text-label text-mute">{t.footer.follow}</span>
             <ul className="flex flex-col gap-10">
               <li>
                 <a
@@ -68,7 +70,7 @@ export function Footer() {
                   rel="noreferrer"
                   className="voice-label inline-block text-label text-ink/80 transition-colors duration-500 hover:text-ink"
                 >
-                  Facebook
+                  {t.footer.facebook}
                 </a>
               </li>
               <li>
@@ -78,7 +80,7 @@ export function Footer() {
                   rel="noreferrer"
                   className="voice-label inline-block text-label text-ink/80 transition-colors duration-500 hover:text-ink"
                 >
-                  Instagram
+                  {t.footer.instagram}
                 </a>
               </li>
             </ul>
@@ -86,10 +88,8 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col-reverse items-start justify-between gap-18 border-t border-dashed border-line pt-24 md:flex-row md:items-center">
-          <span className="text-legal text-mute">
-            © {new Date().getFullYear()} Botanica Chango Spiritual Wonders. All rights reserved.
-          </span>
-          <span className="text-legal text-mute">Open on Seventh Street.</span>
+          <span className="text-legal text-mute">{t.footer.rights(new Date().getFullYear())}</span>
+          <span className="text-legal text-mute">{t.footer.openLine}</span>
         </div>
       </motion.div>
     </footer>

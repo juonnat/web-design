@@ -5,17 +5,17 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { EASE_MASS } from "@/lib/motion";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 type Message = { role: "user" | "assistant"; content: string };
 
-const WELCOME: Message = {
-  role: "assistant",
-  content:
-    "Hey — I can help you find what you're looking for on the site: products, services, hours, or how to book a reading. What do you need?",
-};
-
 export function AssistantChat({ onClose }: { onClose: () => void }) {
-  const [messages, setMessages] = useState<Message[]>([WELCOME]);
+  const { locale } = useLanguage();
+  const t = useTranslation();
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "assistant", content: t.assistant.welcome },
+  ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
@@ -50,17 +50,17 @@ export function AssistantChat({ onClose }: { onClose: () => void }) {
       const res = await fetch("/api/assistant", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, locale }),
       });
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.reply ?? data.error ?? "Something went wrong." },
+        { role: "assistant", content: data.reply ?? data.error ?? t.assistant.genericError },
       ]);
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Couldn't reach the assistant — try calling (610) 704-4022 instead." },
+        { role: "assistant", content: t.assistant.unreachable },
       ]);
     } finally {
       setLoading(false);
@@ -82,7 +82,7 @@ export function AssistantChat({ onClose }: { onClose: () => void }) {
       <motion.div
         role="dialog"
         aria-modal="true"
-        aria-label="Botanica Chango Spiritual Wonders shop assistant"
+        aria-label={t.assistant.dialogAria}
         className="fixed inset-x-18 bottom-18 z-[60] mx-auto flex max-h-[70svh] w-auto max-w-[420px] flex-col rounded-[var(--radius-card)] border border-dashed border-line bg-surface text-ink sm:inset-x-auto sm:right-24 sm:bottom-24 sm:w-[380px]"
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -99,17 +99,17 @@ export function AssistantChat({ onClose }: { onClose: () => void }) {
               className="h-8 w-8 rounded-full object-cover object-top"
             />
             <div className="flex flex-col">
-              <span className="voice-label text-label text-ink">Shop assistant</span>
+              <span className="voice-label text-label text-ink">{t.assistant.shopAssistant}</span>
               <span className="text-legal text-mute">Botanica Chango Spiritual Wonders</span>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close assistant"
+            aria-label={t.assistant.closeAria}
             className="voice-label text-label text-mute transition-colors duration-500 hover:text-ink"
           >
-            Close
+            {t.assistant.close}
           </button>
         </div>
 
@@ -144,11 +144,11 @@ export function AssistantChat({ onClose }: { onClose: () => void }) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about products, services, hours…"
+            placeholder={t.assistant.placeholder}
             className="voice-body min-w-0 flex-1 bg-transparent text-[15px] text-ink placeholder:text-mute focus:outline-none"
           />
           <Button type="submit" variant="filled" className="shrink-0">
-            Send
+            {t.assistant.send}
           </Button>
         </form>
       </motion.div>
