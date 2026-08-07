@@ -12,7 +12,7 @@ import { FloatingLogo } from "@/components/FloatingLogo";
 import { CartProvider } from "@/components/cart/CartContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 
-// Botanica Chango's own established brand typography (client brand wins
+// Botanica Chango Spiritual Wonders' own established brand typography (client brand wins
 // over the house style's Inter/Halyard substitution — see /CLAUDE.md).
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -27,7 +27,7 @@ const mulish = Mulish({
 });
 
 const siteUrl = "https://botanica-sigma-ten.vercel.app";
-const title = "Botanica Chango | Bosslady Evil Eye - Spiritual Supply Store";
+const title = "Botanica Chango Spiritual Wonders | Bosslady Evil Eye - Spiritual Supply Store";
 const description =
   "Crystals, blessed jewelry, candles, and spiritual baths on Seventh Street in Allentown, PA. Tarot readings, shell readings, and house cleansings, biweekly on Thursdays.";
 
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: "%s | Botanica Chango",
+    template: "%s | Botanica Chango Spiritual Wonders",
   },
   description,
   keywords: [
@@ -49,14 +49,14 @@ export const metadata: Metadata = {
     "Santeria supplies",
     "Seventh Street",
   ],
-  authors: [{ name: "Botanica Chango" }],
+  authors: [{ name: "Botanica Chango Spiritual Wonders" }],
   openGraph: {
     title,
     description,
     url: siteUrl,
-    siteName: "Botanica Chango",
+    siteName: "Botanica Chango Spiritual Wonders",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Botanica Chango" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Botanica Chango Spiritual Wonders" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -78,7 +78,7 @@ export const viewport: Viewport = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "Store",
-  name: "Botanica Chango",
+  name: "Botanica Chango Spiritual Wonders",
   alternateName: "Bosslady Evil Eye",
   image: `${siteUrl}/og.png`,
   telephone: "+1-610-704-4022",

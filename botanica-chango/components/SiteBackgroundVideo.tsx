@@ -29,14 +29,50 @@ export function SiteBackgroundVideo() {
 
     if (reducedMotion) {
       video.pause();
-    } else {
-      video.play().catch(() => {});
+      return;
     }
+
+    // A single play() call right after mount can still lose the race
+    // against iOS Safari's autoplay eligibility check — if metadata isn't
+    // ready yet, the attempt is silently rejected and Safari falls back to
+    // showing its native tap-to-play affordance permanently, even though
+    // the video is muted+playsinline. Retrying as buffering state changes,
+    // plus once more on the very first touch/scroll/click anywhere on the
+    // page (a real user gesture always clears any autoplay block), makes
+    // sure the video actually starts instead of getting stuck on that icon.
+    const attemptPlay = () => {
+      video.muted = true;
+      video.play().catch(() => {});
+    };
+
+    attemptPlay();
+    video.addEventListener("loadedmetadata", attemptPlay);
+    video.addEventListener("canplay", attemptPlay);
+    window.addEventListener("touchstart", attemptPlay, { once: true, passive: true });
+    window.addEventListener("scroll", attemptPlay, { once: true, passive: true });
+    window.addEventListener("click", attemptPlay, { once: true });
+
+    return () => {
+      video.removeEventListener("loadedmetadata", attemptPlay);
+      video.removeEventListener("canplay", attemptPlay);
+      window.removeEventListener("touchstart", attemptPlay);
+      window.removeEventListener("scroll", attemptPlay);
+      window.removeEventListener("click", attemptPlay);
+    };
   }, [reducedMotion]);
 
   return (
     <video
-      ref={ref}
+      ref={(el) => {
+        ref.current = el;
+        // Set as early as possible — during commit, before the browser gets
+        // a chance to paint or evaluate autoplay eligibility — rather than
+        // waiting for the effect above to run after paint.
+        if (el) {
+          el.muted = true;
+          el.defaultMuted = true;
+        }
+      }}
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 h-full w-full object-cover"
       src="/background.mp4"
@@ -44,6 +80,7 @@ export function SiteBackgroundVideo() {
       muted
       loop
       playsInline
+      preload="auto"
       webkit-playsinline="true"
     />
   );

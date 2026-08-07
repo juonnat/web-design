@@ -6,7 +6,7 @@
    Structure and motion follow the repo's house style (see /CLAUDE.md):
    full-bleed, one-viewport sections, dashed hairlines, no shadows, one
    filled surface per screen, physics-feeling motion. Palette and
-   typeface are Botanica Chango's own established brand, which the house
+   typeface are Botanica Chango Spiritual Wonders' own established brand, which the house
    style's client-brand-override rule puts ahead of the ORYZO reference
    palette — light blue / dark blue / white (with a violet accent),
    Playfair Display (headings) and Mulish (interface + body), instead
@@ -138,7 +138,7 @@ body {
 }
 
 /* Headline voice: same uppercase/tracked treatment, but in Playfair
-   Display at display/heading sizes — Botanica Chango's own "elegant
+   Display at display/heading sizes — Botanica Chango Spiritual Wonders' own "elegant
    serif" identity, reserved for headlines. */
 .voice-heading {
   font-family: var(--font-playfair), Georgia, serif;

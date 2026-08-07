@@ -39,7 +39,7 @@ const TESTIMONIALS = [
   {
     name: "Eddie A.",
     quote:
-      "I went here because my best friend told me the reader was on point, and boy was she right — that woman has told me things about me that my own mother didn't know. I found my home. Now I will never go anywhere else to get read. Botanica Chango has the best reader, hands down.",
+      "I went here because my best friend told me the reader was on point, and boy was she right — that woman has told me things about me that my own mother didn't know. I found my home. Now I will never go anywhere else to get read. Botanica Chango Spiritual Wonders has the best reader, hands down.",
   },
   {
     name: "Taija M.",

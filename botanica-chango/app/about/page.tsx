@@ -7,9 +7,9 @@ import { CTABand } from "@/components/sections/CTABand";
 import { LocationMap } from "@/components/sections/LocationMap";
 
 export const metadata: Metadata = {
-  title: "About Botanica Chango | Bosslady Evil Eye - Our Story",
+  title: "About Botanica Chango Spiritual Wonders | Bosslady Evil Eye - Our Story",
   description:
-    "Meet Bosslady Evil Eye, the owner of Botanica Chango on Seventh Street in Allentown, PA. Real products for real practice — tarot, shell readings, and house cleansings.",
+    "Meet Bosslady Evil Eye, the owner of Botanica Chango Spiritual Wonders on Seventh Street in Allentown, PA. Real products for real practice — tarot, shell readings, and house cleansings.",
   alternates: { canonical: "/about" },
 };
 
@@ -42,10 +42,10 @@ export default function About() {
 
       <TextBlock
         index="03"
-        label="Botanica Chango"
-        headline="Why Botanica Chango"
+        label="Botanica Chango Spiritual Wonders"
+        headline="Why Botanica Chango Spiritual Wonders"
         paragraphs={[
-          "Botanica Chango is a spiritual supply store built around the Orisha and Santería tradition, and around anyone else doing real energy work — manifestation, protection, cleansing, or just paying closer attention to what they carry.",
+          "Botanica Chango Spiritual Wonders is a spiritual supply store built around the Orisha and Santería tradition, and around anyone else doing real energy work — manifestation, protection, cleansing, or just paying closer attention to what they carry.",
           "I'm Bosslady Evil Eye. This shop is mine, and I run it the way I'd want to be treated walking in: told the truth, not sold a story.",
         ]}
       />

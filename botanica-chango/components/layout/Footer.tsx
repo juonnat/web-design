@@ -32,7 +32,7 @@ export function Footer() {
       >
         <div className="flex flex-col gap-45 md:grid md:grid-cols-[1.4fr_1fr_1fr]">
           <div className="flex flex-col gap-18">
-            <span className="voice-heading text-[22px] text-ink">Botanica Chango</span>
+            <span className="voice-heading text-[22px] text-ink">Botanica Chango Spiritual Wonders</span>
             <p className="voice-body max-w-[36ch] text-[18px] leading-[1.35] text-ink/75">
               441 N 7th St, Allentown, PA 18102
             </p>
@@ -87,7 +87,7 @@ export function Footer() {
 
         <div className="flex flex-col-reverse items-start justify-between gap-18 border-t border-dashed border-line pt-24 md:flex-row md:items-center">
           <span className="text-legal text-mute">
-            © {new Date().getFullYear()} Botanica Chango. All rights reserved.
+            © {new Date().getFullYear()} Botanica Chango Spiritual Wonders. All rights reserved.
           </span>
           <span className="text-legal text-mute">Open on Seventh Street.</span>
         </div>

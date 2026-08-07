@@ -14,7 +14,7 @@ export function LocationMap({
       <span className="voice-label text-label text-mute">{address}</span>
       <div className="border border-dashed border-line rounded-[var(--radius-card)] overflow-hidden">
         <iframe
-          title="Botanica Chango location"
+          title="Botanica Chango Spiritual Wonders location"
           className="h-[360px] w-full grayscale-[0.2]"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

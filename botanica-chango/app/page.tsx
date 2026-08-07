@@ -8,7 +8,7 @@ import { CTABand } from "@/components/sections/CTABand";
 import { TextBlock } from "@/components/sections/TextBlock";
 
 export const metadata: Metadata = {
-  title: "Botanica Chango | Bosslady Evil Eye - Spiritual Supply Store",
+  title: "Botanica Chango Spiritual Wonders | Bosslady Evil Eye - Spiritual Supply Store",
   description:
     "Crystals, blessed jewelry, candles, and spiritual baths on Seventh Street in Allentown, PA. Tarot readings, shell readings, and house cleansings, biweekly on Thursdays.",
   alternates: { canonical: "/" },
@@ -89,7 +89,7 @@ export default function Home() {
         label="About the store"
         headline="What's inside on Seventh Street?"
         paragraphs={[
-          "I'm Bosslady Evil Eye, and this is Botanica Chango — a real supply shop for real practice, not a gift shop dressed up as one. Everything on the shelf, I've held and felt myself.",
+          "I'm Bosslady Evil Eye, and this is Botanica Chango Spiritual Wonders — a real supply shop for real practice, not a gift shop dressed up as one. Everything on the shelf, I've held and felt myself.",
           "Whether you're deep in the Orisha tradition or just starting to pay attention to your energy, walk in and I'll tell you straight what you need.",
         ]}
         cta={{ label: "Meet Bosslady Evil Eye", href: "/about" }}

@@ -82,7 +82,7 @@ export function AssistantChat({ onClose }: { onClose: () => void }) {
       <motion.div
         role="dialog"
         aria-modal="true"
-        aria-label="Botanica Chango shop assistant"
+        aria-label="Botanica Chango Spiritual Wonders shop assistant"
         className="fixed inset-x-18 bottom-18 z-[60] mx-auto flex max-h-[70svh] w-auto max-w-[420px] flex-col rounded-[var(--radius-card)] border border-dashed border-line bg-surface text-ink sm:inset-x-auto sm:right-24 sm:bottom-24 sm:w-[380px]"
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -100,7 +100,7 @@ export function AssistantChat({ onClose }: { onClose: () => void }) {
             />
             <div className="flex flex-col">
               <span className="voice-label text-label text-ink">Shop assistant</span>
-              <span className="text-legal text-mute">Botanica Chango</span>
+              <span className="text-legal text-mute">Botanica Chango Spiritual Wonders</span>
             </div>
           </div>
           <button

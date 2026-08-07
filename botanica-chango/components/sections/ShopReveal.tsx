@@ -39,7 +39,7 @@ export function ShopReveal() {
           }}
         >
           <span className="voice-label text-label text-mute">
-            Inside Botanica Chango
+            Inside Botanica Chango Spiritual Wonders
           </span>
         </div>
       </ContainerScroll>

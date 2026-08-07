@@ -99,7 +99,7 @@ export function FloatingLogo() {
   const logo = (
     <Image
       src="/logo.png"
-      alt="Bosslady Evil Eye, Botanica Chango"
+      alt="Bosslady Evil Eye, Botanica Chango Spiritual Wonders"
       width={240}
       height={360}
       className="h-full w-full object-contain object-bottom"

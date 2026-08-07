@@ -8,7 +8,7 @@ import { CTABand } from "@/components/sections/CTABand";
 import { TextBlock } from "@/components/sections/TextBlock";
 
 export const metadata: Metadata = {
-  title: "Spiritual Products - Botanica Chango | Bosslady Evil Eye",
+  title: "Spiritual Products - Botanica Chango Spiritual Wonders | Bosslady Evil Eye",
   description:
     "Blessed jewelry, crystals, candles, and spiritual baths on Seventh Street in Allentown, PA — over 50 products for real spiritual practice.",
   alternates: { canonical: "/products" },

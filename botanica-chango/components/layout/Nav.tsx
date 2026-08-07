@@ -99,8 +99,12 @@ export function Nav() {
         scrolled ? "" : "mode-dark"
       }`}
     >
-      <MotionLink href="/" className="voice-heading text-[20px] text-ink" {...hoverTap}>
-        Botanica Chango
+      <MotionLink
+        href="/"
+        className="voice-heading max-w-[52vw] shrink-0 text-[13px] leading-tight text-ink sm:max-w-none sm:text-[16px] md:text-[20px]"
+        {...hoverTap}
+      >
+        Botanica Chango Spiritual Wonders
       </MotionLink>
 
       <nav className="hidden md:flex items-center gap-31" aria-label="Primary">
@@ -131,7 +135,7 @@ export function Nav() {
           href="https://facebook.com/bossladyevileye"
           target="_blank"
           rel="noreferrer"
-          aria-label="Botanica Chango on Facebook"
+          aria-label="Botanica Chango Spiritual Wonders on Facebook"
           className="text-ink/70 transition-colors duration-500 hover:text-ink"
         >
           <FacebookIcon />
@@ -140,7 +144,7 @@ export function Nav() {
           href="https://instagram.com/bossladysevileye"
           target="_blank"
           rel="noreferrer"
-          aria-label="Botanica Chango on Instagram"
+          aria-label="Botanica Chango Spiritual Wonders on Instagram"
           className="text-ink/70 transition-colors duration-500 hover:text-ink"
         >
           <InstagramIcon />
@@ -154,7 +158,7 @@ export function Nav() {
         </motion.a>
       </div>
 
-      <div className="flex items-center gap-18">
+      <div className="flex shrink-0 items-center gap-18">
         <motion.button
           type="button"
           onClick={cart.toggle}
@@ -214,7 +218,7 @@ export function Nav() {
                 href="https://facebook.com/bossladyevileye"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Botanica Chango on Facebook"
+                aria-label="Botanica Chango Spiritual Wonders on Facebook"
                 className="text-ink/70"
               >
                 <FacebookIcon />
@@ -223,7 +227,7 @@ export function Nav() {
                 href="https://instagram.com/bossladysevileye"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Botanica Chango on Instagram"
+                aria-label="Botanica Chango Spiritual Wonders on Instagram"
                 className="text-ink/70"
               >
                 <InstagramIcon />
